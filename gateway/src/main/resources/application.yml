@@ -21,6 +21,14 @@ spring:
           uri: lb://company-service
           predicates:
             - Path=/api/v1/companies/**
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/v1/products/**
+        - id: slack-service
+          uri: lb://slack-service
+          predicates:
+            - Path=/api/v1/slacks/**
 #        - id: auth-service
 #          uri: lb://auth-service
 #          predicates:
