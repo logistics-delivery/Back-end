@@ -13,6 +13,7 @@
         <module name="logistics-delivery.gateway.main" />
         <module name="logistics-delivery.eureka.main" />
         <module name="logistics-delivery.company-service.main" />
+        <module name="logistics-delivery.hub-service.main" />
         <module name="logistics-delivery.order-service.main" />
       </profile>
     </annotationProcessing>
