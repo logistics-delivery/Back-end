@@ -15,6 +15,7 @@
         <module name="logistics-delivery.company-service.main" />
         <module name="logistics-delivery.hub-service.main" />
         <module name="logistics-delivery.order-service.main" />
+        <module name="logistics-delivery.payment-service.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17" />
