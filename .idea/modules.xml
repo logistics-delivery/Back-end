@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/product-service/logistics-delivery.product-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/product-service/logistics-delivery.product-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/slack-service/logistics-delivery.slack-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/slack-service/logistics-delivery.slack-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service/logistics-delivery.user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service/logistics-delivery.user-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hub-service/logistics-delivery.hub-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/hub-service/logistics-delivery.hub-service.main.iml" />
     </modules>
   </component>
 </project>
