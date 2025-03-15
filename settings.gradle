@@ -8,4 +8,7 @@ include('company-service')
 include('hub-service')
 include('product-service')
 include('slack-service')
+
 include('shipping-service')
+
+include('payment-service')

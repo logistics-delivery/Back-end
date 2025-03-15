@@ -5,8 +5,15 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/company-service/logistics-delivery.company-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/company-service/logistics-delivery.company-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka/logistics-delivery.eureka.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka/logistics-delivery.eureka.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway/logistics-delivery.gateway.main.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway/logistics-delivery.gateway.main.iml" />
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/hub-service/logistics-delivery.hub-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/hub-service/logistics-delivery.hub-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/order-service/logistics-delivery.order-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order-service/logistics-delivery.order-service.main.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/order-service/logistics-delivery.order-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order-service/logistics-delivery.order-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/payment-service/logistics-delivery.payment-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/payment-service/logistics-delivery.payment-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/product-service/logistics-delivery.product-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/product-service/logistics-delivery.product-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/slack-service/logistics-delivery.slack-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/slack-service/logistics-delivery.slack-service.main.iml" />
+>>>>>>> 5dac52f (✨feat [#15]: payment-service init 추가)
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service/logistics-delivery.user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service/logistics-delivery.user-service.main.iml" />
     </modules>
   </component>

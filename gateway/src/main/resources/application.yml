@@ -33,10 +33,15 @@ spring:
           uri: lb://slack-service
           predicates:
             - Path=/api/v1/slacks/**
+
         - id: shipping-service
           uri: lb://shipping-service
           predicates:
             - Path=/api/v1/shippings/**
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/api/v1/payments/**
 #        - id: auth-service
 #          uri: lb://auth-service
 #          predicates:
