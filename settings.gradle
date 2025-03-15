@@ -12,3 +12,4 @@ include('slack-service')
 include('shipping-service')
 
 include('payment-service')
+include('shipping-service')
