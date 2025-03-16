@@ -1,0 +1,19 @@
+FROM eclipse-temurin:17-jdk
+
+WORKDIR /app
+
+# 루트 프로젝트에서 Gradle 관련 파일 복사
+COPY ../gradlew ../build.gradle ../settings.gradle ./
+COPY ../gradle gradle/
+
+# 실행 권한 추가
+RUN chmod +x gradlew
+
+# Gradle 의존성 다운로드
+RUN ./gradlew dependencies --no-daemon
+
+# Eureka 서버 코드 복사
+COPY . .
+
+# Eureka 서버 실행
+ENTRYPOINT ["./gradlew", ":eureka:bootRun"]
