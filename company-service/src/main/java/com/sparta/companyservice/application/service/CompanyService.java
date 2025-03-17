@@ -28,7 +28,7 @@ public class CompanyService {
         Company company = Company.create(
                 UUID.randomUUID(),
                 request.getName(),
-                CompanyType.fromKor(request.getType()),
+                CompanyType.valueOf(request.getType()),
                 request.getHubId(),
                 request.getAddress()
         );
@@ -39,7 +39,7 @@ public class CompanyService {
         return CompanyDto.builder()
                 .id(saved.getId())
                 .name(saved.getName())
-                .type(saved.getType().getKor())
+                .type(saved.getType().name())
                 .hubId(saved.getHubId())
                 .address(saved.getAddress())
                 .createdAt(saved.getCreatedAt())

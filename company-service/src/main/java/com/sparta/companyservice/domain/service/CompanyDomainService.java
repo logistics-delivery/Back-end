@@ -8,7 +8,7 @@ public class CompanyDomainService {
 
     public void validate(Company company) {
         if (company.getName().length() < 2) {
-            throw new IllegalArgumentException("회사명은 2자 이상이어야 합니다.");
+            throw new IllegalArgumentException("업체명은 2자 이상이어야 합니다.");
         }
     }
 }
