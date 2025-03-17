@@ -1,24 +1,30 @@
 package com.sparta.orderservice.application.service;
 
 import com.sparta.orderservice.application.dto.OrderRequestDto;
+<<<<<<< HEAD
 import com.sparta.orderservice.application.dto.OrderResponseDto;
 import com.sparta.orderservice.domain.model.Order;
 import com.sparta.orderservice.domain.model.OrderStatus;
+=======
+import com.sparta.orderservice.domain.model.Order;
+>>>>>>> 7deb867 (application - service - OrderService create 기능구현)
 import com.sparta.orderservice.domain.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+<<<<<<< HEAD
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
 
-    // 주문 생성
+
     @Transactional
     public Order createOrder(OrderRequestDto requestDto){
         Order order = Order.builder()
@@ -33,7 +39,7 @@ public class OrderService {
                 return orderRepository.save(order);
     }
 
-    // 주문 전체 조회
+
     @Transactional(readOnly = true)
     public List<OrderResponseDto> getALlOrders(){
         List<Order> orders = orderRepository.findAll();
@@ -53,7 +59,6 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    // 주문 개별 조회 (id)
     @Transactional(readOnly = true)
     public OrderResponseDto getOrderById(UUID orderId){
         Order order = orderRepository.findById(orderId)
@@ -91,6 +96,7 @@ public class OrderService {
         return new OrderResponseDto(order);
 
     }
+
 
 
 }
