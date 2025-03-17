@@ -1,0 +1,137 @@
+services:
+  eureka-server:
+    build:
+      context: .  # 루트에서 빌드 (Gradle 파일 접근 가능)
+      dockerfile: eureka/Dockerfile.dev
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - msa-network
+
+  gateway-service:
+    build:
+      context: .  # 루트에서 빌드
+      dockerfile: gateway/Dockerfile.dev
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - msa-network
+
+  company-service:
+    build:
+      context: .  # 루트에서 빌드
+      dockerfile: company-service/Dockerfile.dev
+    container_name: company-service
+    ports:
+      - "8085:8080"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - msa-network
+
+  hub-service:
+    build:
+      context: .  # 루트에서 빌드
+      dockerfile: hub-service/Dockerfile.dev
+    container_name: hub-service
+    ports:
+      - "8082:8080"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - msa-network
+
+  order-service:
+    build:
+      context: .  # 루트에서 빌드
+      dockerfile: order-service/Dockerfile.dev
+    container_name: order-service
+    ports:
+      - "8084:8080"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - msa-network
+
+  payment-service:
+    build:
+      context: .  # 루트에서 빌드
+      dockerfile: payment-service/Dockerfile.dev
+    container_name: payment-service
+    ports:
+      - "8086:8080"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - msa-network
+  product-service:
+    build:
+      context: .  # 루트에서 빌드
+      dockerfile: product-service/Dockerfile.dev
+    container_name: product-service
+    ports:
+      - "8083:8080"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - msa-network
+  shipping-service:
+    build:
+      context: .  # 루트에서 빌드
+      dockerfile: shipping-service/Dockerfile.dev
+    container_name: shipping-service
+    ports:
+      - "8088:8080"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - msa-network
+
+  slack-service:
+    build:
+      context: .  # 루트에서 빌드
+      dockerfile: slack-service/Dockerfile.dev
+    container_name: slack-service
+    ports:
+      - "8087:8080"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - msa-network
+  user-service:
+    build:
+      context: .  # 루트에서 빌드
+      dockerfile: user-service/Dockerfile.dev
+    container_name: user-service
+    ports:
+      - "8081:8080"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - msa-network
+
+networks:
+  msa-network:
+    driver: bridge

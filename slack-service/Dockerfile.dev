@@ -1,0 +1,15 @@
+FROM eclipse-temurin:17-jdk
+
+WORKDIR /app
+
+# Gradle 캐시 최적화
+COPY gradle gradle
+COPY gradlew build.gradle settings.gradle ./
+RUN chmod +x gradlew
+RUN ./gradlew dependencies --no-daemon
+
+# 전체 프로젝트 복사
+COPY . .
+
+# 개발 모드에서 실행 (빌드 없이 바로 실행)
+ENTRYPOINT ["./gradlew", ":slack-service:bootRun"]
