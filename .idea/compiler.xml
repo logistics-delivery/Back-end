@@ -12,7 +12,7 @@
         <module name="logistics-delivery.product-service.main" />
         <module name="logistics-delivery.shipping-service.main" />
         <module name="logistics-delivery.eureka.main" />
-        <module name="logistics-delivery.payment-service.main" />
+        <module name="logistics-delivery.common-module.main" />
         <module name="logistics-delivery.gateway.main" />
         <module name="logistics-delivery.company-service.main" />
         <module name="logistics-delivery.hub-service.main" />

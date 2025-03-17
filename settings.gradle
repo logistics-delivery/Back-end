@@ -2,6 +2,7 @@ rootProject.name = 'logistics-delivery'
 
 include('eureka')
 include('gateway')
+include('common-module')
 include('user-service')
 include('order-service')
 include('company-service')
