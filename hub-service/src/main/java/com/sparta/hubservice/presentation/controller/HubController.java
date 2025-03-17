@@ -1,18 +1,19 @@
 package com.sparta.hubservice.presentation.controller;
 
 import com.sparta.hubservice.application.dto.HubCreateResponseDto;
+import com.sparta.hubservice.application.dto.HubDeleteResponseDto;
 import com.sparta.hubservice.application.dto.HubRequestDto;
 import com.sparta.hubservice.application.dto.HubResponseDto;
 import com.sparta.hubservice.application.dto.HubUpdateRequestDto;
-import com.sparta.hubservice.application.dto.HubUpdateResponserDto;
+import com.sparta.hubservice.application.dto.HubUpdateResponseDto;
 import com.sparta.hubservice.application.service.HubService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,8 +52,14 @@ public class HubController {
     }
 
     @PutMapping
-    public ResponseEntity<HubUpdateResponserDto> updateHub(@RequestBody HubUpdateRequestDto requestDto,  @RequestParam long userId) {
+    public ResponseEntity<HubUpdateResponseDto> updateHub(@RequestBody HubUpdateRequestDto requestDto,  @RequestParam long userId) {
         return hubService.updateHub(requestDto, userId);
     }
+
+    @DeleteMapping("{hub_id}")
+    public ResponseEntity<HubDeleteResponseDto> deleteHub(@PathVariable("hub_id") UUID hubId, @RequestParam long userId) {
+        return hubService.deleteHub(hubId, userId);
+    }
+
 
 }

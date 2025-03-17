@@ -3,13 +3,13 @@ package com.sparta.hubservice.application.service;
 import com.sparta.commonmodule.exception.DuplicateResourceException;
 import com.sparta.commonmodule.exception.ResourceNotFoundException;
 import com.sparta.hubservice.application.dto.HubCreateResponseDto;
+import com.sparta.hubservice.application.dto.HubDeleteResponseDto;
 import com.sparta.hubservice.application.dto.HubRequestDto;
 import com.sparta.hubservice.application.dto.HubResponseDto;
 import com.sparta.hubservice.application.dto.HubUpdateRequestDto;
-import com.sparta.hubservice.application.dto.HubUpdateResponserDto;
+import com.sparta.hubservice.application.dto.HubUpdateResponseDto;
 import com.sparta.hubservice.domain.model.Hub;
 import com.sparta.hubservice.domain.repository.HubRepository;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,65 +39,50 @@ public class HubService {
         return new ResponseEntity<>(hubResponseDtos, HttpStatus.OK);
     }
 
-    // 특정 허브 목록 조회
+    // 특정 허브 조회
     @Transactional(readOnly = true)
     public ResponseEntity<HubResponseDto> getHub(UUID hubId) {
-        Optional<Hub> hubDetail = hubRepository.findById(hubId);
-        if(hubDetail.isEmpty()){
-            throw new ResourceNotFoundException();
-        }
-        HubResponseDto responseDto = new HubResponseDto(hubDetail.get());
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        Hub hubDetail = hubRepository.findById(hubId)
+            .orElseThrow(ResourceNotFoundException::new);
+
+        return ResponseEntity.ok(new HubResponseDto(hubDetail));
     }
 
     // 허브 생성
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public ResponseEntity<HubCreateResponseDto> createHub(HubRequestDto hubRequestDto, long userId) {
-        try{
-            Hub savedHub = Hub.builder()
-                .name(hubRequestDto.getName())
-                .address(hubRequestDto.getAddress())
-                .latitude(hubRequestDto.getLatitude())
-                .longitude(hubRequestDto.getLongitude())
-                .userId(userId)
-                .build();
-            savedHub = hubRepository.save(savedHub);
-            HubCreateResponseDto responseDto = new HubCreateResponseDto(savedHub, "Hub successfully created.");
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        if(hubRepository.existsByName(hubRequestDto.getName())){
+            throw new DuplicateResourceException();
         }
-        catch (DuplicateResourceException e){
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ResponseEntity.badRequest()
-                .body(new HubCreateResponseDto(null, "Failed to create hub : Duplicate name"));
-        }
-        catch (Exception e){
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ResponseEntity.badRequest()
-                .body(new HubCreateResponseDto(null, "Failed to create hub : unexpected exception"));
-        }
+        Hub hub = Hub.builder()
+            .name(hubRequestDto.getName())
+            .address(hubRequestDto.getAddress())
+            .latitude(hubRequestDto.getLatitude())
+            .longitude(hubRequestDto.getLongitude())
+            .userId(userId)
+            .build();
+
+        Hub savedHub = hubRepository.save(hub);
+        return ResponseEntity.ok(new HubCreateResponseDto(savedHub, "Hub successfully created."));
     }
 
     // 허브 수정
-    @Transactional(rollbackFor = Exception.class)
-    public ResponseEntity<HubUpdateResponserDto> updateHub(HubUpdateRequestDto requestDto, long userId) {
-        try {
-            Hub originHub = hubRepository.findById(requestDto.getHubId()).get();
-            if(originHub == null) {
-                throw new ResourceNotFoundException();
-            }
-            originHub = Hub.builder()
-                .address(requestDto.getAddress())
-                .latitude(requestDto.getLatitude())
-                .longitude(requestDto.getLongitude())
-                .build();
-            originHub.update(userId);
-            Hub updateHub = hubRepository.save(originHub);
-            return ResponseEntity.ok(new HubUpdateResponserDto(updateHub, "Hub successfully updated."));
-        }
-        catch (Exception e){
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ResponseEntity.badRequest()
-                .body(new HubUpdateResponserDto(null, "Failed to update hub : unexpected exception"));
-        }
+    @Transactional
+    public ResponseEntity<HubUpdateResponseDto> updateHub(HubUpdateRequestDto requestDto, long userId) {
+        Hub hub = hubRepository.findById(requestDto.getHubId())
+            .orElseThrow(ResourceNotFoundException::new);
+
+        hub.updateHub(requestDto.getAddress(), requestDto.getLatitude(), requestDto.getLongitude(), userId);
+        return ResponseEntity.ok(new HubUpdateResponseDto(hub, "Hub successfully updated."));
+    }
+
+    // 허브삭제 (Soft Delete)
+    @Transactional
+    public ResponseEntity<HubDeleteResponseDto> deleteHub(UUID hubId, long userId) {
+        Hub hub = hubRepository.findById(hubId)
+            .orElseThrow(ResourceNotFoundException::new);
+
+        hub.delete(userId);
+        return ResponseEntity.ok(new HubDeleteResponseDto(hubId, "Hub successfully deleted."));
     }
 }

@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class HubUpdateResponserDto {
+public class HubUpdateResponseDto {
 
     private final UUID hubId;
     private final String message;
@@ -19,7 +19,7 @@ public class HubUpdateResponserDto {
     private final LocalDateTime updatedAt;
     private final long updatedBy;
 
-    public HubUpdateResponserDto(Hub hub, String message) {
+    public HubUpdateResponseDto(Hub hub, String message) {
         this.hubId = getHubId();
         this.message = message;
         this.location = getLocation();

@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HubRepository extends JpaRepository<Hub, UUID> {
     Page<HubResponseDto> findAllAndIsDeletedFalse(Pageable pageable);
+
+    boolean existsByName(String name);
 }
