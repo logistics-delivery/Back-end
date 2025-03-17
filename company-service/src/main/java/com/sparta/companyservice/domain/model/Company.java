@@ -1,5 +1,6 @@
 package com.sparta.companyservice.domain.model;
 
+import com.sparta.commonmodule.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Company {
+public class Company extends BaseEntity {
     @Id
     @Column(name = "company_id")
     private UUID id;
@@ -33,22 +34,14 @@ public class Company {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String address;
 
-    // 나중에 BaseEntity 상속
-    @Column(nullable = false, updatable = false)
-    private Long createdBy;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    private Long updatedBy;
-
-    private LocalDateTime updatedAt;
-
-    @Column(nullable = false)
-    private Boolean isDeleted;
-
-    private Long deletedBy;
-
-    private LocalDateTime deletedAt;
+    public static Company create(UUID id, String name, CompanyType type, UUID hubId, String address) {
+        return Company.builder()
+                .id(id)
+                .name(name)
+                .type(type)
+                .hubId(hubId)
+                .address(address)
+                .build();
+    }
 }
 
