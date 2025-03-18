@@ -1,0 +1,60 @@
+package com.sparta.hubservice.domain.model;
+
+import com.sparta.commonmodule.entity.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Digits;
+import java.math.BigDecimal;
+import java.util.UUID;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
+
+@Entity
+@Getter
+@NoArgsConstructor
+@Table(name = "p_hub")
+public class Hub extends BaseEntity {
+    @Id
+    @Column(name = "hub_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @UuidGenerator
+    private UUID hubId;
+
+    @Column(unique = true, nullable = false, length = 255)
+    private String name;
+
+    @Column(nullable = false, length = 255)
+    private String address;
+
+    @Column(nullable = false)
+    @Digits(integer = 10, fraction = 6)
+    private BigDecimal latitude;
+
+    @Column(nullable = false)
+    @Digits(integer = 10, fraction = 6)
+    private BigDecimal longitude;
+
+    @Builder
+    public Hub(String name, String address, BigDecimal latitude, BigDecimal longitude, long userId) {
+        super(userId);
+        this.name = name;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public void updateHub(String address, BigDecimal latitude, BigDecimal longitude, long userId){
+        super.update(userId);
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+
+}
