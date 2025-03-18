@@ -1,7 +1,18 @@
 spring:
   application:
     name: user-service
-
+  datasource:
+    url: jdbc:postgresql://localhost:5001/user_db  # Docker의 PostgreSQL 컨테이너의 IP 또는 호스트와 포트를 사용
+    username: postgres_user  # PostgreSQL 사용자 이름
+    password: 12345  # PostgreSQL 비밀번호
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL에 맞는 Hibernate Dialect 설정
+  h2:
+    console:
+      enabled: false  # H2 콘솔 비활성화 (PostgreSQL 사용 시)
 server:
   port: 8081
 
@@ -11,3 +22,14 @@ eureka:
     fetch-registry: true # Eureka?? ??? ?? ????
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+service:
+  jwt:
+    access-expiration: 3600000 # 1시간 뒤 만료
+    secret-key: "50OsBNAaYDd8KJkGL8DCy8l8GFeJY--lzgxXrQJA-vUl1ZfivKtLNuwR_qNn2LJ6NkXpg8AAa2fe2CVUtN4UcQ"
+  master:
+    signup-key: "mgbE4vogtrMGufz6PXkQNTV-KZtU4-Mz7_wcKf7r40kKTu8z4BD9l_kacdd4MzU3pQV6y3LB-yrmMvvXFKep2Q"
+  hub:
+    signup-key: "WS4LLkUhglcrzhFaqWhGXMX70V-ntoQrJdsbT8997aR32veCI2Y35-yyjdHzUzVc4TybaGSdRJ6WYVVcY9K6Uw"
+  shipping:
+    signup-key: "QqjxcIpIisVqc2evLWPRyjMya8nCyWiheO5L8SbxwKbJFRjlIkxFaX1l8ShI8GlE1hxw_oOoyrfefEE7ZrUkMQ"
