@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class HubUpdateRequestDto {
 
-    private UUID hubId;
     private String address;
     private BigDecimal latitude;
     private BigDecimal longitude;

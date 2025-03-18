@@ -49,9 +49,9 @@ public class HubController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @PutMapping
-    public ResponseEntity<HubUpdateResponseDto> updateHub(@RequestBody HubUpdateRequestDto requestDto,  @RequestParam long userId) {
-        HubUpdateResponseDto responseDto = hubService.updateHub(requestDto, userId);
+    @PutMapping("{hub_id}")
+    public ResponseEntity<HubUpdateResponseDto> updateHub(@PathVariable("hub_id") UUID hubId, @RequestBody HubUpdateRequestDto requestDto,  @RequestParam long userId) {
+        HubUpdateResponseDto responseDto = hubService.updateHub(hubId, requestDto, userId);
         return ResponseEntity.ok(responseDto);
     }
 
