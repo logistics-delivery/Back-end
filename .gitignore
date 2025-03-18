@@ -27,6 +27,9 @@ log/
 docker/data/
 docker/db-data/
 
+.idea/compiler.xml
+.idea/misc.xml
+
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
@@ -34,7 +37,6 @@ docker/db-data/
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/modules/**
-.idea/compiler.xml
 
 # AWS User-specific
 .idea/**/aws.xml
