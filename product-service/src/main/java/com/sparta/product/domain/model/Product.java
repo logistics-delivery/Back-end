@@ -1,7 +1,7 @@
 package com.sparta.product.domain.model;
 
-/*import com.spring_cloud.eureka.client.product.presentation.dto.ProductRequestDto;
-import com.spring_cloud.eureka.client.product.presentation.dto.ProductResponseDto;*/
+
+import com.sparta.commonmodule.entity.BaseEntity;
 import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import jakarta.persistence.*;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PRIVATE)
-public class Product {
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
