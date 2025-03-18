@@ -21,11 +21,23 @@ logs/
 *.log
 log/
 
+# IntelliJ 프로젝트 설정 파일 제외
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/compiler.xml
+.idea/shelf/
+.idea/libraries/
+.idea/inspectionProfiles/
+.idea/artifacts/
+.idea/deployment.xml
+.idea/httpRequests/
 
 # Docker 빌드 중 생기는 파일
 .dockerignore
 docker/data/
 docker/db-data/
+
 
 # User-specific stuff
 .idea/**/workspace.xml
