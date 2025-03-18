@@ -9,6 +9,6 @@ import java.util.UUID;
 @FeignClient(name = "hub-service")
 public interface HubClient {
 
-    @GetMapping("api/v1/hubs/{id}/exists")
+    @GetMapping("/api/v1/hubs/{id}/exists")
     boolean existsById(@PathVariable("id") UUID id);
 }
