@@ -1,4 +1,4 @@
-package com.sparta.hubservice.domain.model;
+package com.sparta.hubservice.hub.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
 import jakarta.persistence.Column;
@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Getter
@@ -24,9 +23,8 @@ import org.hibernate.annotations.UuidGenerator;
 public class HubRoute extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "hub_route_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @UuidGenerator
     private UUID hubRouteId;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,4 +1,4 @@
-package com.sparta.hubservice.domain.model;
+package com.sparta.hubservice.hub.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
 import jakarta.persistence.Column;
@@ -13,7 +13,6 @@ import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Getter
@@ -21,9 +20,8 @@ import org.hibernate.annotations.UuidGenerator;
 @Table(name = "p_hub")
 public class Hub extends BaseEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "hub_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @UuidGenerator
     private UUID hubId;
 
     @Column(unique = true, nullable = false, length = 255)

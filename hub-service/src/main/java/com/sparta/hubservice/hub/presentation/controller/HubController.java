@@ -1,12 +1,12 @@
-package com.sparta.hubservice.controller;
+package com.sparta.hubservice.hub.presentation.controller;
 
-import com.sparta.hubservice.application.dto.HubCreateResponseDto;
-import com.sparta.hubservice.application.dto.HubDeleteResponseDto;
-import com.sparta.hubservice.application.dto.HubRequestDto;
-import com.sparta.hubservice.application.dto.HubResponseDto;
-import com.sparta.hubservice.application.dto.HubUpdateRequestDto;
-import com.sparta.hubservice.application.dto.HubUpdateResponseDto;
-import com.sparta.hubservice.application.service.HubService;
+import com.sparta.hubservice.hub.application.dto.HubCreateResponseDto;
+import com.sparta.hubservice.hub.application.dto.HubDeleteResponseDto;
+import com.sparta.hubservice.hub.application.dto.HubRequestDto;
+import com.sparta.hubservice.hub.application.dto.HubResponseDto;
+import com.sparta.hubservice.hub.application.dto.HubUpdateRequestDto;
+import com.sparta.hubservice.hub.application.dto.HubUpdateResponseDto;
+import com.sparta.hubservice.hub.application.service.HubService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,34 +31,34 @@ public class HubController {
     private final HubService hubService;
 
     @GetMapping
-    public ResponseEntity<String> hubTest(){
-        return ResponseEntity.ok("connect hub-service");
-    }
-
-    @GetMapping
     public ResponseEntity<Page<HubResponseDto>> getHubs(
         @PageableDefault(page = 0, size = 10, sort = "createdAt") Pageable pageable) {
-        return hubService.getHubs(pageable);
+        Page<HubResponseDto> responseDtos = hubService.getHubs(pageable);
+        return ResponseEntity.ok(responseDtos);
     }
 
     @GetMapping("/{hub_id}")
     public ResponseEntity<HubResponseDto> getHubById(@PathVariable("hub_id") UUID hubId) {
-        return hubService.getHub(hubId);
+        HubResponseDto responseDto = hubService.getHub(hubId);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping
     public ResponseEntity<HubCreateResponseDto> createHub(@RequestBody HubRequestDto requestDto, @RequestParam long userId) {
-        return hubService.createHub(requestDto, userId);
+        HubCreateResponseDto responseDto = hubService.createHub(requestDto, userId);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping
     public ResponseEntity<HubUpdateResponseDto> updateHub(@RequestBody HubUpdateRequestDto requestDto,  @RequestParam long userId) {
-        return hubService.updateHub(requestDto, userId);
+        HubUpdateResponseDto responseDto = hubService.updateHub(requestDto, userId);
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("{hub_id}")
     public ResponseEntity<HubDeleteResponseDto> deleteHub(@PathVariable("hub_id") UUID hubId, @RequestParam long userId) {
-        return hubService.deleteHub(hubId, userId);
+        HubDeleteResponseDto responseDto = hubService.deleteHub(hubId, userId);
+        return ResponseEntity.ok(responseDto);
     }
 
 

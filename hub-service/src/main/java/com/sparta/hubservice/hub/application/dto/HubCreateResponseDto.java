@@ -1,6 +1,6 @@
-package com.sparta.hubservice.application.dto;
+package com.sparta.hubservice.hub.application.dto;
 
-import com.sparta.hubservice.domain.model.Hub;
+import com.sparta.hubservice.hub.domain.model.Hub;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Builder;

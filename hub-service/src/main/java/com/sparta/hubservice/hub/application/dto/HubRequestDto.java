@@ -1,7 +1,6 @@
-package com.sparta.hubservice.application.dto;
+package com.sparta.hubservice.hub.application.dto;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HubUpdateRequestDto {
+public class HubRequestDto {
 
-    private UUID hubId;
+    private String name;
     private String address;
     private BigDecimal latitude;
     private BigDecimal longitude;
