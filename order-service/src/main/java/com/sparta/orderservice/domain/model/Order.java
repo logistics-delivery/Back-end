@@ -69,5 +69,16 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>(); // 주문 아이템 1:N 관계 설정
 
+
+    // 주문 update 메서드
+    public void updateOrderDetails(String name, UUID supplierId, UUID receiverId, UUID productId, BigDecimal totalPrice, String requestDetail) {
+        this.name = name;
+        this.supplierId = supplierId;
+        this.receiverId = receiverId;
+        this.productId = productId;
+        this.totalPrice = totalPrice;
+        this.requestDetail = requestDetail;
+    }
+
 }
 
