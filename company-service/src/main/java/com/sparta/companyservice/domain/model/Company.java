@@ -1,21 +1,14 @@
 package com.sparta.companyservice.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 public class Company extends BaseEntity {
     @Id
     @Column(name = "company_id")
@@ -34,14 +27,14 @@ public class Company extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String address;
 
-    public static Company create(UUID id, String name, CompanyType type, UUID hubId, String address) {
-        return Company.builder()
-                .id(id)
-                .name(name)
-                .type(type)
-                .hubId(hubId)
-                .address(address)
-                .build();
+    @Builder
+    public Company(UUID id, String name, CompanyType type, UUID hubId, String address, long userId) {
+        super(userId);
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.hubId = hubId;
+        this.address = address;
     }
 }
 
