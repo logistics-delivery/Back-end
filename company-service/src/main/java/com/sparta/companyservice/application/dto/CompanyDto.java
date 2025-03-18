@@ -1,21 +1,32 @@
 package com.sparta.companyservice.application.dto;
 
-import java.util.UUID;
-
-import lombok.Builder;
-import lombok.Getter;
+import com.sparta.companyservice.domain.model.Company;
+import com.sparta.companyservice.domain.model.CompanyType;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-@Getter
-@Builder
-public class CompanyDto {
-    private UUID id;
-    private String name;
-    private String type;
-    private UUID hubId;
-    private String address;
-    private LocalDateTime createdAt;
-    private String createdBy;
+// 서비스 <-> 도메인 간 내부 데이터 전달용 DTO
+
+public record CompanyDto(
+        UUID id,
+        String name,
+        CompanyType type,
+        UUID hubId,
+        String address,
+        LocalDateTime createdAt,
+        long createdBy
+) {
+    public static CompanyDto fromEntity(Company company) {
+        return new CompanyDto(
+                company.getId(),
+                company.getName(),
+                company.getType(),
+                company.getHubId(),
+                company.getAddress(),
+                company.getCreatedAt(),
+                company.getCreatedBy()
+        );
+    }
 }
 

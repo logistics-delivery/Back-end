@@ -41,9 +41,6 @@ public class UserController {
         UserSigninResponseDto responseDto
                 = userService.signIn(reqeustDto);
 
-//        //토큰생성은 auth Service에서 진행(추출한 user 정보로 토큰생성 후 엑세스 토큰값 전달.)
-//        return ResponseEntity.ok(new AuthResponse(authService.createAccessToken(responseDto)));
-
         // 토큰 생성하여 추출
         String accessToken = authService.createAccessToken(responseDto);
 
