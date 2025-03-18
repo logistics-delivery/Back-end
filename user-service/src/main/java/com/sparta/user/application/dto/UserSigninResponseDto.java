@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class UserSigninResponseDto {
     private Long id;
-    private UserRoleEnum role;
+    private String role;
     private String slackName;
 }

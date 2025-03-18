@@ -43,7 +43,7 @@ public class UserService {
                         .password(passwordEncoder.encode(requestDto.getPassword()))
                         .email(requestDto.getEmail())
                         .slackName(requestDto.getSlackName())
-                        .role(role)
+                        .role(role.getAuthority())
                         .build()
         );
         return ResponseEntity.ok("sign-up success");
