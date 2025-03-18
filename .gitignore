@@ -5,12 +5,36 @@
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
+# 보안 관련 키 및 인증 파일
+*.pem
+*.key
+*.crt
+*.pfx
+
+# DB 및 로그 파일
+*.db
+*.sqlite
+*.h2.db
+*.mv.db
+*.pgdata/
+logs/
+*.log
+log/
+
+
+# Docker 빌드 중 생기는 파일
+.dockerignore
+docker/data/
+docker/db-data/
+
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/modules/**
+.idea/compiler.xml
 
 # AWS User-specific
 .idea/**/aws.xml

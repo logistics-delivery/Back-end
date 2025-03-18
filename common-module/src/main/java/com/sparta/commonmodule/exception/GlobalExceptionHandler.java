@@ -1,4 +1,4 @@
-package com.sparta.commonmodule.entity.exception;
+package com.sparta.commonmodule.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

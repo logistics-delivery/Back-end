@@ -1,4 +1,4 @@
-package com.sparta.commonmodule.entity.exception;
+package com.sparta.commonmodule.exception;
 
 import org.springframework.dao.DataAccessException;
 
