@@ -8,6 +8,7 @@ import com.sparta.companyservice.infrastructure.client.HubClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 // 도메인 계층: 오직 순수한 값만 받아서 도메인 로직을 수행해야 함 (순수 비즈니스 규칙 실행, 객체 생성/검증/저장 책임)
@@ -35,4 +36,11 @@ public class CompanyDomainService {
     }
 
 
+    public List<Company> findAll() {
+        return companyRepository.findAll();
+    }
+
+    public Company findById(UUID id) {
+        return companyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("해당 업체를 찾을 수 없습니다."));
+    }
 }
