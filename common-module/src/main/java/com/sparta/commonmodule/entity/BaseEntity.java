@@ -27,41 +27,41 @@ public class BaseEntity {
     private LocalDateTime createdAt;
 
     @CreatedBy
-    @JoinColumn(name = "created_by")
-    private long createdBy;
+    @Column(name = "created_by")
+    private Long createdBy;
 
     @LastModifiedDate
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
 
     @LastModifiedBy
-    @JoinColumn(name = "updated_by")
-    private long updatedBy;
+    @Column(name = "updated_by", nullable = true)
+    private Long updatedBy;
 
     @Column(name = "is_deleted")
     @ColumnDefault("FALSE")
     private Boolean isDeleted;
 
-    @Column(name = "deleted_at")
+    @Column(name = "deleted_at", nullable = true)
     private LocalDateTime deletedAt;
 
-    @JoinColumn(name = "deleted_by")
-    private long deletedBy;
+    @Column(name = "deleted_by", nullable = true)
+    private Long deletedBy;
 
     // 생성을 위한 method
-    public BaseEntity(long userId) {
+    public BaseEntity(Long userId) {
         this.createdBy = userId;
         this.updatedBy = userId;
         this.isDeleted = false;
     }
 
     // update를 위한 method
-    public void update(long userId) {
+    public void update(Long userId) {
         this.updatedBy = userId;
     }
 
     // 소프트 delete를 위한 method
-    public void delete(long userId) {
+    public void delete(Long userId) {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
         this.deletedBy = userId;
