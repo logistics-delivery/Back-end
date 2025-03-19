@@ -1,6 +1,7 @@
 package com.sparta.companyservice.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
+import com.sparta.companyservice.application.dto.CompanyUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +30,7 @@ public class Company extends BaseEntity {
 
     @Builder
     // 도메인 객체 생성 책임은 create()가 지고, 그 내부에서 builder를 통해 객체 생성
-    public Company(UUID id, String name, CompanyType type, UUID hubId, String address, long userId) {
+    private Company(UUID id, String name, CompanyType type, UUID hubId, String address, long userId) {
         super(userId);
         this.id = id;
         this.name = name;
@@ -57,6 +58,16 @@ public class Company extends BaseEntity {
         this.hubId = newHubId;
         this.type = newType;
         super.update(userId);
+    }
+
+    public void applyUpdate(CompanyUpdateDto dto, long userId) {
+        // 수정 시 사용자가 입력하지 않은 필드는 기존 값으로 씌움
+        String newName = dto.name() != null ? dto.name() : this.name;
+        String newAddress = dto.address() != null ? dto.address() : this.address;
+        UUID newHubId = dto.hubId() != null ? dto.hubId() : this.hubId;
+        CompanyType newType = dto.type() != null ? dto.type() : this.type;
+
+        update(newName, newAddress, newHubId, newType, userId);
     }
 
     /// ///////////////////////////////////////////////////////////////////////////////////////
