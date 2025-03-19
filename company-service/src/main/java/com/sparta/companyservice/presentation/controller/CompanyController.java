@@ -3,7 +3,9 @@ package com.sparta.companyservice.presentation.controller;
 import com.sparta.companyservice.application.dto.CompanyDto;
 import com.sparta.companyservice.application.service.CompanyService;
 import com.sparta.companyservice.presentation.request.CompanyCreateRequest;
+import com.sparta.companyservice.presentation.request.CompanyUpdateRequest;
 import com.sparta.companyservice.presentation.response.CompanyResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +22,9 @@ public class CompanyController {
 
     // 생성
     @PostMapping
-    public ResponseEntity<CompanyResponse> createCompany(@RequestBody CompanyCreateRequest request) {
-        CompanyDto created = companyService.createCompany(request);
-        return ResponseEntity.ok(CompanyResponse.fromDto(created));
+    public ResponseEntity<CompanyResponse> createCompany(@Valid @RequestBody CompanyCreateRequest request) {
+        CompanyDto createdCompany = companyService.createCompany(request.toDto());
+        return ResponseEntity.ok(CompanyResponse.fromDto(createdCompany));
     }
 
     // 전체 조회
@@ -41,6 +43,11 @@ public class CompanyController {
     }
 
     // 수정
+    @PatchMapping("/{companyId}")
+    public ResponseEntity<CompanyResponse> updateCompany(@PathVariable UUID companyId, @Valid @RequestBody CompanyUpdateRequest request) {
+        CompanyDto updatedCompany = companyService.updateCompany(companyId, request.toDto());
+        return ResponseEntity.ok(CompanyResponse.fromDto(updatedCompany));
+    }
 
     // 삭제
 
