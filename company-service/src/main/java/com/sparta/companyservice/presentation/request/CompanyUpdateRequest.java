@@ -7,11 +7,10 @@ import java.util.UUID;
 
 public record CompanyUpdateRequest (
         String name,
-        CompanyType type,
         UUID hubId,
         String address
     ) {
     public CompanyUpdateDto toDto() {
-        return new CompanyUpdateDto(name, type, hubId, address);
+        return new CompanyUpdateDto(name, hubId, address);
     }
 }

@@ -6,7 +6,6 @@ import java.util.UUID;
 
 public record CompanyUpdateDto(
         String name,
-        CompanyType type,
         UUID hubId,
         String address
 ) {}

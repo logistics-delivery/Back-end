@@ -51,12 +51,11 @@ public class Company extends BaseEntity {
                 .build();
     }
 
-    public void update(String newName, String newAddress, UUID newHubId, CompanyType newType, long userId) {
-        validateCompany(newName, newAddress, newHubId, newType);
+    public void update(String newName, String newAddress, UUID newHubId, long userId) {
+        validateCompany(newName, newAddress, newHubId);
         this.name = newName;
         this.address = newAddress;
         this.hubId = newHubId;
-        this.type = newType;
         super.update(userId);
     }
 
@@ -65,20 +64,25 @@ public class Company extends BaseEntity {
         String newName = dto.name() != null ? dto.name() : this.name;
         String newAddress = dto.address() != null ? dto.address() : this.address;
         UUID newHubId = dto.hubId() != null ? dto.hubId() : this.hubId;
-        CompanyType newType = dto.type() != null ? dto.type() : this.type;
 
-        update(newName, newAddress, newHubId, newType, userId);
+        update(newName, newAddress, newHubId, userId);
     }
 
     /// ///////////////////////////////////////////////////////////////////////////////////////
 
-    // 업체 생성, 수정 시 검증
-
+    // 업체 생성 시 검증
     private static void validateCompany(String newName, String newAddress, UUID newHubId, CompanyType newType) {
         validateCompanyNewName(newName);
         validateCompanyNewAddress(newAddress);
         validateCompanyNewHubId(newHubId);
         validateCompanyNewType(newType);
+    }
+
+    // 업체 수정 시 검증
+    private static void validateCompany(String newName, String newAddress, UUID newHubId) {
+        validateCompanyNewName(newName);
+        validateCompanyNewAddress(newAddress);
+        validateCompanyNewHubId(newHubId);
     }
 
     private static void validateCompanyNewType(CompanyType newType) {
