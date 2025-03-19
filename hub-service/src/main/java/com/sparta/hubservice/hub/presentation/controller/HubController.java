@@ -44,19 +44,19 @@ public class HubController {
     }
 
     @PostMapping
-    public ResponseEntity<HubCreateResponseDto> createHub(@RequestBody @Valid HubRequestDto requestDto, @RequestParam long userId) {
+    public ResponseEntity<HubCreateResponseDto> createHub(@RequestBody @Valid HubRequestDto requestDto, @RequestParam Long userId) {
         HubCreateResponseDto responseDto = hubService.createHub(requestDto, userId);
         return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping("{hub_id}")
-    public ResponseEntity<HubUpdateResponseDto> updateHub(@PathVariable("hub_id") UUID hubId, @RequestParam String address,  @RequestParam long userId) {
+    public ResponseEntity<HubUpdateResponseDto> updateHub(@PathVariable("hub_id") UUID hubId, @RequestParam String address,  @RequestParam Long userId) {
         HubUpdateResponseDto responseDto = hubService.updateHub(hubId, address, userId);
         return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("{hub_id}")
-    public ResponseEntity<HubDeleteResponseDto> deleteHub(@PathVariable("hub_id") UUID hubId, @RequestParam long userId) {
+    public ResponseEntity<HubDeleteResponseDto> deleteHub(@PathVariable("hub_id") UUID hubId, @RequestParam Long userId) {
         HubDeleteResponseDto responseDto = hubService.deleteHub(hubId, userId);
         return ResponseEntity.ok(responseDto);
     }

@@ -4,11 +4,13 @@ import com.sparta.hubservice.hub.domain.model.Hub;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class HubResponseDto {
 
     private final UUID hubId;

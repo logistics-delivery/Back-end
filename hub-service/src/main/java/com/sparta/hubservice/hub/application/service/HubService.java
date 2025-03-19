@@ -47,10 +47,7 @@ public class HubService {
 
     // 허브 생성
     @Transactional
-    public HubCreateResponseDto createHub(HubRequestDto hubRequestDto, long userId) {
-        if(hubRepository.existsByName(hubRequestDto.getName())) {
-            throw new DuplicateResourceException();
-        }
+    public HubCreateResponseDto createHub(HubRequestDto hubRequestDto, Long userId) {
 
         // 주소 -> 위,경도값 변환
         Map<String, BigDecimal> map = geocodeApiService.getGeocodeAddress(hubRequestDto.getAddress());
@@ -69,20 +66,20 @@ public class HubService {
 
     // 허브 수정
     @Transactional
-    public HubUpdateResponseDto updateHub(UUID hubId, String address, long userId) {
+    public HubUpdateResponseDto updateHub(UUID hubId, String address, Long userId) {
         Hub hub = hubRepository.findById(hubId).orElseThrow(ResourceNotFoundException::new);
 
         // 주소 -> 위, 경도값 변환
         Map<String, BigDecimal> map = geocodeApiService.getGeocodeAddress(hub.getAddress());
-        hub.updateHub(address, map.get("latitude"), map.get("longitude"), userId);
 
+        hub.updateHub(address, map.get("latitude"), map.get("longitude"), userId);
         hubRepository.save(hub);
-        return new HubUpdateResponseDto(hub, "Hub successfully updated.");
+        return new HubUpdateResponseDto(hub,"Hub successfully updated.");
     }
 
     // 허브삭제 (Soft Delete)
     @Transactional
-    public HubDeleteResponseDto deleteHub(UUID hubId, long userId) {
+    public HubDeleteResponseDto deleteHub(UUID hubId, Long userId) {
         Hub hub = hubRepository.findById(hubId).orElseThrow(ResourceNotFoundException::new);
 
         hub.delete(userId);
