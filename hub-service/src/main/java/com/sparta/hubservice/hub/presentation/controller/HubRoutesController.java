@@ -3,7 +3,6 @@ package com.sparta.hubservice.hub.presentation.controller;
 
 import com.sparta.hubservice.hub.application.dto.response.HubRouteResponse;
 import com.sparta.hubservice.hub.application.service.HubRoutesService;
-import com.sparta.hubservice.hub.domain.model.HubRoute;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +19,8 @@ public class HubRoutesController {
 
     // 허브 간 경로 조회
     @GetMapping("/{from_hub_id}/{to_hub_id}")
-    public ResponseEntity<HubRouteResponse> getHubRoute(@PathVariable String fromHubId, @PathVariable String toHubId) {
-        HubRouteResponse response =  hubRoutesService.getHubRoute(fromHubId, toHubId);
+    public ResponseEntity<HubRouteResponse> getHubRoute(@PathVariable String from_hub_id, @PathVariable String to_hub_id) {
+        HubRouteResponse response =  hubRoutesService.getHubRoute(from_hub_id, to_hub_id);
         return ResponseEntity.ok(response);
     }
 
