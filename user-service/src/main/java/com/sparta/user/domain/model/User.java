@@ -32,12 +32,11 @@ public class User{
     private String slackName;
 
     @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum role;
+    private String role;
 
 
 
-    public User(Long id, String username, String password, String email, String slackName, UserRoleEnum role) {
+    public User(Long id, String username, String password, String email, String slackName, String role) {
         this.id = id;
         this.username = username;
         this.password = password;

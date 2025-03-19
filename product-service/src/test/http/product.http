@@ -1,0 +1,15 @@
+### 상품 생성
+POST http://localhost:8080/api/v1/products
+Content-Type: application/json
+X-User-Id: 12345  # 사용자 ID (Long 타입)
+
+{
+  "name": "마른오징어",
+  "description": "마른오징어 입니다.",
+  "price": 1000,
+  "quantity": 50,
+  "isDisplay": true,
+  "companyId": "550e8400-e29b-41d4-a716-446655440000",
+  "hubId": "123e4567-e89b-12d3-a456-426614174000"
+}
+

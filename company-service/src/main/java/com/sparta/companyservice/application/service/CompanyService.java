@@ -2,48 +2,41 @@ package com.sparta.companyservice.application.service;
 
 import com.sparta.companyservice.application.dto.CompanyDto;
 import com.sparta.companyservice.domain.model.Company;
-import com.sparta.companyservice.domain.model.CompanyType;
-import com.sparta.companyservice.domain.repository.CompanyRepository;
 import com.sparta.companyservice.domain.service.CompanyDomainService;
-import com.sparta.companyservice.presentation.request.CompanyRequest;
-import com.sparta.companyservice.infrastructure.client.HubClient;
+import com.sparta.companyservice.presentation.request.CompanyCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
+    private final CompanyDomainService companyDomainService;
 
-    private final HubClient hubClient;
-    private final CompanyRepository companyRepository;
-    private final CompanyDomainService domainService;
-
-    public CompanyDto createCompany(CompanyRequest request) {
-        if (!hubClient.existsById(request.getHubId())) {
-            throw new IllegalArgumentException("유효하지 않은 허브 ID입니다.");
-        }
-
-        Company company = Company.create(
-                UUID.randomUUID(),
-                request.getName(),
-                CompanyType.valueOf(request.getType()),
-                request.getHubId(),
-                request.getAddress()
+    public CompanyDto createCompany(CompanyCreateRequest request) {
+        long userId = 1L; // 실제로는 인증된 사용자 ID 가져와야 함
+        Company company = companyDomainService.create(
+                request.name(),
+                request.type(),
+                request.hub_id(),
+                request.address(),
+                userId
         );
+        // presentation에서 받은 요청을 파싱해서 domainService에 넘기고 처리 결과를 DTO로 만들어서 다시 controller로 반환
+        return CompanyDto.fromEntity(company);
+    }
 
-        domainService.validate(company);
-        Company saved = companyRepository.save(company);
+    public List<CompanyDto> getAllCompanies() {
+        return companyDomainService.findAll()
+                .stream()
+                .map(CompanyDto::fromEntity)
+                .toList();
+    }
 
-        return CompanyDto.builder()
-                .id(saved.getId())
-                .name(saved.getName())
-                .type(saved.getType().name())
-                .hubId(saved.getHubId())
-                .address(saved.getAddress())
-                .createdAt(saved.getCreatedAt())
-                .createdBy("admin_user") // 임시로 해둠
-                .build();
+    public CompanyDto getCompanyById(UUID id) {
+        Company company = companyDomainService.findById(id);
+        return CompanyDto.fromEntity(company);
     }
 }
