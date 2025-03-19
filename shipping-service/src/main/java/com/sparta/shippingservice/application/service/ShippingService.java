@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -38,6 +40,25 @@ public class ShippingService {
         return ShippingResponseDto.send(shipping);
 
     }
+
+    @Transactional(readOnly = true)
+    public List<ShippingResponseDto> getAllShipping(){
+
+        List<Shipping> result = shippingRepository.findAll();
+        return result.stream()
+            .map( shipping -> new ShippingResponseDto(
+                shipping.getId(),
+                shipping.getShippingAddress(),
+                shipping.getReceiverName(),
+                shipping.getShippingManagerId(),
+                shipping.getStatus()
+            ))
+            .collect(Collectors.toList());
+
+
+
+    }
+
 
 
 
