@@ -12,7 +12,7 @@ public record ShippingResponseDto(
     UUID shippingManagerId,
     ShippingStatus status
 ){
-    public static ShippingResponseDto send (Shipping shipping) {
+    public static ShippingResponseDto from (Shipping shipping) {
         return new ShippingResponseDto(
                 shipping.getId(),
                 shipping.getShippingAddress(),
