@@ -11,6 +11,9 @@
 *.crt
 *.pfx
 
+# 시크릿키 보관 파일
+application-secret.yml
+
 # DB 및 로그 파일
 *.db
 *.sqlite
