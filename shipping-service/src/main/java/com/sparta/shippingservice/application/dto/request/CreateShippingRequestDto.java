@@ -24,7 +24,6 @@ public record CreateShippingRequestDto(
     UUID shippingManagerId,
 
     @NotNull(message = "배송 상태는 필수입니다.")
-    //@Size(min = 2, max = 50, message = "배송 상태는 2~50자 사이여야 합니다.")
     ShippingStatus status
 
 ) {
