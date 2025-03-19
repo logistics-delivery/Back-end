@@ -3,11 +3,10 @@ package com.sparta.companyservice.application.service;
 import com.sparta.commonmodule.exception.ResourceNotFoundException;
 import com.sparta.companyservice.application.dto.CompanyCreateDto;
 import com.sparta.companyservice.application.dto.CompanyDto;
+import com.sparta.companyservice.application.dto.CompanyUpdateDto;
 import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.domain.repository.CompanyRepository;
 import com.sparta.companyservice.infrastructure.client.HubClient;
-import com.sparta.companyservice.presentation.request.CompanyCreateRequest;
-import com.sparta.companyservice.presentation.request.CompanyUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,20 +51,21 @@ public class CompanyService {
     }
 
     @Transactional // 수정
-    public CompanyDto updateCompany(UUID id, CompanyUpdateRequest request) {
+    public CompanyDto updateCompany(UUID id, CompanyUpdateDto dto) {
         Company company = findCompany(id);
 
         company.update(
-                request.name(),
-                request.address(),
-                request.hub_id(),
-                request.type(),
+                dto.name(),
+                dto.address(),
+                dto.hubId(),
+                dto.type(),
                 userId
         );
-        return CompanyDto.fromEntity(companyRepository.save(company));
+        Company saved = companyRepository.save(company);
+        return CompanyDto.fromEntity(saved);
     }
 
-    /// ////////////////////////////////////////////////////////////
+    /// //////////////////////////////////////////////////////////////////////////////////
 
     private void validateHubExists(UUID hubId) {
         if (!hubClient.existsById(hubId)) {

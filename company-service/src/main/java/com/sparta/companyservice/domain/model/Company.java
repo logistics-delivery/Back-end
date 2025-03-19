@@ -27,7 +27,8 @@ public class Company extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String address;
 
-    @Builder // 도메인 객체 생성 책임은 create()가 지고, 그 내부에서 builder로 객체 생성
+    @Builder
+    // 도메인 객체 생성 책임은 create()가 지고, 그 내부에서 builder를 통해 객체 생성
     public Company(UUID id, String name, CompanyType type, UUID hubId, String address, long userId) {
         super(userId);
         this.id = id;
@@ -58,7 +59,7 @@ public class Company extends BaseEntity {
         super.update(userId);
     }
 
-    /// ////////////////////////////////////////////////////////////
+    /// ///////////////////////////////////////////////////////////////////////////////////////
 
     // 업체 생성, 수정 시 검증
 

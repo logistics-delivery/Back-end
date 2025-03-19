@@ -2,7 +2,6 @@ package com.sparta.companyservice.presentation.controller;
 
 import com.sparta.companyservice.application.dto.CompanyDto;
 import com.sparta.companyservice.application.service.CompanyService;
-import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.presentation.request.CompanyCreateRequest;
 import com.sparta.companyservice.presentation.request.CompanyUpdateRequest;
 import com.sparta.companyservice.presentation.response.CompanyResponse;
@@ -45,9 +44,9 @@ public class CompanyController {
 
     // 수정
     @PatchMapping("/{companyId}")
-    public ResponseEntity<CompanyResponse> updateCompany(@PathVariable UUID companyId, @RequestBody CompanyUpdateRequest request) {
-        CompanyDto updated = companyService.updateCompany(companyId, request);
-        return ResponseEntity.ok(CompanyResponse.fromDto(updated));
+    public ResponseEntity<CompanyResponse> updateCompany(@PathVariable UUID companyId, @Valid @RequestBody CompanyUpdateRequest request) {
+        CompanyDto updatedCompany = companyService.updateCompany(companyId, request.toDto());
+        return ResponseEntity.ok(CompanyResponse.fromDto(updatedCompany));
     }
 
     // 삭제
