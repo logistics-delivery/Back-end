@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -39,5 +40,18 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("찾을 수 없는 상품 입니다."));
         return ReadProductResponseDto.from(product);
+    }
+
+
+    /**
+     * 상품 목록 조회
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReadProductResponseDto> readAllProduct() {
+        return productRepository.findAll()
+                .stream()
+                .map(ReadProductResponseDto::from)
+                .toList();
     }
 }
