@@ -46,8 +46,7 @@ public class CompanyService {
 
     @Transactional(readOnly = true) // 단일 조회
     public CompanyDto getCompanyById(UUID id) {
-        Company company = companyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("해당 업체를 찾을 수 없습니다."));
-        return CompanyDto.fromEntity(company);
+        return CompanyDto.fromEntity(findCompany(id));
     }
 
     @Transactional // 수정
