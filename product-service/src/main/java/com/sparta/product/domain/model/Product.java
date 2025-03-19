@@ -2,6 +2,7 @@ package com.sparta.product.domain.model;
 
 
 import com.sparta.commonmodule.entity.BaseEntity;
+import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import jakarta.persistence.*;
@@ -46,9 +47,8 @@ public class Product extends BaseEntity {
     private UUID hubId;
 
 
-
     /**
-     *  상품 생성
+     * 상품 생성
      */
     public static Product createProduct(CreateProductRequestDto requestDto, Long userId) {
         return Product.builder()
@@ -63,7 +63,18 @@ public class Product extends BaseEntity {
     }
 
 
+    /**
+     * 상품 수정
+     */
+    public Product updateProduct(UpdateProductServiceRequestDto serviceDto) {
+        this.name = serviceDto.name();
+        this.description = serviceDto.description();
+        this.price = serviceDto.price();
+        this.isDisplay = serviceDto.isDisplay();
+        return this;
+    }
 
+    
     // DTO -> Entity 변환 메서드
     public static Product of(CreateProductResponseDto responseDto) {
         return Product.builder()
