@@ -70,42 +70,22 @@ public class Company extends BaseEntity {
 
     /// ///////////////////////////////////////////////////////////////////////////////////////
 
-    // 업체 생성 시 검증
-    private static void validateCompany(String newName, String newAddress, UUID newHubId, CompanyType newType) {
-        validateCompanyNewName(newName);
-        validateCompanyNewAddress(newAddress);
-        validateCompanyNewHubId(newHubId);
-        validateCompanyNewType(newType);
-    }
-
     // 업체 수정 시 검증
     private static void validateCompany(String newName, String newAddress, UUID newHubId) {
-        validateCompanyNewName(newName);
-        validateCompanyNewAddress(newAddress);
-        validateCompanyNewHubId(newHubId);
+        validateNotNull(newName, "업체명");
+        validateNotNull(newAddress, "주소");
+        validateNotNull(newHubId, "소속 Hub");
     }
 
-    private static void validateCompanyNewType(CompanyType newType) {
-        if(newType == null) {
-            throw new IllegalArgumentException("업체 type은 null일 수 없습니다.");
-        }
+    // 업체 생성 시 검증
+    private static void validateCompany(String newName, String newAddress, UUID newHubId, CompanyType newType) {
+        validateCompany(newName, newAddress, newHubId);
+        validateNotNull(newType, "업체 type");
     }
 
-    private static void validateCompanyNewHubId(UUID newHubId) {
-        if (newHubId == null) {
-            throw new IllegalArgumentException("소속 Hub는 null일 수 없습니다.");
-        }
-    }
-
-    private static void validateCompanyNewAddress(String newAddress) {
-        if (newAddress == null) {
-            throw new IllegalArgumentException("주소는 null일 수 없습니다.");
-        }
-    }
-
-    private static void validateCompanyNewName(String newName) {
-        if (newName == null) {
-            throw new IllegalArgumentException("업체명은 null일 수 없습니다.");
+    private static void validateNotNull(Object value, String fieldName) {
+        if (value == null) {
+            throw new IllegalArgumentException(fieldName + "은(는) null일 수 없습니다.");
         }
     }
 }

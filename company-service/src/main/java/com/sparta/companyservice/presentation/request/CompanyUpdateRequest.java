@@ -1,7 +1,6 @@
 package com.sparta.companyservice.presentation.request;
 
 import com.sparta.companyservice.application.dto.CompanyUpdateDto;
-import com.sparta.companyservice.domain.model.CompanyType;
 
 import java.util.UUID;
 
