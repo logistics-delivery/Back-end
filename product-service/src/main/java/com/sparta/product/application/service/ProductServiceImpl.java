@@ -1,11 +1,14 @@
 package com.sparta.product.application.service;
 
 import com.sparta.commonmodule.exception.ResourceNotFoundException;
+import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
+import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.domain.model.Product;
 import com.sparta.product.domain.repository.ProductRepository;
 import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import com.sparta.product.presentation.dto.response.ReadProductResponseDto;
+import com.sparta.product.presentation.dto.response.UpdateProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,5 +56,28 @@ public class ProductServiceImpl implements ProductService {
                 .stream()
                 .map(ReadProductResponseDto::from)
                 .toList();
+    }
+
+
+    /**
+     * 상품 수정
+     */
+    @Override
+    public UpdateProductResponseDto updateProduct(UpdateProductServiceRequestDto serviceDto) {
+        Product product = productRepository.findById(serviceDto.id())
+                .orElseThrow(() -> new ResourceNotFoundException("찾을 수 없는 상품 입니다."));
+        product.updateProduct(serviceDto);
+        return UpdateProductResponseDto.from(product);
+    }
+
+
+    /**
+     * 상품 삭제
+     */
+    @Override
+    public void deleteProduct(DeleteProductServiceRequestDto serviceDto) {
+        Product product = productRepository.findById(serviceDto.productId())
+                .orElseThrow(() -> new ResourceNotFoundException("찾을 수 없는 상품 입니다."));
+        product.delete(serviceDto.userId());
     }
 }

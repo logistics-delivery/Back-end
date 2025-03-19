@@ -1,9 +1,13 @@
 package com.sparta.product.presentation;
 
+import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
+import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.application.service.ProductServiceImpl;
 import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
+import com.sparta.product.presentation.dto.request.UpdateProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import com.sparta.product.presentation.dto.response.ReadProductResponseDto;
+import com.sparta.product.presentation.dto.response.UpdateProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,5 +47,28 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ReadProductResponseDto>> readAllProduct() {
         return ResponseEntity.ok(productServiceImpl.readAllProduct());
+    }
+
+
+    /**
+     * 상품 수정
+     */
+    @PutMapping("/{productId}")
+    public ResponseEntity<UpdateProductResponseDto> updateProduct(@PathVariable UUID productId,
+                                                                  @RequestBody UpdateProductRequestDto requestDto) {
+        return ResponseEntity.ok(productServiceImpl.updateProduct(
+                UpdateProductServiceRequestDto.of(requestDto, productId)));
+    }
+
+
+    /**
+     * 상품 삭제
+     */
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable UUID productId,
+                                              @RequestHeader(value = "X-User-Id", required = true) Long userId) {
+        productServiceImpl.deleteProduct(
+                DeleteProductServiceRequestDto.of(userId, productId));
+        return ResponseEntity.noContent().build();
     }
 }

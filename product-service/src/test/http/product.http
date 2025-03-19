@@ -24,4 +24,18 @@ GET http://localhost:8083/api/v1/products
 Content-Type: application/json
 
 
+### 상품 수정
+PUT http://localhost:8083/api/v1/products/69e23662-9e36-4172-96db-8003308fcb45
+Content-Type: application/json
 
+{
+  "name": "마른오징어 수정",
+  "description": "마른오징어 입니다 수정.",
+  "price": 3000,
+  "isDisplay": false
+}
+
+
+### 상품 삭제
+DELETE http://localhost:8083/api/v1/products/225dc81a-7b96-4905-83b9-16945fef9a7d
+X-User-Id: 12345  # 사용자 ID (Long 타입)

@@ -1,5 +1,6 @@
 package com.sparta.orderservice.domain.model;
 
+import com.sparta.commonmodule.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Order {
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -46,28 +47,13 @@ public class Order {
     @Lob
     private String requestDetail;  // 요청 사항
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;  // 주문 생성 시간
-
-    @Column(nullable = false)
-    private UUID createdBy;  // 주문자 ID
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;  // 수정 시간
-
-    private UUID updatedBy;  // 수정자 ID
-
-    private LocalDateTime deletedAt;  // 삭제 시간
-
-    private UUID deletedBy;  // 삭제자 ID
-
     @Lob
     private String cancelReason;  // 주문 취소 사유
 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>(); // 주문 아이템 1:N 관계 설정
+
 
 
     // 주문 update 메서드
