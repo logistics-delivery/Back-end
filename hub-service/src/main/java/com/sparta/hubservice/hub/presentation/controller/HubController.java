@@ -4,9 +4,9 @@ import com.sparta.hubservice.hub.application.dto.HubCreateResponseDto;
 import com.sparta.hubservice.hub.application.dto.HubDeleteResponseDto;
 import com.sparta.hubservice.hub.application.dto.HubRequestDto;
 import com.sparta.hubservice.hub.application.dto.HubResponseDto;
-import com.sparta.hubservice.hub.application.dto.HubUpdateRequestDto;
 import com.sparta.hubservice.hub.application.dto.HubUpdateResponseDto;
 import com.sparta.hubservice.hub.application.service.HubService;
+import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,14 +44,14 @@ public class HubController {
     }
 
     @PostMapping
-    public ResponseEntity<HubCreateResponseDto> createHub(@RequestBody HubRequestDto requestDto, @RequestParam long userId) {
+    public ResponseEntity<HubCreateResponseDto> createHub(@RequestBody @Valid HubRequestDto requestDto, @RequestParam long userId) {
         HubCreateResponseDto responseDto = hubService.createHub(requestDto, userId);
         return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping("{hub_id}")
-    public ResponseEntity<HubUpdateResponseDto> updateHub(@PathVariable("hub_id") UUID hubId, @RequestBody HubUpdateRequestDto requestDto,  @RequestParam long userId) {
-        HubUpdateResponseDto responseDto = hubService.updateHub(hubId, requestDto, userId);
+    public ResponseEntity<HubUpdateResponseDto> updateHub(@PathVariable("hub_id") UUID hubId, @RequestParam String address,  @RequestParam long userId) {
+        HubUpdateResponseDto responseDto = hubService.updateHub(hubId, address, userId);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -60,6 +60,7 @@ public class HubController {
         HubDeleteResponseDto responseDto = hubService.deleteHub(hubId, userId);
         return ResponseEntity.ok(responseDto);
     }
+
 
 
 }

@@ -14,8 +14,5 @@ public class HubRequestDto {
 
     private String name;
     private String address;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
-
 
 }

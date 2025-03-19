@@ -6,11 +6,11 @@ import com.sparta.hubservice.hub.application.dto.HubCreateResponseDto;
 import com.sparta.hubservice.hub.application.dto.HubDeleteResponseDto;
 import com.sparta.hubservice.hub.application.dto.HubRequestDto;
 import com.sparta.hubservice.hub.application.dto.HubResponseDto;
-import com.sparta.hubservice.hub.application.dto.HubUpdateRequestDto;
 import com.sparta.hubservice.hub.application.dto.HubUpdateResponseDto;
 import com.sparta.hubservice.hub.domain.model.Hub;
 import com.sparta.hubservice.hub.domain.repository.HubRepository;
-import com.sparta.hubservice.hub.domain.service.HubDomainService;
+import java.math.BigDecimal;
+import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class HubService {
 
-    private final HubDomainService hubDomainService;
+    private final GeocodeApiService geocodeApiService;
     private final HubRepository hubRepository;
 
     // 허브 목록 조회
@@ -52,17 +52,30 @@ public class HubService {
             throw new DuplicateResourceException();
         }
 
-        Hub savedHub = hubDomainService.createHub(userId,  hubRequestDto.getName(), hubRequestDto.getAddress(), hubRequestDto.getLatitude(), hubRequestDto.getLongitude());
-        hubRepository.save(savedHub);
-        return new HubCreateResponseDto(savedHub, "Hub successfully created.");
+        // 주소 -> 위,경도값 변환
+        Map<String, BigDecimal> map = geocodeApiService.getGeocodeAddress(hubRequestDto.getAddress());
+
+        Hub createHub = Hub.builder()
+            .name(hubRequestDto.getName())
+            .address(hubRequestDto.getAddress())
+            .latitude(map.get("latitude"))
+            .longitude(map.get("longitude"))
+            .userId(userId)
+            .build();
+
+        hubRepository.save(createHub);
+        return new HubCreateResponseDto(createHub, "Hub successfully created.");
     }
 
     // 허브 수정
     @Transactional
-    public HubUpdateResponseDto updateHub(UUID hubId, HubUpdateRequestDto requestDto, long userId) {
+    public HubUpdateResponseDto updateHub(UUID hubId, String address, long userId) {
         Hub hub = hubRepository.findById(hubId).orElseThrow(ResourceNotFoundException::new);
 
-        hubDomainService.updateHub(hub, userId, requestDto.getAddress() , requestDto.getLatitude(), requestDto.getLongitude());
+        // 주소 -> 위, 경도값 변환
+        Map<String, BigDecimal> map = geocodeApiService.getGeocodeAddress(hub.getAddress());
+        hub.updateHub(address, map.get("latitude"), map.get("longitude"), userId);
+
         hubRepository.save(hub);
         return new HubUpdateResponseDto(hub, "Hub successfully updated.");
     }
@@ -72,8 +85,9 @@ public class HubService {
     public HubDeleteResponseDto deleteHub(UUID hubId, long userId) {
         Hub hub = hubRepository.findById(hubId).orElseThrow(ResourceNotFoundException::new);
 
-        hubDomainService.deleteHub(hub, userId);
+        hub.delete(userId);
         hubRepository.save(hub);
+
         return new HubDeleteResponseDto(hub.getHubId(), "Hub successfully deleted.");
     }
 }
