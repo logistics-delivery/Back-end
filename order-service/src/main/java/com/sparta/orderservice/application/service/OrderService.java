@@ -9,16 +9,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
 
-    // 주문 생성
+
     @Transactional
     public Order createOrder(OrderRequestDto requestDto){
         Order order = Order.builder()
@@ -33,7 +35,7 @@ public class OrderService {
                 return orderRepository.save(order);
     }
 
-    // 주문 전체 조회
+
     @Transactional(readOnly = true)
     public List<OrderResponseDto> getALlOrders(){
         List<Order> orders = orderRepository.findAll();
@@ -53,7 +55,6 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    // 주문 개별 조회 (id)
     @Transactional(readOnly = true)
     public OrderResponseDto getOrderById(UUID orderId){
         Order order = orderRepository.findById(orderId)
@@ -72,6 +73,7 @@ public class OrderService {
                 );
     }
 
+    // 주문 수정
     @Transactional
     public OrderResponseDto updateOrder(UUID orderId, OrderRequestDto requestDto){
         Order order = orderRepository.findById(orderId)
@@ -89,8 +91,17 @@ public class OrderService {
                 requestDto.getRequestDetail()
         );
         return new OrderResponseDto(order);
-
     }
+
+    // 주문 삭제
+    @Transactional
+    public void deleteOrder(UUID orderId){
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Not found id" + orderId));
+
+        orderRepository.delete(order);
+    }
+
 
 
 }

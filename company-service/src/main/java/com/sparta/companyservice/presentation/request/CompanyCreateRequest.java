@@ -1,5 +1,6 @@
 package com.sparta.companyservice.presentation.request;
 
+import com.sparta.companyservice.application.dto.CompanyCreateDto;
 import com.sparta.companyservice.domain.model.CompanyType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,9 +11,13 @@ import java.util.UUID;
 public record CompanyCreateRequest(
         @NotBlank @Size(min = 3) String name,
         @NotNull CompanyType type,
-        @NotNull UUID hub_id,
+        @NotNull UUID hubId,
         @NotBlank String address
-) {}
+) {
+    public CompanyCreateDto toDto() {
+        return new CompanyCreateDto(name, type, hubId, address);
+    }
+}
 
 // 레이어드 아키텍처 설계 헷갈리는 부분: CompanyCreateRequest가 application 계층의 dto가 아니라 왜 presentation 계층?
 // ㄴ CompanyCreateRequest는 클라이언트에서 컨트롤러로 들어오는 HTTP 요청을 담는 객체이기 때문에 presentation 계층에 있어야 한다.
