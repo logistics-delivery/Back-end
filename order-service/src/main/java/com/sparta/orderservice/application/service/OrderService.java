@@ -1,19 +1,14 @@
 package com.sparta.orderservice.application.service;
 
 import com.sparta.orderservice.application.dto.OrderRequestDto;
-<<<<<<< HEAD
 import com.sparta.orderservice.application.dto.OrderResponseDto;
 import com.sparta.orderservice.domain.model.Order;
 import com.sparta.orderservice.domain.model.OrderStatus;
-=======
-import com.sparta.orderservice.domain.model.Order;
->>>>>>> 7deb867 (application - service - OrderService create 기능구현)
 import com.sparta.orderservice.domain.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-<<<<<<< HEAD
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
