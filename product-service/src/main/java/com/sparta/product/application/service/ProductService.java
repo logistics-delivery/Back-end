@@ -1,5 +1,6 @@
 package com.sparta.product.application.service;
 
+import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
@@ -18,5 +19,7 @@ public interface ProductService {
 
     List<ReadProductResponseDto> readAllProduct();
 
-    UpdateProductResponseDto updateProduct(UpdateProductServiceRequestDto requestDto);
+    UpdateProductResponseDto updateProduct(UpdateProductServiceRequestDto serviceDto);
+
+    void deleteProduct(DeleteProductServiceRequestDto serviceDto);
 }
