@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -72,6 +73,7 @@ public class OrderService {
                 );
     }
 
+    // 주문 수정
     @Transactional
     public OrderResponseDto updateOrder(UUID orderId, OrderRequestDto requestDto){
         Order order = orderRepository.findById(orderId)
@@ -89,7 +91,15 @@ public class OrderService {
                 requestDto.getRequestDetail()
         );
         return new OrderResponseDto(order);
+    }
 
+    // 주문 삭제
+    @Transactional
+    public void deleteOrder(UUID orderId){
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Not found id" + orderId));
+
+        orderRepository.delete(order);
     }
 
 
