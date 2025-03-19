@@ -30,8 +30,9 @@ public class ShippingController {
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
-//    @GetMapping()
-//    public ResponseEntity<List<ShippingResponseDto>> getAllShipping(){
-//        return ResponseEntity.status(HttpStatus.OK).body()
-//    }
+    @GetMapping() //모든 배송 내역 조회
+    public ResponseEntity<List<ShippingResponseDto>> getAllShipping(){
+        List<ShippingResponseDto> allShipping = shippingService.getAllShipping();
+        return ResponseEntity.status(HttpStatus.OK).body(allShipping);
+    }
 }
