@@ -1,6 +1,7 @@
 package com.sparta.shippingservice.application.service;
 
 import com.sparta.shippingservice.application.dto.request.CreateShippingRequestDto;
+import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.domain.model.Shipping;
 import com.sparta.shippingservice.domain.repository.ShippingRepository;
@@ -24,29 +25,29 @@ public class ShippingService {
 
 
     @Transactional
-    public ShippingResponseDto create(@Valid CreateShippingRequestDto request){
+    public ShippingResponseDto create(@Valid CreateShippingRequestDto request) {
 
-        Shipping shipping = request.tobe().toShipping();
+        Shipping shipping = request.of().toShipping();
         shippingRepository.save(shipping); //DB 저장
 
-        return ShippingResponseDto.send(shipping);
+        return ShippingResponseDto.from(shipping);
     }
 
     @Transactional(readOnly = true)
-    public ShippingResponseDto getShippingById(UUID shippingId){
+    public ShippingResponseDto getShippingById(UUID shippingId) {
         Shipping shipping = shippingRepository.findById(shippingId).orElseThrow(
             () -> new ResourceNotFoundException("찾을 수 없는 배송 정보 입니다.")
         );
-        return ShippingResponseDto.send(shipping);
+        return ShippingResponseDto.from(shipping);
 
     }
 
     @Transactional(readOnly = true)
-    public List<ShippingResponseDto> getAllShipping(){
+    public List<ShippingResponseDto> getAllShipping() {
 
         List<Shipping> result = shippingRepository.findAll();
         return result.stream()
-            .map( shipping -> new ShippingResponseDto(
+            .map(shipping -> new ShippingResponseDto(
                 shipping.getId(),
                 shipping.getShippingAddress(),
                 shipping.getReceiverName(),
@@ -56,12 +57,17 @@ public class ShippingService {
             .collect(Collectors.toList());
 
 
-
     }
 
+    @Transactional
+    public ShippingResponseDto updateShipping(UUID shippingId, @Valid UpdateShippingRequestDto request){
+        Shipping shipping = shippingRepository.findById(shippingId).orElseThrow(
+            () -> new ResourceNotFoundException("찾을 수 없는 배송 정보 입니다.")
+        );
+        shipping.updateShipping(request);
+        return ShippingResponseDto.from(shipping);
 
-
-
+    }
 
 
 }
