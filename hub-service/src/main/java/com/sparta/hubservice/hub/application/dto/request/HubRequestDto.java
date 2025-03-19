@@ -1,4 +1,4 @@
-package com.sparta.hubservice.hub.application.dto;
+package com.sparta.hubservice.hub.application.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

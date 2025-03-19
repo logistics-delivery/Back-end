@@ -1,4 +1,4 @@
-package com.sparta.hubservice.hub.application.dto;
+package com.sparta.hubservice.hub.application.dto.response;
 
 import com.sparta.hubservice.hub.domain.model.Hub;
 import java.math.BigDecimal;
@@ -11,28 +11,26 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class HubResponseDto {
+public class HubCreateResponseDto {
 
     private final UUID hubId;
+    private final String message;
     private final String name;
     private final String address;
-    private final BigDecimal latitude;
-    private final BigDecimal longitude;
+    private final BigDecimal latitud;
+    private final BigDecimal longitud;
     private final LocalDateTime createdAt;
     private final long createdBy;
-    private final LocalDateTime updatedAt;
-    private final long updatedBy;
 
-    public HubResponseDto(Hub hub) {
+    public HubCreateResponseDto(Hub hub, String message) {
         this.hubId = hub.getHubId();
+        this.message = message;
         this.name = hub.getName();
         this.address = hub.getAddress();
-        this.latitude = hub.getLatitude();
-        this.longitude = hub.getLongitude();
-        this.createdAt = hub.getCreatedAt();
+        this.latitud = hub.getLatitude();
+        this.longitud = hub.getLongitude();
+        this.createdAt = LocalDateTime.now();
         this.createdBy = hub.getCreatedBy();
-        this.updatedAt = hub.getUpdatedAt();
-        this.updatedBy = hub.getUpdatedBy();
     }
 
 }

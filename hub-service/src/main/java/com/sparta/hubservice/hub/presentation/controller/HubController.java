@@ -1,10 +1,10 @@
 package com.sparta.hubservice.hub.presentation.controller;
 
-import com.sparta.hubservice.hub.application.dto.HubCreateResponseDto;
-import com.sparta.hubservice.hub.application.dto.HubDeleteResponseDto;
-import com.sparta.hubservice.hub.application.dto.HubRequestDto;
-import com.sparta.hubservice.hub.application.dto.HubResponseDto;
-import com.sparta.hubservice.hub.application.dto.HubUpdateResponseDto;
+import com.sparta.hubservice.hub.application.dto.response.HubCreateResponseDto;
+import com.sparta.hubservice.hub.application.dto.response.HubDeleteResponseDto;
+import com.sparta.hubservice.hub.application.dto.request.HubRequestDto;
+import com.sparta.hubservice.hub.application.dto.response.HubResponseDto;
+import com.sparta.hubservice.hub.application.dto.response.HubUpdateResponseDto;
 import com.sparta.hubservice.hub.application.service.HubService;
 import jakarta.validation.Valid;
 import java.util.UUID;

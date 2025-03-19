@@ -2,7 +2,7 @@ package com.sparta.hubservice.hub.application.service;
 
 
 import com.sparta.commonmodule.exception.OperationNotAllowedException;
-import com.sparta.hubservice.hub.application.dto.GeocodeResponse;
+import com.sparta.hubservice.hub.application.dto.response.GeocodeResponse;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;

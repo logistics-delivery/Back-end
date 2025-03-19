@@ -1,12 +1,11 @@
 package com.sparta.hubservice.hub.application.service;
 
-import com.sparta.commonmodule.exception.DuplicateResourceException;
 import com.sparta.commonmodule.exception.ResourceNotFoundException;
-import com.sparta.hubservice.hub.application.dto.HubCreateResponseDto;
-import com.sparta.hubservice.hub.application.dto.HubDeleteResponseDto;
-import com.sparta.hubservice.hub.application.dto.HubRequestDto;
-import com.sparta.hubservice.hub.application.dto.HubResponseDto;
-import com.sparta.hubservice.hub.application.dto.HubUpdateResponseDto;
+import com.sparta.hubservice.hub.application.dto.response.HubCreateResponseDto;
+import com.sparta.hubservice.hub.application.dto.response.HubDeleteResponseDto;
+import com.sparta.hubservice.hub.application.dto.request.HubRequestDto;
+import com.sparta.hubservice.hub.application.dto.response.HubResponseDto;
+import com.sparta.hubservice.hub.application.dto.response.HubUpdateResponseDto;
 import com.sparta.hubservice.hub.domain.model.Hub;
 import com.sparta.hubservice.hub.domain.repository.HubRepository;
 import java.math.BigDecimal;

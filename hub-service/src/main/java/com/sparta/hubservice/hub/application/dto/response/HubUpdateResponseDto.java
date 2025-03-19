@@ -1,4 +1,4 @@
-package com.sparta.hubservice.hub.application.dto;
+package com.sparta.hubservice.hub.application.dto.response;
 
 import com.sparta.hubservice.hub.domain.model.Hub;
 import java.math.BigDecimal;
