@@ -3,6 +3,7 @@ package com.sparta.hubservice.hub.infrastructure.persistence;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.hubservice.hub.domain.model.Hub;
+import com.sparta.hubservice.hub.domain.model.QHub;
 import com.sparta.hubservice.hub.domain.repository.HubQueryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
