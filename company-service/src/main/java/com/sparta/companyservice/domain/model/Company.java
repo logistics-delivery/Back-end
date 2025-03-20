@@ -1,6 +1,7 @@
 package com.sparta.companyservice.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
+import com.sparta.companyservice.application.dto.CompanyUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +30,7 @@ public class Company extends BaseEntity {
 
     @Builder
     // 도메인 객체 생성 책임은 create()가 지고, 그 내부에서 builder를 통해 객체 생성
-    public Company(UUID id, String name, CompanyType type, UUID hubId, String address, long userId) {
+    private Company(UUID id, String name, CompanyType type, UUID hubId, String address, long userId) {
         super(userId);
         this.id = id;
         this.name = name;
@@ -50,47 +51,41 @@ public class Company extends BaseEntity {
                 .build();
     }
 
-    public void update(String newName, String newAddress, UUID newHubId, CompanyType newType, long userId) {
-        validateCompany(newName, newAddress, newHubId, newType);
+    public void update(String newName, String newAddress, UUID newHubId, long userId) {
+        validateCompany(newName, newAddress, newHubId);
         this.name = newName;
         this.address = newAddress;
         this.hubId = newHubId;
-        this.type = newType;
         super.update(userId);
+    }
+
+    public void applyUpdate(CompanyUpdateDto dto, long userId) {
+        // 수정 시 사용자가 입력하지 않은 필드는 기존 값으로 씌움
+        String newName = dto.name() != null ? dto.name() : this.name;
+        String newAddress = dto.address() != null ? dto.address() : this.address;
+        UUID newHubId = dto.hubId() != null ? dto.hubId() : this.hubId;
+
+        update(newName, newAddress, newHubId, userId);
     }
 
     /// ///////////////////////////////////////////////////////////////////////////////////////
 
-    // 업체 생성, 수정 시 검증
+    // 업체 수정 시 검증
+    private static void validateCompany(String newName, String newAddress, UUID newHubId) {
+        validateNotNull(newName, "업체명");
+        validateNotNull(newAddress, "주소");
+        validateNotNull(newHubId, "소속 Hub");
+    }
 
+    // 업체 생성 시 검증
     private static void validateCompany(String newName, String newAddress, UUID newHubId, CompanyType newType) {
-        validateCompanyNewName(newName);
-        validateCompanyNewAddress(newAddress);
-        validateCompanyNewHubId(newHubId);
-        validateCompanyNewType(newType);
+        validateCompany(newName, newAddress, newHubId);
+        validateNotNull(newType, "업체 type");
     }
 
-    private static void validateCompanyNewType(CompanyType newType) {
-        if(newType == null) {
-            throw new IllegalArgumentException("업체 type은 null일 수 없습니다.");
-        }
-    }
-
-    private static void validateCompanyNewHubId(UUID newHubId) {
-        if (newHubId == null) {
-            throw new IllegalArgumentException("소속 Hub는 null일 수 없습니다.");
-        }
-    }
-
-    private static void validateCompanyNewAddress(String newAddress) {
-        if (newAddress == null) {
-            throw new IllegalArgumentException("주소는 null일 수 없습니다.");
-        }
-    }
-
-    private static void validateCompanyNewName(String newName) {
-        if (newName == null) {
-            throw new IllegalArgumentException("업체명은 null일 수 없습니다.");
+    private static void validateNotNull(Object value, String fieldName) {
+        if (value == null) {
+            throw new IllegalArgumentException(fieldName + "은(는) null일 수 없습니다.");
         }
     }
 }

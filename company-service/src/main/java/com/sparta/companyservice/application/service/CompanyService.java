@@ -53,15 +53,13 @@ public class CompanyService {
     public CompanyDto updateCompany(UUID id, CompanyUpdateDto dto) {
         Company company = findCompany(id);
 
-        company.update(
-                dto.name(),
-                dto.address(),
-                dto.hubId(),
-                dto.type(),
-                userId
-        );
-        Company saved = companyRepository.save(company);
-        return CompanyDto.fromEntity(saved);
+        // hubId가 변경된 경우 유효한 허브Id인지 유효성 검사
+        if (dto.hubId() != null && !dto.hubId().equals(company.getHubId())) {
+            validateHubExists(dto.hubId());
+        }
+
+        company.applyUpdate(dto, userId);
+        return CompanyDto.fromEntity(company);
     }
 
     /// //////////////////////////////////////////////////////////////////////////////////
