@@ -23,18 +23,27 @@ public class HubRouteController {
 
     private final HubRouteService hubRoutesService;
 
-    // 허브 간 경로 조회 -> 기능 추가 예정
+    // 전체 허브 간 경로 목록 조회
+
+
+    // 특정 경로 ID 조회
+
+
+    // 특정 출발 허브 → 도착 허브 경로 조회
     @GetMapping("/{from_hub_id}/{to_hub_id}")
     public ResponseEntity<HubRouteResponse> getHubRoute(@PathVariable String from_hub_id, @PathVariable String to_hub_id) {
         HubRouteResponse response =  hubRoutesService.getHubRoute(UUID.fromString(from_hub_id), UUID.fromString(to_hub_id));
         return ResponseEntity.ok(response);
     }
 
-    // 허브 간 경로 생성
-    // 미완성-> naver api 이용하여 자동 경로 생성으로 기능 추가 예정
+    // (정해진) 허브 간 경로 생성
+    // Todo : 더미데이터 필요 (추후 중요한 경로만 주기적으로 naver api 실시간 거리 및 시간 반영 고려)
     @PostMapping("/{from_hub_id}/{to_hub_id}")
-    public ResponseEntity<HubRouteCreateResponse> createHubRoute(@PathVariable String from_hub_id, @PathVariable String to_hub_id) {
-        HubRouteCreateResponse response = hubRoutesService.createHubRoute(UUID.fromString(from_hub_id), UUID.fromString(to_hub_id));
+    public ResponseEntity<HubRouteCreateResponse> createHubRoute(
+        @PathVariable String from_hub_id,
+        @PathVariable String to_hub_id,
+        @RequestParam Long userId) {
+        HubRouteCreateResponse response = hubRoutesService.createHubRoute(userId, UUID.fromString(from_hub_id), UUID.fromString(to_hub_id));
         return ResponseEntity.ok(response);
     }
 

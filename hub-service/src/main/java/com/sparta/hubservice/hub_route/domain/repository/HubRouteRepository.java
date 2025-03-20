@@ -9,4 +9,6 @@ public interface HubRouteRepository {
     Optional<HubRoute> findByFromHub_HubIdAndToHub_HubIdAndIsDeletedFalse(UUID fromHubId, UUID toHubId);
 
     HubRoute findByHubRouteIdAndIsDeletedFalse(UUID hubRouteId);
+
+    HubRoute save(HubRoute saveHubRoute);
 }
