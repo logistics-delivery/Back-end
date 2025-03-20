@@ -1,13 +1,21 @@
+server:
+  port: 8082
 spring:
   application:
     name: hub-service
   config:
     import: "application-secret.yml"
-  autoconfigure:
-      exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
 
-server:
-  port: 8082
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update  # 테이블 자동 생성
+    show-sql: true  # SQL 로그 출력
 
 eureka:
   client:
@@ -15,3 +23,10 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+security:
+  basic:
+    enabled: false
+

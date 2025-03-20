@@ -31,11 +31,11 @@ public class Hub extends BaseEntity {
     private String address;
 
     @Column(nullable = false)
-    @Digits(integer = 10, fraction = 6)
+    @Digits(integer = 10, fraction = 8)
     private BigDecimal latitude;
 
     @Column(nullable = false)
-    @Digits(integer = 10, fraction = 6)
+    @Digits(integer = 10, fraction = 8)
     private BigDecimal longitude;
 
     @Builder

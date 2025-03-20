@@ -1,4 +1,4 @@
-package com.sparta.hubservice.hub.application.dto;
+package com.sparta.hubservice.hub.application.dto.response;
 
 import java.util.UUID;
 import lombok.Builder;
