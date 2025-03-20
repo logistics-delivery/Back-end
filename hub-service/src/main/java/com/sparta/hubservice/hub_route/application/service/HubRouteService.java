@@ -24,7 +24,7 @@ public class HubRouteService {
     // 허브 간 경로 조회
     public HubRouteResponse getHubRoute(UUID fromHubId, UUID toHubId) {
 
-        Optional<HubRoute> hubRoute = hubRouteRepository.findByFromHubIdAndToHubIdAndIsDeletedFalse(fromHubId, toHubId);
+        Optional<HubRoute> hubRoute = hubRouteRepository.findByFromHub_HubIdAndToHub_HubIdAndIsDeletedFalse(fromHubId, toHubId);
 
         if(hubRoute.isEmpty()){
             throw new ResourceNotFoundException("Hub route not found");

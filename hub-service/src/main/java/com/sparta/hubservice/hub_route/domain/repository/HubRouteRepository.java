@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface HubRouteRepository {
 
-    Optional<HubRoute> findByFromHubIdAndToHubIdAndIsDeletedFalse(UUID fromHubId, UUID toHubId);
+    Optional<HubRoute> findByFromHub_HubIdAndToHub_HubIdAndIsDeletedFalse(UUID fromHubId, UUID toHubId);
 }
