@@ -84,7 +84,6 @@ public class HubService {
         Map<String, BigDecimal> map = geocodeApiService.getGeocodeAddress(hub.getAddress());
 
         hub.updateHub(address, map.get("latitude"), map.get("longitude"), userId);
-        hubRepository.save(hub);
         return new HubUpdateResponseDto(hub,"Hub successfully updated.");
     }
 
@@ -94,8 +93,6 @@ public class HubService {
         Hub hub = hubRepository.findById(hubId).orElseThrow(ResourceNotFoundException::new);
 
         hub.delete(userId);
-        hubRepository.save(hub);
-
         return new HubDeleteResponseDto(hub.getHubId(), "Hub successfully deleted.");
     }
 }
