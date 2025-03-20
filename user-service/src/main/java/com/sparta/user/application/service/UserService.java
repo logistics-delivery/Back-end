@@ -61,7 +61,9 @@ public class UserService {
     }
     //회원정보 삭제
     public void deleteUser(String userId) {
-        userRepository.deleteById(Long.parseLong(userId));
+        User user = findUserInfo(userId);
+        user.delete(Long.parseLong(userId));
+        userRepository.save(user);
     }
 
     //비밀번호 인증

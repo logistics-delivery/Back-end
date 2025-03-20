@@ -1,5 +1,6 @@
 package com.sparta.user.domain.model;
 
+import com.sparta.commonmodule.entity.BaseEntity;
 import com.sparta.user.application.dto.request.UserSignupRequestDto;
 import com.sparta.user.application.dto.request.UserUpdateRequestDto;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @Table(name = "p_users")
 @Entity
-public class User{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

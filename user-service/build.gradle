@@ -11,6 +11,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'io.projectreactor:reactor-test'
     runtimeOnly 'org.postgresql:postgresql'
+    implementation project(':common-module')
 }
 
 dependencyManagement {
