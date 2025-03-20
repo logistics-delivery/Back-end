@@ -38,7 +38,7 @@ public class CompanyService {
 
     @Transactional(readOnly = true) // 전체 조회
     public List<CompanyDto> getAllCompanies() {
-        return companyRepository.findAll()
+        return companyRepository.findAllByDeletedAtIsNull()
                 .stream()
                 .map(CompanyDto::fromEntity)
                 .toList();
@@ -62,6 +62,12 @@ public class CompanyService {
         return CompanyDto.fromEntity(company);
     }
 
+    @Transactional // 삭제
+    public void deleteCompany(UUID id) {
+        Company company = findCompany(id);
+        company.delete(userId);
+    }
+
     /// //////////////////////////////////////////////////////////////////////////////////
 
     private void validateHubExists(UUID hubId) {
@@ -71,6 +77,6 @@ public class CompanyService {
     }
 
     private Company findCompany(UUID id) {
-        return companyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("해당 업체를 찾을 수 없습니다."));
+        return companyRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new ResourceNotFoundException("해당 업체를 찾을 수 없습니다."));
     }
 }
