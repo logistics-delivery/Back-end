@@ -4,6 +4,7 @@ import com.sparta.companyservice.application.dto.CompanyDto;
 import com.sparta.companyservice.application.service.CompanyService;
 import com.sparta.companyservice.presentation.request.CompanyCreateRequest;
 import com.sparta.companyservice.presentation.request.CompanyUpdateRequest;
+import com.sparta.companyservice.presentation.response.CompanyDeleteResponse;
 import com.sparta.companyservice.presentation.response.CompanyResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,9 +52,9 @@ public class CompanyController {
 
     // 삭제
     @DeleteMapping("/{companyId}")
-    public ResponseEntity<Void> deleteCompany(@PathVariable UUID companyId) {
-        companyService.deleteCompany(companyId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<CompanyDeleteResponse> deleteCompany(@PathVariable UUID companyId) {
+        CompanyDeleteResponse deletedCompany = companyService.deleteCompany(companyId);
+        return ResponseEntity.ok(deletedCompany);
     }
 
 }
