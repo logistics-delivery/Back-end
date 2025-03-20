@@ -1,19 +1,16 @@
 package com.sparta.hubservice.hub_route.application.service;
 
 import com.sparta.commonmodule.exception.ResourceNotFoundException;
+import com.sparta.hubservice.hub.domain.model.Hub;
 import com.sparta.hubservice.hub.domain.repository.HubRepository;
 import com.sparta.hubservice.hub_route.application.dto.response.HubRouteCreateResponse;
 import com.sparta.hubservice.hub_route.application.dto.response.HubRouteDeleteResponse;
 import com.sparta.hubservice.hub_route.application.dto.response.HubRouteResponse;
-import com.sparta.hubservice.hub.domain.model.Hub;
 import com.sparta.hubservice.hub_route.domain.common.HaversineCalculator;
 import com.sparta.hubservice.hub_route.domain.model.HubRoute;
-import com.sparta.hubservice.hub_route.domain.model.HubRouteCheckpoint;
 import com.sparta.hubservice.hub_route.domain.repository.HubRouteCheckpointRepository;
 import com.sparta.hubservice.hub_route.domain.repository.HubRouteRepository;
-import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
