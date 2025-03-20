@@ -7,6 +7,7 @@ import com.sparta.hubservice.hub.application.dto.request.HubRequestDto;
 import com.sparta.hubservice.hub.application.dto.response.HubResponseDto;
 import com.sparta.hubservice.hub.application.dto.response.HubUpdateResponseDto;
 import com.sparta.hubservice.hub.domain.model.Hub;
+import com.sparta.hubservice.hub.domain.repository.HubQueryRepository;
 import com.sparta.hubservice.hub.domain.repository.HubRepository;
 import java.math.BigDecimal;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class HubService {
 
     private final GeocodeApiService geocodeApiService;
     private final HubRepository hubRepository;
+    private final HubQueryRepository hubQueryRepository;
 
     // 허브 목록 조회
     @Transactional(readOnly = true)
@@ -42,6 +44,16 @@ public class HubService {
     public HubResponseDto getHub(UUID hubId) {
         Hub hubDetail = hubRepository.findById(hubId).orElseThrow(ResourceNotFoundException::new);
         return new HubResponseDto(hubDetail);
+    }
+
+    // 허브 검색
+    @Transactional(readOnly = true)
+    public Page<HubResponseDto> getSearchHubs(String name, String address, Pageable pageable) {
+        Page<Hub> searchHubs = hubQueryRepository.searchByKeyword(name, address, pageable);
+        if (searchHubs.isEmpty()) {
+            throw new ResourceNotFoundException("해당하는 정보의 허브가 존재하지 않습니다.");
+        }
+        return searchHubs.map(HubResponseDto::new);
     }
 
     // 허브 생성
