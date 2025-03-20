@@ -50,6 +50,11 @@ public class CompanyController {
     }
 
     // 삭제
+    @DeleteMapping("/{companyId}")
+    public ResponseEntity<Void> deleteCompany(@PathVariable UUID companyId) {
+        companyService.deleteCompany(companyId);
+        return ResponseEntity.noContent().build();
+    }
 
 }
 
