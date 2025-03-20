@@ -1,6 +1,7 @@
 package com.sparta.shippingservice.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
+import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,13 +34,27 @@ public class Shipping extends BaseEntity {
     @Column(name = "status", nullable = false, length = 50)
     private ShippingStatus status = ShippingStatus.PENDING; // 기본값 설정
 
-    public Shipping( UUID orderId, String shippingAddress, String receiverName, UUID shippingManagerId, ShippingStatus status) {
+    public Shipping(UUID orderId, String shippingAddress, String receiverName, UUID shippingManagerId, ShippingStatus status) {
         this.orderId = orderId;
         this.shippingAddress = shippingAddress;
         this.receiverName = receiverName;
         this.shippingManagerId = shippingManagerId;
         this.status = status;
     }
+
+
+    public void updateShipping(UpdateShippingRequestDto requestDto) {
+        if (this.status == ShippingStatus.DELIVERED) {
+            throw new IllegalStateException("배송이 완료된 후에는 정보를 변경할 수 없습니다.");
+        }
+
+        requestDto.orderId().ifPresent(order -> this.orderId = order);
+        requestDto.shippingAddress().ifPresent(address -> this.shippingAddress = address);
+        requestDto.receiverName().ifPresent(name -> this.receiverName = name);
+        requestDto.shippingManagerId().ifPresent(manager -> this.shippingManagerId = manager);
+        requestDto.status().ifPresent(s -> this.status = s);
+    }
+
 
     @PrePersist
     public void prePersist(){
@@ -51,21 +66,24 @@ public class Shipping extends BaseEntity {
 
 
 
-    public void updateShippingAddress(String newAddress) {
-        if (this.status == ShippingStatus.DELIVERED) {
-            throw new IllegalStateException("배송이 완료된 후에는 주소를 변경할 수 없습니다.");
-        }
-        this.shippingAddress = newAddress;
-    }
 
-    public void updateReceiverName(String newReceiverName) {
-        if (this.status == ShippingStatus.DELIVERED) {
-            throw new IllegalStateException("배송이 완료된 후에는 수령인 정보를 변경할 수 없습니다.");
-        }
-        this.receiverName = newReceiverName;
-    }
 
-    public void markAsDelivered() {
-        this.status = ShippingStatus.DELIVERED;
-    }
+
+//    public void updateShippingAddress(String newAddress) {
+//        if (this.status == ShippingStatus.DELIVERED) {
+//            throw new IllegalStateException("배송이 완료된 후에는 주소를 변경할 수 없습니다.");
+//        }
+//        this.shippingAddress = newAddress;
+//    }
+//
+//    public void updateReceiverName(String newReceiverName) {
+//        if (this.status == ShippingStatus.DELIVERED) {
+//            throw new IllegalStateException("배송이 완료된 후에는 수령인 정보를 변경할 수 없습니다.");
+//        }
+//        this.receiverName = newReceiverName;
+//    }
+//
+//    public void markAsDelivered() {
+//        this.status = ShippingStatus.DELIVERED;
+//    }
 }
