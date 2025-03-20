@@ -18,29 +18,38 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ShippingController {
     private final ShippingService shippingService;
+
     @PostMapping() // 배송 생성
-    public ResponseEntity<ShippingResponseDto>Shipping(@Valid @RequestBody CreateShippingRequestDto requestDto) {
+    public ResponseEntity<ShippingResponseDto> Shipping(@Valid @RequestBody CreateShippingRequestDto requestDto) {
         ShippingResponseDto responseDto = shippingService.create(requestDto);
 
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/{id}") // 특정 배송 정보 조회
-    public ResponseEntity<ShippingResponseDto> getShippingById(@PathVariable UUID id){
+    public ResponseEntity<ShippingResponseDto> getShippingById(@PathVariable("id") UUID id) {
         ShippingResponseDto responseDto = shippingService.getShippingById(id);
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping() //모든 배송 내역 조회
-    public ResponseEntity<List<ShippingResponseDto>> getAllShipping(){
+    public ResponseEntity<List<ShippingResponseDto>> getAllShipping() {
         List<ShippingResponseDto> allShipping = shippingService.getAllShipping();
         return ResponseEntity.ok(allShipping);
     }
 
 
     @PatchMapping("/{id}") // 배송 내역 수정
-    public ResponseEntity<ShippingResponseDto> updateShipping(@PathVariable UUID id, @Valid @RequestBody UpdateShippingRequestDto request) {
+    public ResponseEntity<ShippingResponseDto> updateShipping(@PathVariable("id") UUID id, @Valid @RequestBody UpdateShippingRequestDto request) {
         ShippingResponseDto ResponseDto = shippingService.updateShipping(id, request);
         return ResponseEntity.ok(ResponseDto);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ShippingResponseDto> deleteHub(@PathVariable("id") UUID id, @RequestParam long userId) {
+        ShippingResponseDto responseDto = shippingService.deleteShipping(id, userId);
+        return ResponseEntity.ok(responseDto);
+    }
+
+
 }

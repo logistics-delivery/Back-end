@@ -4,6 +4,7 @@ import com.sparta.shippingservice.application.dto.request.CreateShippingRequestD
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.domain.model.Shipping;
+import com.sparta.shippingservice.domain.model.ShippingStatus;
 import com.sparta.shippingservice.domain.repository.ShippingRepository;
 import com.sparta.commonmodule.exception.*;
 
@@ -35,16 +36,13 @@ public class ShippingService {
 
     @Transactional(readOnly = true)
     public ShippingResponseDto getShippingById(UUID shippingId) {
-        Shipping shipping = shippingRepository.findById(shippingId).orElseThrow(
-            () -> new ResourceNotFoundException("찾을 수 없는 배송 정보 입니다.")
-        );
+        Shipping shipping = findShipping(shippingId);
         return ShippingResponseDto.from(shipping);
 
     }
 
     @Transactional(readOnly = true)
     public List<ShippingResponseDto> getAllShipping() {
-
         List<Shipping> result = shippingRepository.findAll();
         return result.stream()
             .map(shipping -> new ShippingResponseDto(
@@ -55,19 +53,31 @@ public class ShippingService {
                 shipping.getStatus()
             ))
             .collect(Collectors.toList());
-
-
     }
 
     @Transactional
-    public ShippingResponseDto updateShipping(UUID shippingId, @Valid UpdateShippingRequestDto request){
-        Shipping shipping = shippingRepository.findById(shippingId).orElseThrow(
-            () -> new ResourceNotFoundException("찾을 수 없는 배송 정보 입니다.")
-        );
+    public ShippingResponseDto updateShipping(UUID shippingId, @Valid UpdateShippingRequestDto request) {
+        Shipping shipping = findShipping(shippingId);
         shipping.updateShipping(request);
         return ShippingResponseDto.from(shipping);
 
     }
 
+
+    @Transactional
+    public ShippingResponseDto deleteShipping(UUID shippingId, long userId) {
+        Shipping shipping = findShipping(shippingId);
+        shipping.delete(userId);
+        shipping.setStatus(ShippingStatus.CANCELED);
+        shippingRepository.save(shipping);
+        return ShippingResponseDto.from(shipping);
+    }
+
+
+    private Shipping findShipping(UUID shippingId) {
+        Shipping shipping = shippingRepository.findById(shippingId).orElseThrow(
+            () -> new ResourceNotFoundException("찾을 수 없는 배송 정보 입니다."));
+        return shipping;
+    }
 
 }
