@@ -21,11 +21,10 @@ public class OrderResponseDto {
     private UUID supplierId;
     private UUID receiverId;
     private UUID productId;
-    private BigDecimal totolPrice;
+    private BigDecimal totalPrice;
     private OrderStatus status;
     private String requestDetail;
     private LocalDateTime createdAt;
-    private UUID createdBy;
 
     public OrderResponseDto(Order order) {
         this.orderId = order.getOrderId();
@@ -33,11 +32,25 @@ public class OrderResponseDto {
         this.supplierId = order.getSupplierId();
         this.receiverId = order.getReceiverId();
         this.productId = order.getProductId();
-        this.totolPrice = order.getTotalPrice();
+        this.totalPrice = order.getTotalPrice();
         this.status = order.getStatus();
         this.requestDetail = order.getRequestDetail();
         this.createdAt = order.getCreatedAt();
-        this.createdBy = order.getCreatedBy();
+    }
+
+    // 더 직관적인 DTO 변환
+    public static OrderResponseDto fromEntity(Order order) {
+        return OrderResponseDto.builder()
+                .orderId(order.getOrderId())
+                .name(order.getName())
+                .supplierId(order.getSupplierId())
+                .receiverId(order.getReceiverId())
+                .productId(order.getProductId())
+                .totalPrice(order.getTotalPrice())
+                .status(order.getStatus())
+                .requestDetail(order.getRequestDetail())
+                .createdAt(order.getCreatedAt())
+                .build();
     }
 }
 
