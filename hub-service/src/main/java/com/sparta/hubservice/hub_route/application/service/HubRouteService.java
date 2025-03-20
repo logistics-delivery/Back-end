@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,20 @@ public class HubRouteService {
     private final HubRouteRepository hubRouteRepository;
     private final HubRepository hubRepository;
     private final HubRouteCheckpointRepository checkpointRepository;
+
+    // 전체 허브 간 경로 목록 조회
+    @Transactional(readOnly = true)
+    public Page<HubRouteResponse> getHubRoutes(Pageable pageable) {
+        Page<HubRoute> hubRoutes = hubRouteRepository.findAllByIsDeletedFalse(pageable);
+
+        if(hubRoutes.isEmpty()) {
+            throw new ResourceNotFoundException("Hub routes not found");
+        }
+
+        return hubRoutes.map(HubRouteResponse::new);
+    }
+
+    // 특정 경로 ID 조회
 
     // 허브 간 경로 조회
     @Transactional(readOnly = true)
@@ -83,4 +99,6 @@ public class HubRouteService {
         hubRoute.delete(userId);
         return new HubRouteDeleteResponse(hubRouteId, "Hub successfully deleted.");
     }
+
+
 }
