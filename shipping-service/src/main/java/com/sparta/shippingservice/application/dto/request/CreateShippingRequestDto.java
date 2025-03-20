@@ -27,7 +27,7 @@ public record CreateShippingRequestDto(
     ShippingStatus status
 
 ) {
-    public ShippingSelf tobe(){
+    public ShippingSelf of(){
         return new ShippingSelf(
             this.orderId(),
             this.shippingAddress(),

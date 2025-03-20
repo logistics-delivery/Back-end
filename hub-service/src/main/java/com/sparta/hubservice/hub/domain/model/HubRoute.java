@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Digits;
 import java.math.BigDecimal;
 import java.util.UUID;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,6 +43,7 @@ public class HubRoute extends BaseEntity {
     @Digits(integer = 10, fraction = 2)
     private BigDecimal distance;
 
+    @Builder
     public HubRoute(Hub fromHub, Hub toHub, int duration, BigDecimal distance, long userId) {
         super(userId);
         this.fromHub = fromHub;

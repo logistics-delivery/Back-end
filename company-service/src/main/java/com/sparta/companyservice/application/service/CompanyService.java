@@ -38,7 +38,7 @@ public class CompanyService {
 
     @Transactional(readOnly = true) // 전체 조회
     public List<CompanyDto> getAllCompanies() {
-        return companyRepository.findAll()
+        return companyRepository.findAllByDeletedAtIsNull()
                 .stream()
                 .map(CompanyDto::fromEntity)
                 .toList();
@@ -53,15 +53,19 @@ public class CompanyService {
     public CompanyDto updateCompany(UUID id, CompanyUpdateDto dto) {
         Company company = findCompany(id);
 
-        company.update(
-                dto.name(),
-                dto.address(),
-                dto.hubId(),
-                dto.type(),
-                userId
-        );
-        Company saved = companyRepository.save(company);
-        return CompanyDto.fromEntity(saved);
+        // hubId가 변경된 경우 유효한 허브Id인지 유효성 검사
+        if (dto.hubId() != null && !dto.hubId().equals(company.getHubId())) {
+            validateHubExists(dto.hubId());
+        }
+
+        company.applyUpdate(dto, userId);
+        return CompanyDto.fromEntity(company);
+    }
+
+    @Transactional // 삭제
+    public void deleteCompany(UUID id) {
+        Company company = findCompany(id);
+        company.delete(userId);
     }
 
     /// //////////////////////////////////////////////////////////////////////////////////
@@ -73,6 +77,6 @@ public class CompanyService {
     }
 
     private Company findCompany(UUID id) {
-        return companyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("해당 업체를 찾을 수 없습니다."));
+        return companyRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new ResourceNotFoundException("해당 업체를 찾을 수 없습니다."));
     }
 }
