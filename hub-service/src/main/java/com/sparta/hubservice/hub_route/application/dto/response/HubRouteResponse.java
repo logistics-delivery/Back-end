@@ -1,6 +1,6 @@
-package com.sparta.hubservice.hub.application.dto.response;
+package com.sparta.hubservice.hub_route.application.dto.response;
 
-import com.sparta.hubservice.hub.domain.model.HubRoute;
+import com.sparta.hubservice.hub_route.domain.model.HubRoute;
 import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.AllArgsConstructor;

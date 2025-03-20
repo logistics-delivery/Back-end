@@ -1,6 +1,7 @@
-package com.sparta.hubservice.hub.domain.model;
+package com.sparta.hubservice.hub_route.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
+import com.sparta.hubservice.hub.domain.model.Hub;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
