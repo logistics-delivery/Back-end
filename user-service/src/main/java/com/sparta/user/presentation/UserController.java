@@ -3,6 +3,7 @@ package com.sparta.user.presentation;
 
 import com.sparta.user.application.dto.request.UserSigninReqeustDto;
 import com.sparta.user.application.dto.request.UserSignupRequestDto;
+import com.sparta.user.application.dto.request.UserUpdateRequestDto;
 import com.sparta.user.application.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -37,11 +38,18 @@ public class UserController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<Void> signIn(@Valid @RequestBody UserSigninReqeustDto reqeustDto,
+    public ResponseEntity<Void> signIn(@Valid @RequestBody UserSigninReqeustDto requestDto,
     HttpServletResponse httpServletResponse) throws AuthenticationException {
-        String accessToken= userService.signIn(reqeustDto);
+        String accessToken= userService.signIn(requestDto);
         //HttpHeaders(중요)
         httpServletResponse.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Void> updateUser(@Valid @RequestBody UserUpdateRequestDto requestDto, @RequestHeader("user_id") String userId) {
+        userService.updateUser(requestDto, userId);
 
         return ResponseEntity.ok().build();
     }
