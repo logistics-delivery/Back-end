@@ -4,12 +4,9 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
-@Builder
 @Table(name = "p_users")
 @Entity
 public class User{
@@ -35,9 +32,8 @@ public class User{
     private String role;
 
 
-
-    public User(Long id, String username, String password, String email, String slackName, String role) {
-        this.id = id;
+    @Builder
+    public User(String username, String password, String email, String slackName, String role) {
         this.username = username;
         this.password = password;
         this.email = email;

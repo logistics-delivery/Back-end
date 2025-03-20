@@ -1,5 +1,7 @@
-package com.sparta.user.application.dto;
+package com.sparta.user.application.dto.request;
 
+import com.sparta.user.domain.model.User;
+import com.sparta.user.domain.model.UserRoleEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -33,6 +35,17 @@ public class UserSignupRequestDto {
     private String slackName;
 
     private String tokenValue;
+
+    public User createUser(String password, UserRoleEnum role){
+        return User.builder()
+                .username(username)
+                .password(password)
+                .email(email)
+                .slackName(slackName)
+                .role(role.getAuthority())
+                .build();
+    }
+
 
 }
 
