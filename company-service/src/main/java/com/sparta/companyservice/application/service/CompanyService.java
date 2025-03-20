@@ -7,6 +7,7 @@ import com.sparta.companyservice.application.dto.CompanyUpdateDto;
 import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.domain.repository.CompanyRepository;
 import com.sparta.companyservice.infrastructure.client.HubClient;
+import com.sparta.companyservice.presentation.response.CompanyDeleteResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,7 @@ public class CompanyService {
 
     @Transactional(readOnly = true) // 전체 조회
     public List<CompanyDto> getAllCompanies() {
-        return companyRepository.findAll()
+        return companyRepository.findAllByDeletedAtIsNull()
                 .stream()
                 .map(CompanyDto::fromEntity)
                 .toList();
@@ -62,6 +63,13 @@ public class CompanyService {
         return CompanyDto.fromEntity(company);
     }
 
+    @Transactional // 삭제
+    public CompanyDeleteResponse deleteCompany(UUID id) {
+        Company company = findCompany(id);
+        company.delete(userId);
+        return CompanyDeleteResponse.of(id);
+    }
+
     /// //////////////////////////////////////////////////////////////////////////////////
 
     private void validateHubExists(UUID hubId) {
@@ -71,6 +79,6 @@ public class CompanyService {
     }
 
     private Company findCompany(UUID id) {
-        return companyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("해당 업체를 찾을 수 없습니다."));
+        return companyRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new ResourceNotFoundException("해당 업체를 찾을 수 없습니다."));
     }
 }

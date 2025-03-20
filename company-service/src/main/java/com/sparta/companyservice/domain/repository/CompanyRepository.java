@@ -9,11 +9,7 @@ import java.util.UUID;
 public interface CompanyRepository {
     Company save(Company company);
 
-    List<Company> findAll();
+    List<Company> findAllByDeletedAtIsNull();
 
-    Optional<Company> findById(UUID id);
-
-    boolean existsByName(String name);
-
-    void delete(Company company);
+    Optional<Company> findByIdAndDeletedAtIsNull(UUID id);
 }

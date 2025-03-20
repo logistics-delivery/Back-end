@@ -68,6 +68,10 @@ public class Company extends BaseEntity {
         update(newName, newAddress, newHubId, userId);
     }
 
+    public void delete(long userId) {
+        super.delete(userId);
+    }
+
     /// ///////////////////////////////////////////////////////////////////////////////////////
 
     // 업체 수정 시 검증
