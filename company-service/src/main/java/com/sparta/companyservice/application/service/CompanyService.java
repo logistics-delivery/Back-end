@@ -7,6 +7,7 @@ import com.sparta.companyservice.application.dto.CompanyUpdateDto;
 import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.domain.repository.CompanyRepository;
 import com.sparta.companyservice.infrastructure.client.HubClient;
+import com.sparta.companyservice.presentation.response.CompanyDeleteResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,9 +64,10 @@ public class CompanyService {
     }
 
     @Transactional // 삭제
-    public void deleteCompany(UUID id) {
+    public CompanyDeleteResponse deleteCompany(UUID id) {
         Company company = findCompany(id);
         company.delete(userId);
+        return CompanyDeleteResponse.of(id);
     }
 
     /// //////////////////////////////////////////////////////////////////////////////////
