@@ -2,6 +2,7 @@ package com.sparta.user.application.service;
 
 import com.sparta.user.application.dto.request.UserSigninReqeustDto;
 import com.sparta.user.application.dto.request.UserUpdateRequestDto;
+import com.sparta.user.application.dto.response.UserInfoResponseDto;
 import com.sparta.user.application.dto.response.UserSigninResponseDto;
 import com.sparta.user.application.dto.request.UserSignupRequestDto;
 import com.sparta.user.domain.model.User;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.NullArgumentException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.AuthenticationException;
 
@@ -40,13 +42,26 @@ public class UserService {
         UserSigninResponseDto responseDto = new UserSigninResponseDto(user);
         return authService.createAccessToken(responseDto);
     }
+    //회원정보 조회(관리자)
+
+    //회원정보 조회(본인)
+    @Transactional(readOnly = true)
+    public UserInfoResponseDto getUserInfo(String userId) {
+        User user = findUserInfo(userId);
+        return new UserInfoResponseDto(user);
+    }
+
     //회원정보 수정
     public void updateUser(UserUpdateRequestDto requestDto, String userId) {
-        User user = userRepository.findById(Long.parseLong(userId)).orElseThrow(()->new IllegalArgumentException("존재하지않는 회원입니다."));
+        User user = findUserInfo(userId);
         UserRoleEnum userRole = checkUserRole(requestDto.getTokenValue());
         user.updateUser(encryptPassword(requestDto.getPassword()), requestDto, userRole.getAuthority());
 
         userRepository.save(user);
+    }
+    //회원정보 삭제
+    public void deleteUser(String userId) {
+        userRepository.deleteById(Long.parseLong(userId));
     }
 
     //비밀번호 인증
@@ -75,7 +90,6 @@ public class UserService {
         }
         return passwordEncoder.encode(password);
     }
-
     //중복이름방지
     private void validDuplicatedNames(UserSignupRequestDto requestDto) throws IllegalAccessException {
         boolean exsist = userRepository.existsByUsername(requestDto.getUsername());
@@ -83,7 +97,11 @@ public class UserService {
             throw new IllegalAccessException("Username or Email or SlackName is already taken.");
         }
     }
-
+    //회원 존재여부
+    private User findUserInfo(String userId) {
+        return userRepository.findById(Long.parseLong(userId))
+                .orElseThrow(()->new IllegalArgumentException("존재하지않는 회원입니다."));
+    }
 
 
 }

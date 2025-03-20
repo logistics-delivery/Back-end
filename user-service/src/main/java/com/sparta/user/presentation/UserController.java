@@ -4,11 +4,14 @@ package com.sparta.user.presentation;
 import com.sparta.user.application.dto.request.UserSigninReqeustDto;
 import com.sparta.user.application.dto.request.UserSignupRequestDto;
 import com.sparta.user.application.dto.request.UserUpdateRequestDto;
+import com.sparta.user.application.dto.response.UserInfoResponseDto;
 import com.sparta.user.application.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -47,10 +50,22 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping
+    public ResponseEntity<UserInfoResponseDto> getUserInfo(@RequestHeader("user_id") String userId) {
+        UserInfoResponseDto userInfoResponseDto = userService.getUserInfo(userId);
+        return ResponseEntity.ok(userInfoResponseDto);
+    }
+
     @PutMapping("/update")
     public ResponseEntity<Void> updateUser(@Valid @RequestBody UserUpdateRequestDto requestDto, @RequestHeader("user_id") String userId) {
         userService.updateUser(requestDto, userId);
 
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/")
+    public ResponseEntity<Void> deleteUser(@RequestHeader("user_id") String userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
     }
 }
