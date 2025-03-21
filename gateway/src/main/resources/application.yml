@@ -10,35 +10,106 @@ spring:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   cloud:
     gateway:
-      routes: # Spring Cloud Gateway? ??? ??
-        - id: user-service  # ??? ???
-          uri: lb://user-service  # 'user-service'?? ???? ?? ???? ???? ???
+      routes: # Spring Cloud Gateway
+        # User
+        - id: user-service
+          uri: lb://user-service
           predicates:
-            - Path=/api/v1/users/**       # /api/v1/users/** ??? ???? ??? ? ???? ??
+            - Path=/api/v1/users/**
+        - id: user-docs
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/api/v1/users/(?<segment>.*), /api/v1/users/$\{segment}
+
+
+        # Order
         - id: order-service
           uri: lb://order-service
           predicates:
             - Path=/api/v1/orders/**
+        - id: order-docs
+          uri: lb://order-service
+          predicates:
+            - Path=/order-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/order-service/api/v1/orders/(?<segment>.*), /api/v1/orders/$\{segment}
+
+
+        # Company
         - id: company-service
           uri: lb://company-service
           predicates:
             - Path=/api/v1/companies/**
+        - id: company-docs
+          uri: lb://company-service
+          predicates:
+            - Path=/company-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/company-service/api/v1/companies/(?<segment>.*), /api/v1/companies/$\{segment}
+
+
+        # Hub
         - id: hub-service
           uri: lb://hub-service
           predicates:
             - Path=/api/v1/hubs/**
+        - id: hub-docs
+          uri: lb://hub-service
+          predicates:
+            - Path=/hub-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/hub-service/api/v1/hubs/(?<segment>.*), /api/v1/hubs/$\{segment}
+
+
+        # Product
         - id: product-service
           uri: lb://product-service
           predicates:
             - Path=/api/v1/products/**
+        - id: product-docs
+          uri: lb://product-service
+          predicates:
+            - Path=/product-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/product-service/api/v1/products/(?<segment>.*), /api/v1/products/$\{segment}
+
+
+        # Slack
         - id: slack-service
           uri: lb://slack-service
           predicates:
             - Path=/api/v1/slacks/**
+        - id: slack-docs
+          uri: lb://slack-service
+          predicates:
+            - Path=/slack-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/slack-service/api/v1/slacks/(?<segment>.*), /api/v1/slacks/$\{segment}
+
+
+        # Shipping
         - id: shipping-service
           uri: lb://shipping-service
           predicates:
             - Path=/api/v1/shippings/**
+        - id: shipping-docs
+          uri: lb://shipping-service
+          predicates:
+            - Path=/shipping-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/shipping-service/api/v1/shippings/(?<segment>.*), /api/v1/shippings/$\{segment}
+
+
+        # Payment
         - id: payment-service
           uri: lb://payment-service
           predicates:
@@ -49,7 +120,9 @@ spring:
       #            - Path=/api/v1/auth/**
       discovery:
         locator:
-          enabled: true  # ??? ?????? ?? ???? ???? ????? ??
+          enabled: true
+      loadbalancer:
+        enable: true
 
 eureka:
   client:
@@ -60,3 +133,35 @@ eureka:
 service:
   jwt:
     secret-key: "50OsBNAaYDd8KJkGL8DCy8l8GFeJY--lzgxXrQJA-vUl1ZfivKtLNuwR_qNn2LJ6NkXpg8AAa2fe2CVUtN4UcQ"
+
+
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    use-root-path: true
+    urls[0]:
+      name: Order Service
+      url: /order-service/v3/api-docs
+    urls[1]:
+      name: Shipping Service
+      url: /shipping-service/v3/api-docs
+    urls[2]:
+      name: Hub Service
+      url: /hub-service/v3/api-docs
+    urls[3]:
+      name: Company Service
+      url: /comp-service/v3/api-docs
+    urls[4]:
+      name: Slack Service
+      url: /slack-service/v3/api-docs
+    urls[5]:
+      name: User Service
+      url: /user-service/v3/api-docs
+    urls[6]:
+      name: Product Service
+      url: /product-service/v3/api-docs

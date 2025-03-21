@@ -4,7 +4,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MappedSuperclass;
+
 import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +40,11 @@ public class BaseEntity {
     @Column(name = "updated_by", nullable = true)
     private Long updatedBy;
 
+
     @Column(name = "is_deleted")
     @ColumnDefault("FALSE")
     private Boolean isDeleted;
+
 
     @Column(name = "deleted_at", nullable = true)
     private LocalDateTime deletedAt;
