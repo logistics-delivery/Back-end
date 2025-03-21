@@ -22,7 +22,7 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange.anyExchange().permitAll() // 모든 요청 허용
- /*                       .pathMatchers("api/v1/users/**").permitAll()
+ /*                       .pathMatchers("/api/v1/users/**").permitAll()
                         .pathMatchers("/api/v1/companys/**").hasAnyRole("MASTER","COMPANY","SHIPPING")
                         .pathMatchers("/api/v1/shippings/**").hasAnyRole("MASTER","SHIPPING")
                         .pathMatchers("/api/v1/hubs/**").hasAnyRole("MASTER","HUB","SHIPPING")

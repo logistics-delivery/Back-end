@@ -6,6 +6,8 @@ import com.sparta.user.application.dto.request.UserSignupRequestDto;
 import com.sparta.user.application.dto.request.UserUpdateRequestDto;
 import com.sparta.user.application.dto.response.UserInfoResponseDto;
 import com.sparta.user.application.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +25,11 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+@Tag(name = "User Service", description = "사용자 서비스 API")
 public class UserController {
     private final UserService userService;
 
+    @Operation(summary = "회원가입", description = "화원가입 api입니다.")
     @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(@Valid @RequestBody UserSignupRequestDto requestDto, BindingResult bindingResult) throws IllegalAccessException {
         if (bindingResult.hasErrors()) {
