@@ -1,0 +1,33 @@
+### Order 생성 API 테스트
+POST http://localhost:8084/api/v1/orders?userId=123
+Content-Type: application/json
+
+{
+  "name": "테스트 주문",
+  "supplierId": "550e8400-e29b-41d4-a716-446655440000",
+  "receiverId": "550e8400-e29b-41d4-a716-446655440001",
+  "productId": "550e8400-e29b-41d4-a716-446655440002",
+  "totalPrice": 25000.00,
+  "requestDetail": "빠른 배송 부탁드립니다."
+}
+
+### 모든 주문 조회
+GET http://localhost:8084/api/v1/orders
+
+### 특정 주문 조회 (실제 UUID로 바꿔서 사용)
+GET http://localhost:8084/api/v1/orders/fac5ba71-5844-4928-a2be-7e477517324c
+
+### 주문 수정 (실제 UUID로 바꿔서 사용)
+PUT http://localhost:8084/api/v1/orders/fac5ba71-5844-4928-a2be-7e477517324c
+Content-Type: application/json
+
+{
+  "name": "수정된 주문명",
+  "supplierId": "550e8400-e29b-41d4-a716-446655440000",
+  "receiverId": "550e8400-e29b-41d4-a716-446655440001",
+  "productId": "550e8400-e29b-41d4-a716-446655440002",
+  "totalPrice": 30000.00,
+  "requestDetail": "수정된 요청사항"
+}
+### 주문 삭제 (실제 UUID로 바꿔서 사용)
+DELETE http://localhost:8084/api/v1/orders/fac5ba71-5844-4928-a2be-7e477517324c
