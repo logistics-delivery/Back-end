@@ -3,7 +3,6 @@ package com.sparta.orderservice.presentation.controller;
 import com.sparta.orderservice.application.dto.OrderRequestDto;
 import com.sparta.orderservice.application.dto.OrderResponseDto;
 import com.sparta.orderservice.application.service.OrderService;
-import com.sparta.orderservice.domain.model.Order;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +47,8 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable("id") UUID id) {
+    public ResponseEntity<String > deleteOrder(@PathVariable("id") UUID id) {
         orderService.deleteOrder(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("주문이 성공적으로 삭제되었습니다.");
     }
 }
