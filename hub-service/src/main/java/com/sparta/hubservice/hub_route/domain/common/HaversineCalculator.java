@@ -1,8 +1,6 @@
 package com.sparta.hubservice.hub_route.domain.common;
 
-
 import com.sparta.hubservice.hub.domain.model.Hub;
-import java.math.BigDecimal;
 
 public class HaversineCalculator {
 
