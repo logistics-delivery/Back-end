@@ -4,6 +4,7 @@ import com.sparta.shippingservice.application.dto.request.CreateShippingRequestD
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.domain.model.Shipping;
+import com.sparta.shippingservice.domain.model.ShippingSelf;
 import com.sparta.shippingservice.domain.model.ShippingStatus;
 import com.sparta.shippingservice.domain.repository.ShippingRepository;
 import com.sparta.commonmodule.exception.*;
@@ -58,7 +59,7 @@ public class ShippingService {
     @Transactional
     public ShippingResponseDto updateShipping(UUID shippingId, @Valid UpdateShippingRequestDto request) {
         Shipping shipping = findShipping(shippingId);
-        shipping.updateShipping(request);
+        shipping.updateShipping(request.of().toShipping());
         return ShippingResponseDto.from(shipping);
 
     }
