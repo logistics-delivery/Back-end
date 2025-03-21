@@ -2,6 +2,7 @@ package com.sparta.hubservice.hub_route.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
 import com.sparta.hubservice.hub.domain.model.Hub;
+import com.sparta.hubservice.hub_route.domain.common.HaversineCalculator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -45,14 +46,24 @@ public class HubRoute extends BaseEntity {
     private BigDecimal distance;
 
     @Builder
-    public HubRoute(Hub fromHub, Hub toHub, int duration, BigDecimal distance, long userId) {
+    public HubRoute(Hub fromHub, Hub toHub, long userId) {
         super(userId);
         this.fromHub = fromHub;
         this.toHub = toHub;
-        this.duration = duration;
-        this.distance = distance;
+        this.distance = calculateDistance();
+        this.duration = calculateDuration();
     }
 
+    // 거리 계산 (km)
+    private BigDecimal calculateDistance() {
+        return BigDecimal.valueOf(HaversineCalculator.haversineDistance(fromHub, toHub));
+    }
+
+    // 시간 계산 (분)
+    private int calculateDuration(){
+        double speed = 60.0;
+        return (int) Math.round(this.distance.doubleValue() / speed);
+    }
 
 
 }

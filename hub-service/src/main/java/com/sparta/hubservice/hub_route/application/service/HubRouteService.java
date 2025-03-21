@@ -44,7 +44,7 @@ public class HubRouteService {
         return new HubRouteResponse(hubRoute);
     }
 
-    //특정 출발 허브 → 도착 허브 경로 조회
+    // 출발 허브 -> 도착 허브 : 특정 경로 조회
     @Transactional(readOnly = true)
     public HubRouteResponse getHubRouteFromHubToHub(UUID fromHubId, UUID toHubId) {
 
@@ -62,18 +62,9 @@ public class HubRouteService {
         Hub fromHub = hubRepository.findById(fromHubId).get();
         Hub toHub = hubRepository.findById(toHubId).get();
 
-        // 거리 계산
-        double distance = HaversineCalculator.haversineDistance(fromHub, toHub);
-
-        // 시간 계산
-        double speed = 60;
-        int duration = (int)Math.round(distance / speed);
-
         HubRoute saveHubRoute = HubRoute.builder()
             .fromHub(fromHub)
             .toHub(toHub)
-            .duration(duration)
-            .distance(BigDecimal.valueOf(distance))
             .userId(userId)
             .build();
 
