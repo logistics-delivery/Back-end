@@ -1,4 +1,4 @@
-package com.sparta.product.infrastructure.config;
+package com.sparta.commonmodule.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.servers.Server;
