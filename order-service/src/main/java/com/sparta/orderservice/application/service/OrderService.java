@@ -1,5 +1,7 @@
 package com.sparta.orderservice.application.service;
 
+import com.sparta.commonmodule.exception.OperationNotAllowedException;
+import com.sparta.commonmodule.exception.ResourceNotFoundException;
 import com.sparta.orderservice.application.dto.OrderRequestDto;
 import com.sparta.orderservice.application.dto.OrderResponseDto;
 import com.sparta.orderservice.domain.model.Order;
@@ -52,7 +54,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderResponseDto getOrderById(UUID orderId){
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("order Not found : " + orderId));
+                .orElseThrow(() -> new ResourceNotFoundException("해당 주문을 찾을 수 없습니다."));
         return OrderResponseDto.fromEntity(order);
     }
 
@@ -60,10 +62,10 @@ public class OrderService {
     @Transactional
     public OrderResponseDto updateOrder(UUID orderId, OrderRequestDto requestDto) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Not found id" + orderId));
+                .orElseThrow(() -> new ResourceNotFoundException("해당 주문을 찾을 수 없습니다."));
 
         if (order.getStatus() != OrderStatus.CREATED) {
-            throw new RuntimeException("CREATED Status에서만 Update 가능");
+            throw new OperationNotAllowedException("CREATED 상태의 주문만 수정할 수 있습니다.");
         }
         order.updateOrderDetails(
                 requestDto.getName(),
@@ -80,10 +82,19 @@ public class OrderService {
     @Transactional
     public void deleteOrder(UUID orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Not found id" + orderId));
+                .orElseThrow(() -> new ResourceNotFoundException("해당 주문을 찾을 수 없습니다."));
 
         order.softDelete();
     }
 
+    // 주문 취소
+    @Transactional
+    public OrderResponseDto cancelOrder(UUID orderId, String cancelReason) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("해당 주문을 찾을 수 없습니다."));
+
+        order.cancel(cancelReason);
+        return OrderResponseDto.fromEntity(order);
+    }
 
 }
