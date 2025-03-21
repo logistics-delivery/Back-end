@@ -42,10 +42,14 @@ public class HubRouteService {
     }
 
     // 특정 경로 ID 조회
+    public HubRouteResponse getHubRoute(UUID hubRouteId) {
+        HubRoute hubRoute = hubRouteRepository.findById(hubRouteId).orElseThrow(ResourceNotFoundException::new);
+        return new HubRouteResponse(hubRoute);
+    }
 
-    // 허브 간 경로 조회
+    //특정 출발 허브 → 도착 허브 경로 조회
     @Transactional(readOnly = true)
-    public HubRouteResponse getHubRoute(UUID fromHubId, UUID toHubId) {
+    public HubRouteResponse getHubRouteFromHubToHub(UUID fromHubId, UUID toHubId) {
 
         Optional<HubRoute> hubRoute = hubRouteRepository.findByFromHub_HubIdAndToHub_HubIdAndIsDeletedFalse(fromHubId, toHubId);
 
@@ -96,6 +100,5 @@ public class HubRouteService {
         hubRoute.delete(userId);
         return new HubRouteDeleteResponse(hubRouteId, "Hub successfully deleted.");
     }
-
 
 }

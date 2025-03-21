@@ -24,23 +24,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class HubRouteController {
 
-    private final HubRouteService hubRoutesService;
+    private final HubRouteService hubRouteService;
 
     // 전체 허브 간 경로 목록 조회
     @GetMapping
-    public ResponseEntity<Page<HubRouteResponse>> getHubRoutes(@PageableDefault(page = 0, size = 10, sort = "createdAt")
-        Pageable pageable){
-        Page<HubRouteResponse> responses = hubRoutesService.getHubRoutes(pageable);
+    public ResponseEntity<Page<HubRouteResponse>> getHubRoutes(
+        @PageableDefault(page = 0, size = 10, sort = "createdAt") Pageable pageable){
+        Page<HubRouteResponse> responses = hubRouteService.getHubRoutes(pageable);
         return ResponseEntity.ok(responses);
     }
 
     // 특정 경로 ID 조회
-
+    @GetMapping("/{hub_route_id}")
+    public ResponseEntity<HubRouteResponse> getHubRoute(@PathVariable("hub_route_id") UUID hubRouteId) {
+        HubRouteResponse response = hubRouteService.getHubRoute(hubRouteId);
+        return ResponseEntity.ok(response);
+    }
 
     // 특정 출발 허브 → 도착 허브 경로 조회
     @GetMapping("/{from_hub_id}/{to_hub_id}")
     public ResponseEntity<HubRouteResponse> getHubRoute(@PathVariable String from_hub_id, @PathVariable String to_hub_id) {
-        HubRouteResponse response =  hubRoutesService.getHubRoute(UUID.fromString(from_hub_id), UUID.fromString(to_hub_id));
+        HubRouteResponse response =  hubRouteService.getHubRouteFromHubToHub(UUID.fromString(from_hub_id), UUID.fromString(to_hub_id));
         return ResponseEntity.ok(response);
     }
 
@@ -51,14 +55,14 @@ public class HubRouteController {
         @PathVariable String from_hub_id,
         @PathVariable String to_hub_id,
         @RequestParam Long userId) {
-        HubRouteCreateResponse response = hubRoutesService.createHubRoute(userId, UUID.fromString(from_hub_id), UUID.fromString(to_hub_id));
+        HubRouteCreateResponse response = hubRouteService.createHubRoute(userId, UUID.fromString(from_hub_id), UUID.fromString(to_hub_id));
         return ResponseEntity.ok(response);
     }
 
     // 허브 간 경로 정보 삭제
     @DeleteMapping("/{hub_route_id}")
     public ResponseEntity<HubRouteDeleteResponse> deleteHubRoute(@PathVariable String hub_route_id, @RequestParam Long userId) {
-        HubRouteDeleteResponse response = hubRoutesService.deleteHubRoute(UUID.fromString(hub_route_id), userId);
+        HubRouteDeleteResponse response = hubRouteService.deleteHubRoute(UUID.fromString(hub_route_id), userId);
         return ResponseEntity.ok(response);
     }
 

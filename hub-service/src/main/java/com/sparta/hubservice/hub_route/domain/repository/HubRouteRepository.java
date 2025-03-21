@@ -15,4 +15,6 @@ public interface HubRouteRepository {
     HubRoute save(HubRoute saveHubRoute);
 
     Page<HubRoute> findAllByIsDeletedFalse(Pageable pageable);
+
+    Optional<HubRoute> findById(UUID hubRouteId);
 }
