@@ -21,8 +21,8 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeExchange(exchange -> exchange
-                        .pathMatchers("api/v1/users/**").permitAll()
+                .authorizeExchange(exchange -> exchange.anyExchange().permitAll() // 모든 요청 허용
+ /*                       .pathMatchers("api/v1/users/**").permitAll()
                         .pathMatchers("/api/v1/companys/**").hasAnyRole("MASTER","COMPANY","SHIPPING")
                         .pathMatchers("/api/v1/shippings/**").hasAnyRole("MASTER","SHIPPING")
                         .pathMatchers("/api/v1/hubs/**").hasAnyRole("MASTER","HUB","SHIPPING")
@@ -31,6 +31,7 @@ public class SecurityConfig {
                         .pathMatchers("/api/v1/payments/**").hasAnyRole("MASTER","COMPANY","SHIPPING")
                         .pathMatchers("/api/v1/slacks/**").hasRole("COMPANY") // 권한 기반 접근
                         .anyExchange().authenticated()
+                )*/
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
