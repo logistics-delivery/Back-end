@@ -82,7 +82,7 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Not found id" + orderId));
 
-        orderRepository.delete(order);
+        order.softDelete();
     }
 
 
