@@ -3,17 +3,14 @@ package com.sparta.orderservice.domain.model;
 import com.sparta.commonmodule.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "p_order")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -21,7 +18,7 @@ import java.util.UUID;
 public class Order extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID orderId;  // 주문 ID
 
     @Column(nullable = false, length = 100)
@@ -54,6 +51,21 @@ public class Order extends BaseEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>(); // 주문 아이템 1:N 관계 설정
 
+    public void setCreatedBy(Long createdBy) {
+        super.update(createdBy);
+    }
+
+
+    // 주문 생성자 (BaseEntity의 createdBy 강제 설정)
+    public Order(String name, UUID supplierId, UUID receiverId, UUID productId, BigDecimal totalPrice, String requestDetail) {
+        super(0L); // createdBy 기본값 0L (임시 사용자)
+        this.name = name;
+        this.supplierId = supplierId;
+        this.receiverId = receiverId;
+        this.productId = productId;
+        this.totalPrice = totalPrice;
+        this.requestDetail = requestDetail;
+    }
 
 
     // 주문 update 메서드
