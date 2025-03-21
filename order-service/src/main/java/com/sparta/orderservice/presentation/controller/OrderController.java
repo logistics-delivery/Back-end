@@ -39,6 +39,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
+    // 주문 수정
     @PutMapping("/{id}")
     public ResponseEntity<OrderResponseDto> updateOrder(
             @PathVariable("id") UUID id,
@@ -46,9 +47,20 @@ public class OrderController {
         return ResponseEntity.ok(orderService.updateOrder(id, orderRequestDto));
     }
 
+    // 주문 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<String > deleteOrder(@PathVariable("id") UUID id) {
         orderService.deleteOrder(id);
         return ResponseEntity.ok("주문이 성공적으로 삭제되었습니다.");
     }
+
+    // 주문 취소
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<OrderResponseDto> cancelOrder(
+            @PathVariable("id") UUID id,
+            @RequestParam("reason") String cancelReason) {
+        return ResponseEntity.ok(orderService.cancelOrder(id, cancelReason));
+    }
+
+
 }
