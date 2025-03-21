@@ -32,11 +32,8 @@ public class HubRouteService {
     // 전체 허브 간 경로 목록 조회
     @Transactional(readOnly = true)
     public Page<HubRouteResponse> getHubRoutes(Pageable pageable) {
-        Page<HubRoute> hubRoutes = hubRouteRepository.findAllByIsDeletedFalse(pageable);
-
-        if(hubRoutes.isEmpty()) {
-            throw new ResourceNotFoundException("Hub routes not found");
-        }
+        Page<HubRoute> hubRoutes = hubRouteRepository.findAllByIsDeletedFalse(pageable)
+            .orElseThrow(ResourceNotFoundException::new);
 
         return hubRoutes.map(HubRouteResponse::new);
     }
@@ -62,37 +59,35 @@ public class HubRouteService {
     // 허브 간 경로 생성
     @Transactional
     public HubRouteCreateResponse createHubRoute(Long userId, UUID fromHubId, UUID toHubId) {
-        Optional<Hub> fromHub = hubRepository.findById(fromHubId);
-        Optional<Hub> toHub = hubRepository.findById(toHubId);
+        Hub fromHub = hubRepository.findById(fromHubId).get();
+        Hub toHub = hubRepository.findById(toHubId).get();
 
         // 거리 계산
-        double distance = HaversineCalculator.haversineDistance(
-            fromHub.get().getLatitude(), fromHub.get().getLongitude(),
-            toHub.get().getLatitude(), toHub.get().getLongitude());
+        double distance = HaversineCalculator.haversineDistance(fromHub, toHub);
 
         // 시간 계산
         double speed = 60;
         int duration = (int)Math.round(distance / speed);
 
         HubRoute saveHubRoute = HubRoute.builder()
-            .fromHub(fromHub.get())
-            .toHub(toHub.get())
+            .fromHub(fromHub)
+            .toHub(toHub)
             .duration(duration)
             .distance(BigDecimal.valueOf(distance))
             .userId(userId)
             .build();
 
-        HubRoute hubRoute = hubRouteRepository.save(saveHubRoute);
+        HubRoute hubRoute = hubRouteRepository.save(saveHubRoute)
+            .orElseThrow(ResourceNotFoundException::new);
         return new HubRouteCreateResponse(hubRoute);
     }
 
     // 허브 간 경로 정보 삭제 (soft deleted)
     @Transactional
     public HubRouteDeleteResponse deleteHubRoute(UUID hubRouteId, Long userId) {
-        HubRoute hubRoute = hubRouteRepository.findByHubRouteIdAndIsDeletedFalse(hubRouteId);
-        if(hubRoute == null){
-            throw new ResourceNotFoundException("Hub route not found");
-        }
+        HubRoute hubRoute = hubRouteRepository.findByHubRouteIdAndIsDeletedFalse(hubRouteId)
+            .orElseThrow(ResourceNotFoundException::new);
+
         // hubRouteId와 관련있는 hub_route_checkpoint 정보 삭제
         checkpointRepository.findAllByHubRouteId(hubRouteId)
                 .forEach(checkpoint -> checkpoint.delete(userId));

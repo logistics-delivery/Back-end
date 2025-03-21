@@ -10,11 +10,11 @@ public interface HubRouteRepository {
 
     Optional<HubRoute> findByFromHub_HubIdAndToHub_HubIdAndIsDeletedFalse(UUID fromHubId, UUID toHubId);
 
-    HubRoute findByHubRouteIdAndIsDeletedFalse(UUID hubRouteId);
+    Optional<HubRoute> findByHubRouteIdAndIsDeletedFalse(UUID hubRouteId);
 
-    HubRoute save(HubRoute saveHubRoute);
+    Optional<HubRoute> save(HubRoute saveHubRoute);
 
-    Page<HubRoute> findAllByIsDeletedFalse(Pageable pageable);
+    Optional<Page<HubRoute>> findAllByIsDeletedFalse(Pageable pageable);
 
-    Optional<HubRoute> findById(UUID hubRouteId);
+    Optional<HubRoute> findById(java.util.UUID hubRouteId);
 }
