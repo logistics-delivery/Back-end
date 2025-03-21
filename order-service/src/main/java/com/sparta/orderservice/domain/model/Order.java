@@ -77,7 +77,19 @@ public class Order extends BaseEntity {
         this.totalPrice = totalPrice;
         this.requestDetail = requestDetail;
     }
+    // 주문 soft 삭제
+    public void softDelete() {
+        super.delete(0L); // 사용자 인증 시스템 없으므로 임시로 0L 사용
+    }
 
+    // 주문 cancel
+    public void cancel(String cancelReason) {
+        if (this.status != OrderStatus.CREATED) {
+            throw new IllegalStateException("CREATED 상태의 주문만 취소할 수 있습니다.");
+        }
+        this.status = OrderStatus.CANCELED;
+        this.cancelReason = cancelReason;
+    }
 
 }
 

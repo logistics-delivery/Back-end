@@ -33,3 +33,13 @@ service:
     signup-key: "WS4LLkUhglcrzhFaqWhGXMX70V-ntoQrJdsbT8997aR32veCI2Y35-yyjdHzUzVc4TybaGSdRJ6WYVVcY9K6Uw"
   shipping:
     signup-key: "QqjxcIpIisVqc2evLWPRyjMya8nCyWiheO5L8SbxwKbJFRjlIkxFaX1l8ShI8GlE1hxw_oOoyrfefEE7ZrUkMQ"
+
+
+springdoc:
+  api-docs:
+    version: openapi_3_1
+    enabled: true
+    path: /user-service/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
