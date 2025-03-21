@@ -31,10 +31,9 @@ public class HubService {
     // 허브 목록 조회
     @Transactional(readOnly = true)
     public Page<HubResponseDto> getHubs(Pageable pageable) {
-        Page<Hub> hubPages = hubRepository.findByIsDeletedFalse(pageable);
-        if (hubPages.isEmpty()) {
-            throw new ResourceNotFoundException("Hub not found");
-        }
+        Page<Hub> hubPages = hubRepository.findByIsDeletedFalse(pageable)
+            .orElseThrow(ResourceNotFoundException::new);
+
         return hubPages.map(HubResponseDto::new);
     }
 
@@ -48,10 +47,9 @@ public class HubService {
     // 허브 검색
     @Transactional(readOnly = true)
     public Page<HubResponseDto> getSearchHubs(String name, String address, Pageable pageable) {
-        Page<Hub> searchHubs = hubQueryRepository.searchByKeyword(name, address, pageable);
-        if (searchHubs.isEmpty()) {
-            throw new ResourceNotFoundException("Hub not found - name : " + name +"  and address : " + address);
-        }
+        Page<Hub> searchHubs = hubQueryRepository.searchByKeyword(name, address, pageable)
+            .orElseThrow(ResourceNotFoundException::new);
+
         return searchHubs.map(HubResponseDto::new);
     }
 
