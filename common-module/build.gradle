@@ -1,4 +1,5 @@
 dependencies {
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
     compileOnly 'org.springframework:spring-tx:5.3.30'
     // QueryDSL : (hub-service에서 필요)
     implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
