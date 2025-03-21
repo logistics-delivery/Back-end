@@ -7,6 +7,7 @@ import com.sparta.hubservice.hub.application.dto.request.HubRequestDto;
 import com.sparta.hubservice.hub.application.dto.response.HubResponseDto;
 import com.sparta.hubservice.hub.application.dto.response.HubUpdateResponseDto;
 import com.sparta.hubservice.hub.domain.model.Hub;
+import com.sparta.hubservice.hub.domain.repository.HubQueryRepository;
 import com.sparta.hubservice.hub.domain.repository.HubRepository;
 import java.math.BigDecimal;
 import java.util.Map;
@@ -25,14 +26,14 @@ public class HubService {
 
     private final GeocodeApiService geocodeApiService;
     private final HubRepository hubRepository;
+    private final HubQueryRepository hubQueryRepository;
 
     // 허브 목록 조회
     @Transactional(readOnly = true)
     public Page<HubResponseDto> getHubs(Pageable pageable) {
         Page<Hub> hubPages = hubRepository.findByIsDeletedFalse(pageable);
         if (hubPages.isEmpty()) {
-            log.error("not found hubs");
-            throw new ResourceNotFoundException();
+            throw new ResourceNotFoundException("Hub not found");
         }
         return hubPages.map(HubResponseDto::new);
     }
@@ -42,6 +43,16 @@ public class HubService {
     public HubResponseDto getHub(UUID hubId) {
         Hub hubDetail = hubRepository.findById(hubId).orElseThrow(ResourceNotFoundException::new);
         return new HubResponseDto(hubDetail);
+    }
+
+    // 허브 검색
+    @Transactional(readOnly = true)
+    public Page<HubResponseDto> getSearchHubs(String name, String address, Pageable pageable) {
+        Page<Hub> searchHubs = hubQueryRepository.searchByKeyword(name, address, pageable);
+        if (searchHubs.isEmpty()) {
+            throw new ResourceNotFoundException("Hub not found - name : " + name +"  and address : " + address);
+        }
+        return searchHubs.map(HubResponseDto::new);
     }
 
     // 허브 생성
@@ -72,7 +83,6 @@ public class HubService {
         Map<String, BigDecimal> map = geocodeApiService.getGeocodeAddress(hub.getAddress());
 
         hub.updateHub(address, map.get("latitude"), map.get("longitude"), userId);
-        hubRepository.save(hub);
         return new HubUpdateResponseDto(hub,"Hub successfully updated.");
     }
 
@@ -82,8 +92,6 @@ public class HubService {
         Hub hub = hubRepository.findById(hubId).orElseThrow(ResourceNotFoundException::new);
 
         hub.delete(userId);
-        hubRepository.save(hub);
-
         return new HubDeleteResponseDto(hub.getHubId(), "Hub successfully deleted.");
     }
 }

@@ -1,6 +1,6 @@
 package com.sparta.user.application.service;
 
-import com.sparta.user.application.dto.UserSigninResponseDto;
+import com.sparta.user.application.dto.response.UserSigninResponseDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -20,22 +20,10 @@ public class AuthService {
 
     private final SecretKey secretKey;
 
-    /**
-     * AuthService 생성자.
-     * Base64 URL 인코딩된 비밀 키를 디코딩하여 HMAC-SHA 알고리즘에 적합한 SecretKey 객체를 생성합니다.
-     *
-     * @param secretKey Base64 URL 인코딩된 비밀 키
-     */
     public AuthService(@Value("${service.jwt.secret-key}") String secretKey) {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
     }
 
-    /**
-     * 사용자 UserSigninResponseDto 받아 JWT 액세스 토큰을 생성합니다.
-     *
-     * responseDto 사용자 정보Dto
-     * @return 생성된 JWT 액세스 토큰
-     */
     public String createAccessToken(UserSigninResponseDto responseDto) {
         return Jwts.builder()
                 // 사용자 ID를 클레임으로 설정
