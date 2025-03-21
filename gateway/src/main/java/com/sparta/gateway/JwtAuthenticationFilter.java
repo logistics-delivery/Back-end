@@ -34,12 +34,25 @@ public class JwtAuthenticationFilter implements WebFilter {
         this.secretKey = secretKey;
     }
 
+
+    private static final List<String> EXCLUDED_PATHS = List.of(
+            "/api/v1/users/sign-in",
+            "/api/v1/users/sign-up",
+            "/v3/api-docs",
+            "/swagger-ui.html",
+            "/swagger-ui",
+            "/webjars/swagger-ui"
+    );
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-        if (path.equals("/api/v1/users/sign-up") || path.equals("/api/v1/users/sign-in")) {
-            return chain.filter(exchange);  //회원가입, 로그인은 JWT 토큰인증 x
+
+        if (isExcludedPath(path)) {
+            log.info("***********" + path);
+            return chain.filter(exchange);
         }
+
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
 
@@ -126,4 +139,7 @@ public class JwtAuthenticationFilter implements WebFilter {
     }
 
 
+    private boolean isExcludedPath(String path) {
+        return EXCLUDED_PATHS.stream().anyMatch(path::contains);
+    }
 }

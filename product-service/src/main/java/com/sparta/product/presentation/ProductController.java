@@ -8,6 +8,8 @@ import com.sparta.product.presentation.dto.request.UpdateProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import com.sparta.product.presentation.dto.response.ReadProductResponseDto;
 import com.sparta.product.presentation.dto.response.UpdateProductResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
+@Tag(name = "Product Service", description = "상품 서비스 API")
 public class ProductController {
 
     private final ProductServiceImpl productServiceImpl;
@@ -25,6 +28,7 @@ public class ProductController {
     /**
      * 상품 생성
      */
+    @Operation(summary = "Product 등록", description = "Product 생성 api 입니다.")
     @PostMapping
     public ResponseEntity<CreateProductResponseDto> createProduct(@RequestBody CreateProductRequestDto requestDto,
                                                                   @RequestHeader(value = "X-User-Id", required = true) Long userId) {
@@ -35,6 +39,7 @@ public class ProductController {
     /**
      * 상품 단일 조회
      */
+    @Operation(summary = "Product 단일 조회", description = "Product 단일 조회 api 입니다.")
     @GetMapping("/{productId}")
     public ResponseEntity<ReadProductResponseDto> readProduct(@PathVariable UUID productId) {
         return ResponseEntity.ok(productServiceImpl.readProduct(productId));
