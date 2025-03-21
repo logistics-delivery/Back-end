@@ -33,8 +33,7 @@ public class HubService {
     public Page<HubResponseDto> getHubs(Pageable pageable) {
         Page<Hub> hubPages = hubRepository.findByIsDeletedFalse(pageable);
         if (hubPages.isEmpty()) {
-            log.error("not found hubs");
-            throw new ResourceNotFoundException();
+            throw new ResourceNotFoundException("Hub not found");
         }
         return hubPages.map(HubResponseDto::new);
     }
@@ -51,7 +50,7 @@ public class HubService {
     public Page<HubResponseDto> getSearchHubs(String name, String address, Pageable pageable) {
         Page<Hub> searchHubs = hubQueryRepository.searchByKeyword(name, address, pageable);
         if (searchHubs.isEmpty()) {
-            throw new ResourceNotFoundException("해당하는 정보의 허브가 존재하지 않습니다.");
+            throw new ResourceNotFoundException("Hub not found - name : " + name +"  and address : " + address);
         }
         return searchHubs.map(HubResponseDto::new);
     }
@@ -84,7 +83,6 @@ public class HubService {
         Map<String, BigDecimal> map = geocodeApiService.getGeocodeAddress(hub.getAddress());
 
         hub.updateHub(address, map.get("latitude"), map.get("longitude"), userId);
-        hubRepository.save(hub);
         return new HubUpdateResponseDto(hub,"Hub successfully updated.");
     }
 
@@ -94,8 +92,6 @@ public class HubService {
         Hub hub = hubRepository.findById(hubId).orElseThrow(ResourceNotFoundException::new);
 
         hub.delete(userId);
-        hubRepository.save(hub);
-
         return new HubDeleteResponseDto(hub.getHubId(), "Hub successfully deleted.");
     }
 }
