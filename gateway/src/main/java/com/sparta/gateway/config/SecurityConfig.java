@@ -22,8 +22,17 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("api/v1/users/sign-in", "api/v1/users/sign-up").permitAll()
-                        .pathMatchers("/api/v1/**").permitAll() // 권한 기반 접근
+                        .pathMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",
+                                "/webjars/**",
+                                "/api/v1/users/sign-in",
+                                "/api/v1/users/sign-up"
+                        ).permitAll()
+                        //.pathMatchers("/api/v1/users/sign-in", "/api/v1/users/sign-up").permitAll()
+                        //.pathMatchers("/api/v1/**").permitAll() // 권한 기반 접근
                         .anyExchange().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
