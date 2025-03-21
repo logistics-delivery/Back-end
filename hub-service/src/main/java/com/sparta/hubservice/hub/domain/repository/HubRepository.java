@@ -12,5 +12,6 @@ public interface HubRepository {
 
     Optional<Hub> findById(UUID hubId);
 
-    void save(Hub savedHub);
+    <S extends Hub> S save(S hub);
+
 }

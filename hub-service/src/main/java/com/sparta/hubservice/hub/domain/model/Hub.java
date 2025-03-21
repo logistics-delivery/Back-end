@@ -1,12 +1,7 @@
 package com.sparta.hubservice.hub.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -31,11 +26,11 @@ public class Hub extends BaseEntity {
     private String address;
 
     @Column(nullable = false)
-    @Digits(integer = 10, fraction = 6)
+    @Digits(integer = 10, fraction = 8)
     private BigDecimal latitude;
 
     @Column(nullable = false)
-    @Digits(integer = 10, fraction = 6)
+    @Digits(integer = 10, fraction = 8)
     private BigDecimal longitude;
 
     @Builder

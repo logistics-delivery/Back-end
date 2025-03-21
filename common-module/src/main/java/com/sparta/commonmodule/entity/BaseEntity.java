@@ -26,44 +26,48 @@
         @Column(name = "created_at", updatable = false)
         private LocalDateTime createdAt;
 
-        @CreatedBy
-        @JoinColumn(name = "created_by")
-        private long createdBy;
 
-        @LastModifiedDate
-        @Column(name = "updated_at")
-        private LocalDateTime updatedAt;
+ 
 
-        @LastModifiedBy
-        @JoinColumn(name = "updated_by")
-        private long updatedBy;
+    @CreatedBy
+    @Column(name = "created_by")
+    private Long createdBy;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = true)
+    private LocalDateTime updatedAt;
+
+    @LastModifiedBy
+    @Column(name = "updated_by", nullable = true)
+    private Long updatedBy;
+
 
         @Column(name = "is_deleted")
         @ColumnDefault("FALSE")
         private Boolean isDeleted;
 
-        @Column(name = "deleted_at")
-        private LocalDateTime deletedAt;
 
-        @JoinColumn(name = "deleted_by")
-        private long deletedBy;
+    @Column(name = "deleted_at", nullable = true)
+    private LocalDateTime deletedAt;
 
-        // 생성을 위한 method
-        public BaseEntity(long userId) {
-            this.createdBy = userId;
-            this.updatedBy = userId;
-            this.isDeleted = false;
-        }
+    @Column(name = "deleted_by", nullable = true)
+    private Long deletedBy;
 
-        // update를 위한 method
-        public void update(long userId) {
-            this.updatedBy = userId;
-        }
+    // 생성을 위한 method
+    public BaseEntity(Long userId) {
+        this.createdBy = userId;
+        this.updatedBy = userId;
+        this.isDeleted = false;
+    }
 
-        // 소프트 delete를 위한 method
-        public void delete(long userId) {
-            this.isDeleted = true;
-            this.deletedAt = LocalDateTime.now();
-            this.deletedBy = userId;
-        }
+    // update를 위한 method
+    public void update(Long userId) {
+        this.updatedBy = userId;
+    }
+
+    // 소프트 delete를 위한 method
+    public void delete(Long userId) {
+        this.isDeleted = true;
+        this.deletedAt = LocalDateTime.now();
+        this.deletedBy = userId;
     }

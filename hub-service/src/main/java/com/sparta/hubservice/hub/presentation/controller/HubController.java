@@ -1,10 +1,10 @@
 package com.sparta.hubservice.hub.presentation.controller;
 
-import com.sparta.hubservice.hub.application.dto.HubCreateResponseDto;
-import com.sparta.hubservice.hub.application.dto.HubDeleteResponseDto;
-import com.sparta.hubservice.hub.application.dto.HubRequestDto;
-import com.sparta.hubservice.hub.application.dto.HubResponseDto;
-import com.sparta.hubservice.hub.application.dto.HubUpdateResponseDto;
+import com.sparta.hubservice.hub.application.dto.response.HubCreateResponseDto;
+import com.sparta.hubservice.hub.application.dto.response.HubDeleteResponseDto;
+import com.sparta.hubservice.hub.application.dto.request.HubRequestDto;
+import com.sparta.hubservice.hub.application.dto.response.HubResponseDto;
+import com.sparta.hubservice.hub.application.dto.response.HubUpdateResponseDto;
 import com.sparta.hubservice.hub.application.service.HubService;
 import jakarta.validation.Valid;
 import java.util.UUID;
@@ -30,6 +30,7 @@ public class HubController {
 
     private final HubService hubService;
 
+    // 허브 목록 검색
     @GetMapping
     public ResponseEntity<Page<HubResponseDto>> getHubs(
         @PageableDefault(page = 0, size = 10, sort = "createdAt") Pageable pageable) {
@@ -37,26 +38,40 @@ public class HubController {
         return ResponseEntity.ok(responseDtos);
     }
 
+    // 특정 허브 조회
     @GetMapping("/{hub_id}")
     public ResponseEntity<HubResponseDto> getHubById(@PathVariable("hub_id") UUID hubId) {
         HubResponseDto responseDto = hubService.getHub(hubId);
         return ResponseEntity.ok(responseDto);
     }
 
+    // 허브 검색
+    @GetMapping("/search")
+    public ResponseEntity<Page<HubResponseDto>> getSearchHubs(
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String address,
+        @PageableDefault(page = 0, size = 10, sort = "createdAt") Pageable pageable){
+        Page<HubResponseDto> responseDto = hubService.getSearchHubs(name, address, pageable);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    // 허브 생성
     @PostMapping
-    public ResponseEntity<HubCreateResponseDto> createHub(@RequestBody @Valid HubRequestDto requestDto, @RequestParam long userId) {
+    public ResponseEntity<HubCreateResponseDto> createHub(@RequestBody @Valid HubRequestDto requestDto, @RequestParam Long userId) {
         HubCreateResponseDto responseDto = hubService.createHub(requestDto, userId);
         return ResponseEntity.ok(responseDto);
     }
 
+    // 허브 수정
     @PutMapping("{hub_id}")
-    public ResponseEntity<HubUpdateResponseDto> updateHub(@PathVariable("hub_id") UUID hubId, @RequestParam String address,  @RequestParam long userId) {
+    public ResponseEntity<HubUpdateResponseDto> updateHub(@PathVariable("hub_id") UUID hubId, @RequestParam String address,  @RequestParam Long userId) {
         HubUpdateResponseDto responseDto = hubService.updateHub(hubId, address, userId);
         return ResponseEntity.ok(responseDto);
     }
 
+    // 허브 삭제
     @DeleteMapping("{hub_id}")
-    public ResponseEntity<HubDeleteResponseDto> deleteHub(@PathVariable("hub_id") UUID hubId, @RequestParam long userId) {
+    public ResponseEntity<HubDeleteResponseDto> deleteHub(@PathVariable("hub_id") UUID hubId, @RequestParam Long userId) {
         HubDeleteResponseDto responseDto = hubService.deleteHub(hubId, userId);
         return ResponseEntity.ok(responseDto);
     }

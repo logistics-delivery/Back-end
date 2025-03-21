@@ -6,53 +6,74 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.gateway.filter.GatewayFilterChain;
-import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.stereotype.Component;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.SecretKey;
 
 @Slf4j
-@Component
-public class JwtAuthenticationFilter implements GlobalFilter {
-    @Value("${service.jwt.secret-key}")
+public class JwtAuthenticationFilter implements WebFilter {
     private String secretKey;
 
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String path = exchange.getRequest().getURI().getPath();
-        log.debug("Request Path: {}", path);
-        if (path.equals("/api/v1/users/sign-up") || path.equals("/api/v1/users/sign-in")) {
-            return chain.filter(exchange);  //회원가입, 로그인은 JWT 토큰인증 x
-        }
+    public JwtAuthenticationFilter(String secretKey) {
+        this.secretKey = secretKey;
+    }
 
-        String token = extractToken(exchange);
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+        String path = exchange.getRequest().getURI().getPath();
+        if (path.equals("/api/v1/users/sign-up") || path.equals("/api/v1/users/sign-in") ||
+                path.equals("/swagger-ui") || path.equals("/swagger-ui.html") ||
+                path.endsWith("/v3/api-docs") || path.equals("/webjars/swagger-ui")) {
+            return chain.filter(exchange);  //회원가입, 로그인, Swagger 관련 요청은 JWT 토큰인증 x
+        }
+        ServerHttpRequest request = exchange.getRequest();
+        ServerHttpResponse response = exchange.getResponse();
+        log.info(secretKey);
+        log.info(request.getURI().toString());
+
+        String token = extractToken(request); //토큰값을 Bearer 떼고 가져옴
+        log.info(token);
+
 
         if (token == null || !validateToken(token)) {
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
 
-        Claims claims = extractClaims(token); //Payload 부분 추출
-        log.info("Extracted user_id from token: {}", claims.get("user_id"));
-        log.info("Extracted role from token: {}", claims.get("role"));
+        log.info(token);
+        Claims claims = extractClaims(token); //사용자 정보 추출
+        log.info(claims.getSubject());
 
-        // 추출한 정보(header로 전달)
-        ServerHttpRequest modifiedRequest =exchange.getRequest().mutate()
-                .header("user_id",claims.get("user_id", String.class))
-                .header("role", claims.get("role",String.class))
-                .header("slack_id",claims.get("slack_id",String.class))
-                .build();
-        log.info(String.valueOf(exchange.getRequest().getHeaders()));
-
-        // 수정된 요청을 포함하여 필터 체인으로 이동
-        return chain.filter(exchange.mutate().request(modifiedRequest).build());
+        //응답 헤더에 사용자 정보 반환처리
+        setAuthenticationHeader(claims,request);
+        log.info(request.getHeaders().toString());
+        return chain.filter(exchange);
     }
+
+
+
+    private void setAuthenticationHeader(Claims claims, ServerHttpRequest request) {
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        String user_id = claims.get("user_id", String.class);
+        String role = claims.get("role", String.class);
+        String slack_name = claims.get("slack_name",String.class);
+
+        HttpHeaders headers = request.getHeaders();
+        headers.add("user_id", user_id);
+        headers.add("role", role);
+        headers.add("slack_name", slack_name);
+    }
+
+
 
     private Claims extractClaims(String token) {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
@@ -66,8 +87,8 @@ public class JwtAuthenticationFilter implements GlobalFilter {
     }
 
 
-    private String extractToken(ServerWebExchange exchange) {
-        String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
+    private String extractToken(ServerHttpRequest request) {
+        String authHeader = request.getHeaders().getFirst("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7);
         }
@@ -78,14 +99,18 @@ public class JwtAuthenticationFilter implements GlobalFilter {
         try {
             SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
             Jws<Claims> claimsJws = Jwts.parser()
-                    .verifyWith(key)
-                    .build().parseSignedClaims(token);
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
             log.info("#####payload :: " + claimsJws.getPayload().toString());
 
             // 추가적인 검증 로직 (예: 토큰 만료 여부 확인 등)을 여기에 추가할 수 있습니다.
             return true;
         } catch (Exception e) {
+            log.error("Error extracting claims: " + e.getMessage());
             return false;
         }
     }
+
+
 }
