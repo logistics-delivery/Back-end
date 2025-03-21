@@ -30,8 +30,10 @@ public class JwtAuthenticationFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-        if (path.equals("/api/v1/users/sign-up") || path.equals("/api/v1/users/sign-in")) {
-            return chain.filter(exchange);  //회원가입, 로그인은 JWT 토큰인증 x
+        if (path.equals("/api/v1/users/sign-up") || path.equals("/api/v1/users/sign-in") ||
+                path.equals("/swagger-ui") || path.equals("/swagger-ui.html") ||
+                path.endsWith("/v3/api-docs") || path.equals("/webjars/swagger-ui")) {
+            return chain.filter(exchange);  //회원가입, 로그인, Swagger 관련 요청은 JWT 토큰인증 x
         }
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();

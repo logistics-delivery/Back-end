@@ -1,74 +1,79 @@
 package com.sparta.user.application.service;
 
-import com.sparta.user.application.dto.UserSigninReqeustDto;
-import com.sparta.user.application.dto.UserSigninResponseDto;
-import com.sparta.user.application.dto.UserSignupRequestDto;
+import com.sparta.user.application.dto.request.UserSigninReqeustDto;
+import com.sparta.user.application.dto.request.UserUpdateRequestDto;
+import com.sparta.user.application.dto.response.UserInfoResponseDto;
+import com.sparta.user.application.dto.response.UserSigninResponseDto;
+import com.sparta.user.application.dto.request.UserSignupRequestDto;
 import com.sparta.user.domain.model.User;
 import com.sparta.user.domain.model.UserRoleEnum;
 import com.sparta.user.infastructure.configuration.AuthConfig;
 import com.sparta.user.infastructure.repository.JpaUserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.apache.commons.lang.NullArgumentException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.AuthenticationException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final JpaUserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final AuthConfig authConfig;
+    private final AuthService authService;
 
-    public ResponseEntity<?> signUp(UserSignupRequestDto requestDto) {
-        //중복 확인
-        Optional<User> duplicate = userRepository.findDulicate(requestDto.getUsername(),
-                requestDto.getEmail(), requestDto.getSlackName());
-        if(duplicate.isPresent()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username or Email is already taken.");
-        }
-        //권한 설정
+    //회원가입
+    public Long signUp(UserSignupRequestDto requestDto) throws IllegalAccessException {
+        validDuplicatedNames(requestDto);
         UserRoleEnum role = checkUserRole(requestDto.getTokenValue());
+        User user = requestDto.createUser(encryptPassword(requestDto.getPassword()), role);
+        return userRepository.save(user).getId();
+    }
+    //로그인
+    public String signIn(UserSigninReqeustDto reqeustDto) throws AuthenticationException {
+        User user = userRepository.findByUsername(reqeustDto.getUsername())
+                .orElseThrow(()-> new AuthenticationException("아이디가 존재하지않습니다."));
+        passwordMatchChecker(reqeustDto,user);
+        UserSigninResponseDto responseDto = new UserSigninResponseDto(user);
+        return authService.createAccessToken(responseDto);
+    }
+    //회원정보 조회(관리자)
 
-        User user = userRepository.save(
-                User.builder()
-                        .username(requestDto.getUsername())
-                        .password(passwordEncoder.encode(requestDto.getPassword()))
-                        .email(requestDto.getEmail())
-                        .slackName(requestDto.getSlackName())
-                        .role(role.getAuthority())
-                        .build()
-        );
-        return ResponseEntity.ok("sign-up success");
+    //회원정보 조회(본인)
+    @Transactional(readOnly = true)
+    public UserInfoResponseDto getUserInfo(String userId) {
+        User user = findUserInfo(userId);
+        return new UserInfoResponseDto(user);
     }
 
-    public UserSigninResponseDto signIn(@Valid UserSigninReqeustDto reqeustDto) throws AuthenticationException {
-        //아이디 비밀번호 일치여부 확인.
-        Optional<User> userinfo = userRepository.findByUsername(reqeustDto.getUsername());
+    //회원정보 수정
+    public void updateUser(UserUpdateRequestDto requestDto, String userId) {
+        User user = findUserInfo(userId);
+        UserRoleEnum userRole = checkUserRole(requestDto.getTokenValue());
+        user.updateUser(encryptPassword(requestDto.getPassword()), requestDto, userRole.getAuthority());
 
-        User user = userinfo.orElseThrow(()-> new AuthenticationException("아이디가 존재하지않습니다."));
-        boolean pwcheck =  passwordEncoder.matches(reqeustDto.getPassword(), user.getPassword()); //비밀번호 일치여부 판단
+        userRepository.save(user);
+    }
+    //회원정보 삭제
+    public void deleteUser(String userId) {
+        User user = findUserInfo(userId);
+        user.delete(Long.parseLong(userId));
+        userRepository.save(user);
+    }
 
+    //비밀번호 인증
+    private void passwordMatchChecker(UserSigninReqeustDto reqeustDto,  User user) throws AuthenticationException {
+        boolean pwcheck = passwordEncoder.matches(reqeustDto.getPassword(), user.getPassword());
         if(!pwcheck){
             throw new AuthenticationException("아이디나 비밀번호가 일치하지않습니다.");// 일치하지않는 부분 특정방지
         }
-
-        //비밀번호 일치 (토큰 생성을 위한 dto 전달.)
-        UserSigninResponseDto responseDto = new UserSigninResponseDto();
-        responseDto.setId(user.getId());
-        responseDto.setRole(user.getRole());
-        responseDto.setSlackName(user.getSlackName());
-
-        return responseDto;
     }
-
+    //권한 키 체크
     private UserRoleEnum checkUserRole(String tokenValue) {
         if (authConfig.getMasterKey().equals(tokenValue)) {
             return UserRoleEnum.MASTER;
@@ -79,6 +84,25 @@ public class UserService {
         } else {
             return UserRoleEnum.COMPANY;
         }
+    }
+    //비밀번호 암호화
+    private String encryptPassword (String password) {
+        if(password == null){
+            throw new NullArgumentException("비밀번호를 입력해주세요");
+        }
+        return passwordEncoder.encode(password);
+    }
+    //중복이름방지
+    private void validDuplicatedNames(UserSignupRequestDto requestDto) throws IllegalAccessException {
+        boolean exsist = userRepository.existsByUsername(requestDto.getUsername());
+        if(exsist){
+            throw new IllegalAccessException("Username or Email or SlackName is already taken.");
+        }
+    }
+    //회원 존재여부
+    private User findUserInfo(String userId) {
+        return userRepository.findById(Long.parseLong(userId))
+                .orElseThrow(()->new IllegalArgumentException("존재하지않는 회원입니다."));
     }
 
 
