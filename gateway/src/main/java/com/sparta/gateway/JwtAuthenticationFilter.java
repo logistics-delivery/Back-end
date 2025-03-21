@@ -10,6 +10,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.server.ServerWebExchange;
@@ -18,6 +23,8 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.SecretKey;
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 public class JwtAuthenticationFilter implements WebFilter {
@@ -30,18 +37,13 @@ public class JwtAuthenticationFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-        if (path.equals("/api/v1/users/sign-up") || path.equals("/api/v1/users/sign-in") ||
-                path.equals("/swagger-ui") || path.equals("/swagger-ui.html") ||
-                path.endsWith("/v3/api-docs") || path.equals("/webjars/swagger-ui")) {
-            return chain.filter(exchange);  //회원가입, 로그인, Swagger 관련 요청은 JWT 토큰인증 x
+        if (path.equals("/api/v1/users/sign-up") || path.equals("/api/v1/users/sign-in")) {
+            return chain.filter(exchange);  //회원가입, 로그인은 JWT 토큰인증 x
         }
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
-        log.info(secretKey);
-        log.info(request.getURI().toString());
 
         String token = extractToken(request); //토큰값을 Bearer 떼고 가져옴
-        log.info(token);
 
 
         if (token == null || !validateToken(token)) {
@@ -49,16 +51,15 @@ public class JwtAuthenticationFilter implements WebFilter {
             return exchange.getResponse().setComplete();
         }
 
-        log.info(token);
         Claims claims = extractClaims(token); //사용자 정보 추출
-        log.info(claims.getSubject());
 
         //응답 헤더에 사용자 정보 반환처리
         setAuthenticationHeader(claims,request);
-        log.info(request.getHeaders().toString());
-        return chain.filter(exchange);
-    }
 
+        Authentication authentication = setAuthenticationContext(claims);
+
+        return chain.filter(exchange).contextWrite(ReactiveSecurityContextHolder.withAuthentication(authentication));
+    }
 
 
     private void setAuthenticationHeader(Claims claims, ServerHttpRequest request) {
@@ -110,6 +111,18 @@ public class JwtAuthenticationFilter implements WebFilter {
             log.error("Error extracting claims: " + e.getMessage());
             return false;
         }
+    }
+
+    private Authentication setAuthenticationContext(Claims claims) {
+        // JWT에서 사용자 정보와 권한 추출
+        String userId = claims.get("user_id", String.class);
+        String role = claims.get("role", String.class);
+
+        // 권한 설정
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
+
+        // 인증 객체 생성 후 SecurityContext에 설정
+        return new UsernamePasswordAuthenticationToken(userId, null, authorities);
     }
 
 
