@@ -31,8 +31,7 @@ public class HubService {
     // 허브 목록 조회
     @Transactional(readOnly = true)
     public Page<HubResponseDto> getHubs(Pageable pageable) {
-        Page<Hub> hubPages = hubRepository.findByIsDeletedFalse(pageable)
-            .orElseThrow(ResourceNotFoundException::new);
+        Page<Hub> hubPages = hubRepository.findByIsDeletedFalse(pageable);
 
         return hubPages.map(HubResponseDto::new);
     }

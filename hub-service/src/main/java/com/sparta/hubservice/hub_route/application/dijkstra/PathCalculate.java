@@ -26,7 +26,7 @@ public class PathCalculate {
 
         // 그래프 정의
         Map<Hub, List<HubRoute>> graph = new HashMap<>();
-        List<Hub> hubs = hubRepository.findAll().orElseThrow(ResourceNotFoundException::new);
+        List<Hub> hubs = hubRepository.findAll();
         for(Hub hub : hubs){
             List<HubRoute> routes = hubRouteRepository.findByFromHub(hub)
                 .orElseThrow(ResourceNotFoundException::new);

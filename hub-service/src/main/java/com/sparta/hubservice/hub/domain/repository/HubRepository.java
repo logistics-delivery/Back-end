@@ -8,11 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface HubRepository {
-    Optional<Page<Hub>> findByIsDeletedFalse(Pageable pageable);
+    Page<Hub> findByIsDeletedFalse(Pageable pageable);
 
     Optional<Hub> findById(UUID hubId);
 
     <S extends Hub> S save(S hub);
 
-    Optional<List<Hub>> findAll();
+    List<Hub> findAll();
 }
