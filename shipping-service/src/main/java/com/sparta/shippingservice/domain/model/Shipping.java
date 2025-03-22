@@ -1,7 +1,6 @@
 package com.sparta.shippingservice.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
-import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +9,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "p_shipping") // 테이블 명 지정
 public class Shipping extends BaseEntity {
 
@@ -43,16 +42,16 @@ public class Shipping extends BaseEntity {
     }
 
 
-    public void updateShipping(UpdateShippingRequestDto requestDto) {
+    public Shipping updateShipping(Shipping shipping) {
         if (this.status == ShippingStatus.DELIVERED) {
             throw new IllegalStateException("배송이 완료된 후에는 정보를 변경할 수 없습니다.");
         }
-
-        requestDto.orderId().ifPresent(order -> this.orderId = order);
-        requestDto.shippingAddress().ifPresent(address -> this.shippingAddress = address);
-        requestDto.receiverName().ifPresent(name -> this.receiverName = name);
-        requestDto.shippingManagerId().ifPresent(manager -> this.shippingManagerId = manager);
-        requestDto.status().ifPresent(s -> this.status = s);
+       if(shipping.getStatus() !=null) this.status=shipping.getStatus();
+       if(shipping.getOrderId()!=null) this.orderId = shipping.getOrderId();
+       if(shipping.getShippingAddress()!=null) this.shippingAddress=shipping.getShippingAddress();
+       if(shipping.getReceiverName()!=null) this.receiverName = shipping.getReceiverName();
+       if(shipping.getStatus()!=null) this.status=shipping.getStatus();
+       return this;
     }
 
 
