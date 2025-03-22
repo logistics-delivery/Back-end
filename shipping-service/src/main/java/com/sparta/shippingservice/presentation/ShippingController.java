@@ -48,7 +48,7 @@ public class ShippingController {
     }
 
     @DeleteMapping("/{shippingId}")
-    public ResponseEntity<ShippingResponseDto> deleteHub(@PathVariable("shippingId") UUID id, @RequestParam long userId) {
+    public ResponseEntity<ShippingResponseDto> deleteShipping(@PathVariable("shippingId") UUID id, @RequestParam long userId) {
         ShippingResponseDto responseDto = shippingService.deleteShipping(id, userId);
         return ResponseEntity.ok(responseDto);
     }
@@ -66,6 +66,15 @@ public class ShippingController {
         return ResponseEntity.ok(allLog);
 
     }
-//
-//    @DeleteMapping("{}")
+
+
+    @DeleteMapping("/{shippingId}/{shippingLogId}")
+    public ResponseEntity<ShippingRouteResponseDto>deleteShippingLog(@PathVariable("shippingId") UUID id, @PathVariable("shippingLogId") UUID logId ,@RequestParam Long userId){
+        ShippingRouteResponseDto responseDto = shippingService.deleteShippingLog(id, logId, userId);
+        return ResponseEntity.ok(responseDto);
+
+    }
+
+
+
 }
