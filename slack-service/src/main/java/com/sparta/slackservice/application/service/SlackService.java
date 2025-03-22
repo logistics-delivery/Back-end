@@ -19,8 +19,8 @@ public class SlackService {
     private final SlackWebhookService slackWebhookService;
 
     //슬랙 메세지 생성
-    public SlackResponseDto createSlack(String slack_name, SlackRequestDto requestDto) {
-        Slack slack = slackRepository.save(requestDto.createSlack(slack_name));
+    public SlackResponseDto createSlack(String slack_name, SlackRequestDto requestDto, Long userId) {
+        Slack slack = slackRepository.save(requestDto.createSlack(slack_name, userId));
         return new SlackResponseDto(slack);
     }
 
@@ -38,9 +38,9 @@ public class SlackService {
     }
 
     //메세지 수정
-    public SlackResponseDto modifySlack(UUID slackId, SlackRequestDto requestDto) {
+    public SlackResponseDto modifySlack(UUID slackId, SlackRequestDto requestDto, Long userId) {
         Slack slack = findingSlack(slackId);
-        slack.modifySlack(requestDto);
+        slack.modifySlack(requestDto,userId);
         return new SlackResponseDto(slack);
     }
 

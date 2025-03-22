@@ -11,7 +11,7 @@ public class SlackRequestDto {
     private Long receiverId;
 
 
-    public Slack createSlack(String slack_name) {
+    public Slack createSlack(String slack_name,Long userId) {
         return Slack.builder()
                 .slackName(slack_name)
                 .message(message)

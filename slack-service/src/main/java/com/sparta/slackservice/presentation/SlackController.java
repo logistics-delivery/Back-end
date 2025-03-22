@@ -24,8 +24,8 @@ public class SlackController {
 
     @Operation(summary = "메세지 생성", description = "메세지 생성 api입니다.")
     @PostMapping("/create")
-    public ResponseEntity<SlackResponseDto> createSlack(@RequestHeader("slack_name") String slack_name, @RequestBody SlackRequestDto requestDto) {
-        return ResponseEntity.ok(slackService.createSlack(slack_name, requestDto));
+    public ResponseEntity<SlackResponseDto> createSlack(@RequestHeader("user_id") Long userId, @RequestHeader("slack_name") String slack_name, @RequestBody SlackRequestDto requestDto) {
+        return ResponseEntity.ok(slackService.createSlack(slack_name, requestDto, userId));
     }
 
     @Operation(summary = "메세지 전송", description = "메세지 전송 api입니다.")
@@ -43,8 +43,8 @@ public class SlackController {
 
     @Operation(summary = "메세지 수정", description = "메세지 수정 api입니다.")
     @PutMapping("/modify/{id}")
-    public ResponseEntity<?> modifySlack(@PathVariable("id") UUID slackId, @RequestBody SlackRequestDto requestDto) {
-        return ResponseEntity.ok(slackService.modifySlack(slackId, requestDto));
+    public ResponseEntity<?> modifySlack(@RequestHeader("user_id") Long userId,@PathVariable("id") UUID slackId, @RequestBody SlackRequestDto requestDto) {
+        return ResponseEntity.ok(slackService.modifySlack(slackId, requestDto, userId));
     }
 
     @Operation(summary = "메세지 삭제", description = "메세지 삭제 api입니다.")

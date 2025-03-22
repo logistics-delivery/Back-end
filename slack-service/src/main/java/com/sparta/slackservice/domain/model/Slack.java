@@ -38,7 +38,8 @@ public class Slack extends BaseEntity {
     private boolean sendingStatus = false; //기본 true? false?
 
     @Builder
-    public Slack(String slackName, String message, Long receiverId) {
+    public Slack(String slackName, String message, Long receiverId, Long userId) {
+        super(userId);
         this.slackName = slackName;
         this.message = message;
         this.receiverId = receiverId;
@@ -49,7 +50,8 @@ public class Slack extends BaseEntity {
         this.sendedAt = LocalDateTime.now();
     }
 
-    public void modifySlack(SlackRequestDto requestDto) {
+    public void modifySlack(SlackRequestDto requestDto, Long userId) {
+        super.update(userId);
         Optional.ofNullable(requestDto.getMessage()).ifPresent(message -> this.message = message);
         Optional.ofNullable(requestDto.getReceiverId()).ifPresent(receiverId -> this.receiverId = receiverId);
     }
