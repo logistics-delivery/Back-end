@@ -99,7 +99,7 @@ public class ShippingService {
     public ShippingRouteResponseDto getLogById(UUID shippingId, UUID shippingLogId){
         ShippingRouteLog routeLog = shippingRouteRepository.findByIdAndShippingId(shippingLogId, shippingId)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 배송에 속하지 않는 배송 경로 로그입니다."));
-        return ShippingRouteResponseDto.from(routeLog);
+        return ShippingRouteResponseDto.from(routeLog); // 예외 컨트롤러 단에서 잡기
 
     }
 
@@ -120,6 +120,18 @@ public class ShippingService {
 
                 )).collect(Collectors.toList());
     }
+
+    @Transactional
+    public ShippingRouteResponseDto deleteShippingLog(UUID shippingId,UUID shippingLogId, long userId) {
+        ShippingRouteLog routeLog = shippingRouteRepository.findByIdAndShippingId(shippingLogId, shippingId)
+                .orElseThrow(() -> new ResourceNotFoundException("해당 배송에 속하지 않는 배송 경로 로그입니다."));
+
+        routeLog.delete(userId);
+        shippingRouteRepository.save(routeLog);
+        return ShippingRouteResponseDto.from(routeLog);
+    }
+
+
 
     private Shipping findShipping(UUID shippingId) {
         Shipping shipping = shippingRepository.findById(shippingId).orElseThrow(
