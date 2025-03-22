@@ -7,12 +7,12 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class HubRouteDeleteResponse {
+public class HubRouteDeleteResponseDto {
 
     private final UUID hub_route_id;
     private final String message;
 
-    public HubRouteDeleteResponse(UUID hub_route_id, String message) {
+    public HubRouteDeleteResponseDto(UUID hub_route_id, String message) {
         this.hub_route_id = hub_route_id;
         this.message = message;
     }
