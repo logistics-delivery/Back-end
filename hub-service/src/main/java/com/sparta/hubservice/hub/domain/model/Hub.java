@@ -49,5 +49,18 @@ public class Hub extends BaseEntity {
         this.longitude = longitude;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hub hub = (Hub) o;
+        return hubId.equals(hub.hubId);
+    }
+
+    @Override
+    public int hashCode() {
+        return hubId.hashCode();
+    }
+
 
 }

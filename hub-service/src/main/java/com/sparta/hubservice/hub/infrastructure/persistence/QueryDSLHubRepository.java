@@ -6,6 +6,7 @@ import com.sparta.hubservice.hub.domain.model.Hub;
 import com.sparta.hubservice.hub.domain.model.QHub;
 import com.sparta.hubservice.hub.domain.repository.HubQueryRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,7 +20,7 @@ public class QueryDSLHubRepository implements HubQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Hub> searchByKeyword(String name, String address, Pageable pageable) {
+    public Optional<Page<Hub>> searchByKeyword(String name, String address, Pageable pageable) {
         QHub hub = QHub.hub;
 
         BooleanBuilder predicate = new BooleanBuilder();
@@ -46,7 +47,7 @@ public class QueryDSLHubRepository implements HubQueryRepository {
                 .and(hub.isDeleted.eq(false)))
             .fetchCount();
 
-        return new PageImpl<>(hubList, pageable, total);
+        return Optional.of(new PageImpl<>(hubList, pageable, total));
 
     }
 

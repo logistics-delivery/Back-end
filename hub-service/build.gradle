@@ -6,6 +6,11 @@ ext {
 dependencies {
     // 공통 모듈
     implementation project(':common-module')
+
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
     // eureka client
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     // 유효성 검사
@@ -13,6 +18,9 @@ dependencies {
     // Spring Boot 및 JPA 관련 의존성
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+
+    // JGraphT : 그래프 자료구조 및 알고리즘 제공
+    implementation 'org.jgrapht:jgrapht-core:1.5.1'
 
     // QueryDSL
     implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
