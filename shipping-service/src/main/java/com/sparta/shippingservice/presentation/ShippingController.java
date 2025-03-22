@@ -66,4 +66,6 @@ public class ShippingController {
         return ResponseEntity.ok(allLog);
 
     }
+//
+//    @DeleteMapping("{}")
 }
