@@ -4,6 +4,8 @@ import com.sparta.shippingservice.application.dto.request.CreateRouteLogRequestD
 import com.sparta.shippingservice.application.dto.request.CreateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
+import com.sparta.shippingservice.application.dto.response.ShippingRouteResponseDto;
+import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResponseDto;
 import com.sparta.shippingservice.domain.model.*;
 import com.sparta.shippingservice.domain.repository.ShippingRepository;
 import com.sparta.commonmodule.exception.*;
@@ -28,7 +30,7 @@ public class ShippingService {
 
 
     @Transactional
-    public ShippingResponseDto create(@Valid CreateShippingRequestDto request , @Valid CreateRouteLogRequestDto logDto) {
+    public ShippingWithRouteResponseDto create(@Valid CreateShippingRequestDto request , @Valid CreateRouteLogRequestDto logDto) {
         Shipping shipping = request.of().toShipping();
         shippingRepository.save(shipping); //DB 저장
         RouteLogSelf routeLogSelf = new RouteLogSelf(
@@ -45,7 +47,7 @@ public class ShippingService {
         );
         ShippingRouteLog routeLog = routeLogSelf.toShippingRouteLog();
         shippingRouteRepository.save(routeLog);
-        return ShippingResponseDto.from(shipping);
+        return ShippingWithRouteResponseDto.from(shipping,routeLog);
 
     }
 
@@ -87,6 +89,18 @@ public class ShippingService {
         shippingRepository.save(shipping);
         return ShippingResponseDto.from(shipping);
     }
+
+    @Transactional(readOnly = true)
+    public ShippingRouteResponseDto getLogById(UUID shippingId, UUID shippingLogId){
+        ShippingRouteLog routeLog = shippingRouteRepository.findById(shippingLogId).orElseThrow(() -> new ResourceNotFoundException("찾을 수 없는 배송 로그 입니다."));
+        if(!routeLog.getShipping().getId().equals(shippingId)) {
+            throw new ResourceNotFoundException("해당 배송 ID에 해당하는 배송 경로 로그가 아닙니다.");
+        }
+        return ShippingRouteResponseDto.from(routeLog);
+
+    }
+
+
 
 
     private Shipping findShipping(UUID shippingId) {

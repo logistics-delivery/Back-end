@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record ShippingRouteResponseDto(
+        UUID id,
         UUID startHubId,
         UUID endHubId,
         Integer sequence,
@@ -16,6 +17,7 @@ public record ShippingRouteResponseDto(
         UUID shippingManagerId) {
     public static ShippingRouteResponseDto from(ShippingRouteLog shippingRouteLog) {
         return new ShippingRouteResponseDto(
+                shippingRouteLog.getId(),
                 shippingRouteLog.getStartHubId(),
                 shippingRouteLog.getEndHubId(),
                 shippingRouteLog.getSequence(),
