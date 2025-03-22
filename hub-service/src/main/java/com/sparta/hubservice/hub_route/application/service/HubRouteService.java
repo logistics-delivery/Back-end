@@ -81,7 +81,7 @@ public class HubRouteService {
             .orElseThrow(ResourceNotFoundException::new);
 
         // hubRouteId와 관련있는 hub_route_checkpoint 정보 삭제
-        checkpointRepository.findAllByHubRouteId(hubRouteId)
+        checkpointRepository.findAllByHubRoute(hubRoute)
                 .forEach(checkpoint -> checkpoint.delete(userId));
 
         hubRoute.delete(userId);
@@ -130,7 +130,7 @@ public class HubRouteService {
             .orElseThrow(ResourceNotFoundException::new);
 
         List <HubRouteCheckpoint> checkpointList =
-            checkpointRepository.findAllByHubRouteIdOrderBySequenceAsc(route.getHubRouteId());
+            checkpointRepository.findAllByHubRoute_OrderBySequenceAsc(route);
 
         return new HubRouteDetailsResponseDto(route, checkpointList);
     }

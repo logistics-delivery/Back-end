@@ -29,7 +29,7 @@ public class HubRouteCheckpoint extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="hub_route_id", nullable = false)
-    private HubRoute hubRouteId;
+    private HubRoute hubRoute;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="checkpoint_hub_id", nullable = false)
@@ -41,7 +41,7 @@ public class HubRouteCheckpoint extends BaseEntity {
     @Builder
     public HubRouteCheckpoint(HubRoute hubRoute, Hub checkpointHub, int sequence, long userId) {
         super(userId);
-        this.hubRouteId = hubRoute;
+        this.hubRoute = hubRoute;
         this.checkpointHubId = checkpointHub;
         this.sequence = sequence;
     }
