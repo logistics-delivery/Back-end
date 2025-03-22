@@ -7,4 +7,6 @@ import java.util.UUID;
 public interface HubRouteCheckpointRepository {
 
     List<HubRouteCheckpoint> findAllByHubRouteId(UUID hubRouteId);
+
+    void saveAll(List<HubRouteCheckpoint> checkpointList);
 }
