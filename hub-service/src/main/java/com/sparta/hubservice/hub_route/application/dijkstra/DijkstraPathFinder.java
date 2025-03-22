@@ -32,7 +32,7 @@ class HubNode implements Comparable<HubNode> {
 
 public class DijkstraPathFinder implements PathFinder {
 
-    private Map<Hub, List<HubRoute>> graph = new HashMap<>();
+    private final Map<Hub, List<HubRoute>> graph;
 
     public DijkstraPathFinder(Map<Hub, List<HubRoute>>  graph) {
         this.graph = graph;
