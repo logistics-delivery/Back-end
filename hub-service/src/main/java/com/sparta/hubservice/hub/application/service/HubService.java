@@ -1,13 +1,12 @@
 package com.sparta.hubservice.hub.application.service;
 
 import com.sparta.commonmodule.exception.ResourceNotFoundException;
+import com.sparta.hubservice.hub.application.dto.request.HubRequestDto;
 import com.sparta.hubservice.hub.application.dto.response.HubCreateResponseDto;
 import com.sparta.hubservice.hub.application.dto.response.HubDeleteResponseDto;
-import com.sparta.hubservice.hub.application.dto.request.HubRequestDto;
 import com.sparta.hubservice.hub.application.dto.response.HubResponseDto;
 import com.sparta.hubservice.hub.application.dto.response.HubUpdateResponseDto;
 import com.sparta.hubservice.hub.domain.model.Hub;
-import com.sparta.hubservice.hub.domain.repository.HubQueryRepository;
 import com.sparta.hubservice.hub.domain.repository.HubRepository;
 import java.math.BigDecimal;
 import java.util.Map;
@@ -26,7 +25,6 @@ public class HubService {
 
     private final GeocodeApiService geocodeApiService;
     private final HubRepository hubRepository;
-    private final HubQueryRepository hubQueryRepository;
 
     // 허브 목록 조회
     @Transactional(readOnly = true)
@@ -46,7 +44,7 @@ public class HubService {
     // 허브 검색
     @Transactional(readOnly = true)
     public Page<HubResponseDto> getSearchHubs(String name, String address, Pageable pageable) {
-        Page<Hub> searchHubs = hubQueryRepository.searchByKeyword(name, address, pageable)
+        Page<Hub> searchHubs = hubRepository.searchByKeyword(name, address, pageable)
             .orElseThrow(ResourceNotFoundException::new);
 
         return searchHubs.map(HubResponseDto::new);

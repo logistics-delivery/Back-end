@@ -15,4 +15,6 @@ public interface HubRepository {
     <S extends Hub> S save(S hub);
 
     List<Hub> findAll();
+
+    Optional<Page<Hub>> searchByKeyword(String name, String address, Pageable pageable);
 }
