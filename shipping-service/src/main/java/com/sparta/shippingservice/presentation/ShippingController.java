@@ -6,6 +6,7 @@ import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingRouteResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResponseDto;
 import com.sparta.shippingservice.application.service.ShippingService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -59,5 +60,10 @@ public class ShippingController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @GetMapping("/log")
+    public ResponseEntity<List<ShippingRouteResponseDto>> getAllLog() {
+        List<ShippingRouteResponseDto> allLog = shippingService.getLogAll();
+        return ResponseEntity.ok(allLog);
 
+    }
 }
