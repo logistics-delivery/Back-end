@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class HubRouteResponse {
+public class HubRouteResponseDto {
 
     private final UUID routeId;
     private final UUID fromHubId;
@@ -18,7 +18,7 @@ public class HubRouteResponse {
     private final int duration;
     private final BigDecimal distance;
 
-    public HubRouteResponse(HubRoute hubRoute) {
+    public HubRouteResponseDto(HubRoute hubRoute) {
         this.routeId = hubRoute.getHubRouteId();
         this.fromHubId = hubRoute.getFromHub().getHubId();
         this.toHubId = hubRoute.getToHub().getHubId();

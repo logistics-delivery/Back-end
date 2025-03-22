@@ -1,6 +1,8 @@
 package com.sparta.hubservice.hub_route.domain.repository;
 
+import com.sparta.hubservice.hub.domain.model.Hub;
 import com.sparta.hubservice.hub_route.domain.model.HubRoute;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -10,9 +12,15 @@ public interface HubRouteRepository {
 
     Optional<HubRoute> findByFromHub_HubIdAndToHub_HubIdAndIsDeletedFalse(UUID fromHubId, UUID toHubId);
 
-    HubRoute findByHubRouteIdAndIsDeletedFalse(UUID hubRouteId);
+    Optional<HubRoute> findByHubRouteIdAndIsDeletedFalse(UUID hubRouteId);
 
-    HubRoute save(HubRoute saveHubRoute);
+    <S extends HubRoute> S save(S hubRoute);
 
-    Page<HubRoute> findAllByIsDeletedFalse(Pageable pageable);
+    Optional<Page<HubRoute>> findAllByIsDeletedFalse(Pageable pageable);
+
+    Optional<HubRoute> findById(java.util.UUID hubRouteId);
+
+    Optional<List<HubRoute>> findByFromHub(Hub hub);
+
+    Optional<HubRoute> findByFromHubAndToHub(Hub fromHub, Hub toHub);
 }

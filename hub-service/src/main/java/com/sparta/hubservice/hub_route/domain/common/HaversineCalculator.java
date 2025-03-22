@@ -1,19 +1,18 @@
 package com.sparta.hubservice.hub_route.domain.common;
 
-
-import java.math.BigDecimal;
+import com.sparta.hubservice.hub.domain.model.Hub;
 
 public class HaversineCalculator {
 
     private static final double R = 6371; // 지구 반지름 (km)
 
-    public static double haversineDistance(BigDecimal lat1, BigDecimal lon1, BigDecimal lat2, BigDecimal lon2) {
+    public static double haversineDistance(Hub hub1, Hub hub2) {
 
         // 삼각함수 계산을 하기 위해 radian 단위로 변경
-        double latRad1 = Math.toRadians(lat1.doubleValue());
-        double latRad2 = Math.toRadians(lat2.doubleValue());
-        double lonRad1 = Math.toRadians(lon1.doubleValue());
-        double lonRad2 = Math.toRadians(lon2.doubleValue());
+        double latRad1 = Math.toRadians(hub1.getLatitude().doubleValue());
+        double latRad2 = Math.toRadians(hub2.getLatitude().doubleValue());
+        double lonRad1 = Math.toRadians(hub1.getLongitude().doubleValue());
+        double lonRad2 = Math.toRadians(hub2.getLongitude().doubleValue());
 
         double diffLat = latRad2 - latRad1;
         double diffLon = lonRad2 - lonRad1;
