@@ -86,7 +86,6 @@ public class ShippingService {
 
     }
 
-
     @Transactional
     public ShippingResponseDto deleteShipping(UUID shippingId, long userId) {
         Shipping shipping = findShipping(shippingId);
@@ -98,10 +97,8 @@ public class ShippingService {
 
     @Transactional(readOnly = true)
     public ShippingRouteResponseDto getLogById(UUID shippingId, UUID shippingLogId){
-        ShippingRouteLog routeLog = shippingRouteRepository.findById(shippingLogId).orElseThrow(() -> new ResourceNotFoundException("찾을 수 없는 배송 로그 입니다."));
-        if(!routeLog.getShipping().getId().equals(shippingId)) {
-            throw new ResourceNotFoundException("해당 배송 ID에 해당하는 배송 경로 로그가 아닙니다.");
-        }
+        ShippingRouteLog routeLog = shippingRouteRepository.findByIdAndShippingId(shippingLogId, shippingId)
+                .orElseThrow(() -> new ResourceNotFoundException("해당 배송에 속하지 않는 배송 경로 로그입니다."));
         return ShippingRouteResponseDto.from(routeLog);
 
     }
