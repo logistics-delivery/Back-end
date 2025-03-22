@@ -16,6 +16,7 @@ spring:
         spring.jpa.open-in-view: false
         format_sql: true
         default_batch_fetch_size: 10
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
   port: 8083
