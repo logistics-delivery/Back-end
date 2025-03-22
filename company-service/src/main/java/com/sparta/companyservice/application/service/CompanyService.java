@@ -8,8 +8,8 @@ import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.domain.model.CompanyType;
 import com.sparta.companyservice.domain.repository.CompanyRepository;
 import com.sparta.companyservice.infrastructure.client.HubClient;
-import com.sparta.companyservice.infrastructure.querydsl.CompanyQueryRepository;
 import com.sparta.companyservice.presentation.response.CompanyDeleteResponse;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +23,6 @@ import java.util.UUID;
 public class CompanyService {
     private final CompanyRepository companyRepository;
     private final HubClient hubClient;
-    private final CompanyQueryRepository companyQueryRepository;
 
     long userId = 1L; // 실제로는 인증된 사용자 ID 가져와야 함
 
@@ -43,7 +42,7 @@ public class CompanyService {
 
     @Transactional(readOnly = true) // 전체 조회
     public Page<CompanyDto> searchCompanies(String name, String address, CompanyType type, Pageable pageable) {
-        return companyQueryRepository.searchCompanies(name, address, type, pageable)
+        return companyRepository.searchCompanies(name, address, type, pageable)
                 .map(CompanyDto::fromEntity);
     }
 
@@ -75,7 +74,9 @@ public class CompanyService {
     /// //////////////////////////////////////////////////////////////////////////////////
 
     private void validateHubExists(UUID hubId) {
-        if (!hubClient.existsById(hubId)) {
+        try {
+            hubClient.getHubById(hubId);
+        } catch (FeignException.NotFound e) {
             throw new ResourceNotFoundException("해당 허브가 존재하지 않습니다.");
         }
     }
