@@ -1,6 +1,6 @@
 package com.sparta.shippingservice.application.dto.request;
 
-import com.sparta.shippingservice.domain.model.ShippingSelf;
+import com.sparta.shippingservice.domain.model.trans.ShippingSelf;
 import com.sparta.shippingservice.domain.model.ShippingStatus;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
