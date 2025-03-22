@@ -7,6 +7,7 @@ import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingRouteResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResponseDto;
 import com.sparta.shippingservice.domain.model.*;
+import com.sparta.shippingservice.domain.model.trans.RouteLogSelf;
 import com.sparta.shippingservice.domain.repository.ShippingRepository;
 import com.sparta.commonmodule.exception.*;
 
@@ -32,7 +33,7 @@ public class ShippingService {
     @Transactional
     public ShippingWithRouteResponseDto create(@Valid CreateShippingRequestDto request , @Valid CreateRouteLogRequestDto logDto) {
         Shipping shipping = request.of().toShipping();
-        shippingRepository.save(shipping); //DB 저장
+
         RouteLogSelf routeLogSelf = new RouteLogSelf(
                 shipping,
                 logDto.startHubId(),
@@ -46,7 +47,12 @@ public class ShippingService {
 
         );
         ShippingRouteLog routeLog = routeLogSelf.toShippingRouteLog();
-        shippingRouteRepository.save(routeLog);
+
+        // 양방향 연관관계 설정
+        routeLog.setShipping(shipping);
+        shipping.getRouteLogs().add(routeLog);
+
+        shippingRepository.save(shipping);
         return ShippingWithRouteResponseDto.from(shipping,routeLog);
 
     }

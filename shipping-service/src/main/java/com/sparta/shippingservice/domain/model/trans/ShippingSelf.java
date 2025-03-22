@@ -1,4 +1,7 @@
-package com.sparta.shippingservice.domain.model;
+package com.sparta.shippingservice.domain.model.trans;
+
+import com.sparta.shippingservice.domain.model.Shipping;
+import com.sparta.shippingservice.domain.model.ShippingStatus;
 
 import java.util.UUID;
 
