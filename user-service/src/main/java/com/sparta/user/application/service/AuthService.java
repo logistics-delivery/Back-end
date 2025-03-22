@@ -28,7 +28,7 @@ public class AuthService {
         return Jwts.builder()
                 // 사용자 ID를 클레임으로 설정
                 .claim("user_id", responseDto.getId().toString())
-                .claim("role", responseDto.getRole().toString())
+                .claim("role", responseDto.getRole())
                 .claim("slack_name", responseDto.getSlackName())
                 // JWT 발행자를 설정(모듈명)
                 .issuer(issuer)
