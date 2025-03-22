@@ -15,7 +15,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Digits;
 import java.math.BigDecimal;
 import java.util.UUID;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -45,13 +44,22 @@ public class HubRoute extends BaseEntity {
     @Digits(integer = 10, fraction = 2)
     private BigDecimal distance;
 
-    @Builder
-    public HubRoute(Hub fromHub, Hub toHub, long userId) {
+    // 다이렉트로 가는 경로 생성시
+    public HubRoute(Hub fromHub, Hub toHub, Long userId) {
         super(userId);
         this.fromHub = fromHub;
         this.toHub = toHub;
-        this.distance = calculateDistance();
-        this.duration = calculateDuration();
+        this.distance = this.calculateDistance();
+        this.duration = this.calculateDuration();
+    }
+
+    // 체크포인트가 존재하는 최단 거리 생성시
+    public HubRoute(Hub fromHub, Hub toHub, int duration, BigDecimal distance,  Long userId) {
+        super(userId);
+        this.fromHub = fromHub;
+        this.toHub = toHub;
+        this.duration = duration;
+        this.distance = distance;
     }
 
     // 거리 계산 (km)
@@ -64,6 +72,5 @@ public class HubRoute extends BaseEntity {
         double speed = 60.0;
         return (int) Math.round(this.distance.doubleValue() / speed);
     }
-
 
 }
