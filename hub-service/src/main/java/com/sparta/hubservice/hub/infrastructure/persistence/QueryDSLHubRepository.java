@@ -4,7 +4,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.hubservice.hub.domain.model.Hub;
 import com.sparta.hubservice.hub.domain.model.QHub;
-import com.sparta.hubservice.hub.domain.repository.HubQueryRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +14,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class QueryDSLHubRepository implements HubQueryRepository {
+public class QueryDSLHubRepository{
 
     private final JPAQueryFactory queryFactory;
 
-    @Override
     public Optional<Page<Hub>> searchByKeyword(String name, String address, Pageable pageable) {
         QHub hub = QHub.hub;
 
@@ -48,8 +46,5 @@ public class QueryDSLHubRepository implements HubQueryRepository {
             .fetchCount();
 
         return Optional.of(new PageImpl<>(hubList, pageable, total));
-
     }
-
-
 }
