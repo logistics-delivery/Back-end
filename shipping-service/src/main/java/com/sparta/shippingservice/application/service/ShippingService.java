@@ -1,13 +1,14 @@
 package com.sparta.shippingservice.application.service;
 
+import com.sparta.shippingservice.application.dto.request.CreateRouteLogRequestDto;
 import com.sparta.shippingservice.application.dto.request.CreateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
-import com.sparta.shippingservice.domain.model.Shipping;
-import com.sparta.shippingservice.domain.model.ShippingStatus;
+import com.sparta.shippingservice.domain.model.*;
 import com.sparta.shippingservice.domain.repository.ShippingRepository;
 import com.sparta.commonmodule.exception.*;
 
+import com.sparta.shippingservice.domain.repository.ShippingRouteRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,15 +24,29 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ShippingService {
     private final ShippingRepository shippingRepository;
+    private final ShippingRouteRepository shippingRouteRepository;
 
 
     @Transactional
-    public ShippingResponseDto create(@Valid CreateShippingRequestDto request) {
-
+    public ShippingResponseDto create(@Valid CreateShippingRequestDto request , @Valid CreateRouteLogRequestDto logDto) {
         Shipping shipping = request.of().toShipping();
         shippingRepository.save(shipping); //DB 저장
+        RouteLogSelf routeLogSelf = new RouteLogSelf(
+                shipping,
+                logDto.startHubId(),
+                logDto.endHubId(),
+                logDto.sequence(),
+                logDto.estimatedDistance(),
+                logDto.estimatedTime(),
+                logDto.actualDistance(),
+                logDto.actualTime(),
+                logDto.shippingManagerId()
 
+        );
+        ShippingRouteLog routeLog = routeLogSelf.toShippingRouteLog();
+        shippingRouteRepository.save(routeLog);
         return ShippingResponseDto.from(shipping);
+
     }
 
     @Transactional(readOnly = true)
@@ -58,7 +73,7 @@ public class ShippingService {
     @Transactional
     public ShippingResponseDto updateShipping(UUID shippingId, @Valid UpdateShippingRequestDto request) {
         Shipping shipping = findShipping(shippingId);
-        shipping.updateShipping(request);
+        shipping.updateShipping(request.of().toShipping());
         return ShippingResponseDto.from(shipping);
 
     }

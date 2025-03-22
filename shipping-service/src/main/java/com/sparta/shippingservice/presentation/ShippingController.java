@@ -1,12 +1,15 @@
 package com.sparta.shippingservice.presentation;
 
+import com.sparta.shippingservice.application.dto.request.CreateRouteLogRequestDto;
 import com.sparta.shippingservice.application.dto.request.CreateShippingRequestDto;
+import com.sparta.shippingservice.application.dto.request.CreateShippingWithRouteRequestDto;
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
+import com.sparta.shippingservice.application.dto.response.ShippingRouteResponseDto;
+import com.sparta.shippingservice.application.service.ShippingRouteService;
 import com.sparta.shippingservice.application.service.ShippingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +21,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ShippingController {
     private final ShippingService shippingService;
+    private final ShippingRouteService shippingRouteService;
 
     @PostMapping() // 배송 생성
-    public ResponseEntity<ShippingResponseDto> Shipping(@Valid @RequestBody CreateShippingRequestDto requestDto) {
-        ShippingResponseDto responseDto = shippingService.create(requestDto);
-
+    public ResponseEntity<ShippingResponseDto> Shipping(@Valid @RequestBody CreateShippingWithRouteRequestDto request) {
+        ShippingResponseDto responseDto = shippingService.create(request.shipping(),request.routeLog());
         return ResponseEntity.ok(responseDto);
     }
 
@@ -48,6 +51,12 @@ public class ShippingController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ShippingResponseDto> deleteHub(@PathVariable("id") UUID id, @RequestParam long userId) {
         ShippingResponseDto responseDto = shippingService.deleteShipping(id, userId);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PostMapping("/route") // 배송 생성
+    public ResponseEntity<ShippingRouteResponseDto> ShippingRoute(@Valid @RequestBody CreateRouteLogRequestDto requestDto) {
+        ShippingRouteResponseDto responseDto = shippingRouteService.create(requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
