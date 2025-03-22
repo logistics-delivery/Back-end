@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@Table(name = "p_slacks")
 @NoArgsConstructor
 public class Slack extends BaseEntity {
 
