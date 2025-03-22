@@ -100,8 +100,23 @@ public class ShippingService {
 
     }
 
+    @Transactional(readOnly = true)
+    public List<ShippingRouteResponseDto> getLogAll(){
+        List<ShippingRouteLog> result = shippingRouteRepository.findAll();
+        return result.stream()
+                .map(shippingRouteLog->new ShippingRouteResponseDto(
+                        shippingRouteLog.getId(),
+                        shippingRouteLog.getStartHubId(),
+                        shippingRouteLog.getEndHubId(),
+                        shippingRouteLog.getSequence(),
+                        shippingRouteLog.getEstimatedDistance(),
+                        shippingRouteLog.getActualTime(),
+                        shippingRouteLog.getActualDistance(),
+                        shippingRouteLog.getEstimatedTime(),
+                        shippingRouteLog.getShippingManagerId()
 
-
+                )).collect(Collectors.toList());
+    }
 
     private Shipping findShipping(UUID shippingId) {
         Shipping shipping = shippingRepository.findById(shippingId).orElseThrow(

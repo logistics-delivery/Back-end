@@ -4,13 +4,17 @@ import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.application.service.ProductServiceImpl;
 import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
+import com.sparta.product.presentation.dto.request.SearchProductRequestDto;
 import com.sparta.product.presentation.dto.request.UpdateProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import com.sparta.product.presentation.dto.response.ReadProductResponseDto;
+import com.sparta.product.presentation.dto.response.SearchProductResponseDto;
 import com.sparta.product.presentation.dto.response.UpdateProductResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,4 +80,15 @@ public class ProductController {
                 DeleteProductServiceRequestDto.of(userId, productId));
         return ResponseEntity.noContent().build();
     }
+
+
+    /**
+     * 상품 검색
+     */
+    @GetMapping("/search")
+    public ResponseEntity<Page<SearchProductResponseDto>> searchProducts(@ModelAttribute SearchProductRequestDto requestDto,
+                                                                         Pageable pageable) {
+        return ResponseEntity.ok(productServiceImpl.searchProducts(requestDto, pageable));
+    }
+
 }
