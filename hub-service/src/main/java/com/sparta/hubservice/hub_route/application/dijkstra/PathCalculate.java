@@ -22,7 +22,7 @@ public class PathCalculate {
     private final HubRouteRepository hubRouteRepository;
     private final HubRepository hubRepository;
 
-    public List<Hub> getShortPath(Hub fromHub, Hub toHub, Long userId) {
+    public List<Hub> getShortPath(Hub fromHub, Hub toHub) {
 
         // 그래프 정의
         Map<Hub, List<HubRoute>> graph = new HashMap<>();

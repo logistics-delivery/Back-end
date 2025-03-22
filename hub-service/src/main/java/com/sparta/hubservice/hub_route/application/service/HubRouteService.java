@@ -94,7 +94,7 @@ public class HubRouteService {
         Hub fromHub = hubRepository.findById(fromHubId).orElseThrow(ResourceNotFoundException::new);
         Hub toHub = hubRepository.findById(toHubId).orElseThrow(ResourceNotFoundException::new);
 
-        List<Hub> shortPath = pathCalculate.getShortPath(fromHub, toHub, userId);
+        List<Hub> shortPath = pathCalculate.getShortPath(fromHub, toHub);
         PathValueDto vlaues = pathCalculate.getValue(shortPath);
 
         if(hubRouteRepository.findByFromHubAndToHub(fromHub, toHub).isPresent()){
