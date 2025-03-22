@@ -2,6 +2,7 @@ package com.sparta.companyservice.presentation.controller;
 
 import com.sparta.companyservice.application.dto.CompanyDto;
 import com.sparta.companyservice.application.service.CompanyService;
+import com.sparta.companyservice.domain.model.CompanyType;
 import com.sparta.companyservice.presentation.request.CompanyCreateRequest;
 import com.sparta.companyservice.presentation.request.CompanyUpdateRequest;
 import com.sparta.companyservice.presentation.response.CompanyDeleteResponse;
@@ -10,6 +11,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +38,14 @@ public class CompanyController {
     // 전체 조회
     @Operation(summary = "Company 전체 조회", description = "Company 전체 조회 API")
     @GetMapping
-    public ResponseEntity<List<CompanyResponse>> getAllCompanies() {
-        List<CompanyDto> companies = companyService.getAllCompanies();
-        List<CompanyResponse> responses = companies.stream().map(CompanyResponse::fromDto).toList();
+    public ResponseEntity<Page<CompanyResponse>> searchCompanies(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) CompanyType type,
+            Pageable pageable
+    ) {
+        Page<CompanyDto> companies = companyService.searchCompanies(name, address, type, pageable);
+        Page<CompanyResponse> responses = companies.map(CompanyResponse::fromDto);
         return ResponseEntity.ok(responses);
     }
 
