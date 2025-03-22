@@ -1,6 +1,7 @@
 package com.sparta.hubservice.hub.domain.repository;
 
 import com.sparta.hubservice.hub.domain.model.Hub;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -13,4 +14,5 @@ public interface HubRepository {
 
     <S extends Hub> S save(S hub);
 
+    Optional<List<Hub>> findAll();
 }
