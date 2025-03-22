@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -97,6 +98,7 @@ public class HubRouteService {
         List<Hub> shortPath = pathCalculate.getShortPath(fromHub, toHub);
         PathValueDto vlaues = pathCalculate.getValue(shortPath);
 
+        // 다이렉트는 이미 최단 경로 -> 이미 route 정보가 있다면 패스
         if(hubRouteRepository.findByFromHubAndToHub(fromHub, toHub).isPresent()){
             throw new EntityExistsException("Hub route already exists");
         }
@@ -119,7 +121,21 @@ public class HubRouteService {
         return new HubRouteDetailsResponseDto(route, checkpointList);
     }
 
-    // fromHub -> toHub 최단 경로 시퀀스 조회
+    // fromHub -> toHub 최단 경로 정보 조회
+    @Transactional(readOnly = true)
+    public HubRouteDetailsResponseDto getPathHubRoute(UUID fromHubId, UUID toHubId) {
+        Hub fromHub = hubRepository.findById(fromHubId).orElseThrow(ResourceNotFoundException::new);
+        Hub toHub = hubRepository.findById(toHubId).orElseThrow(ResourceNotFoundException::new);
+
+        HubRoute route = hubRouteRepository.findByFromHubAndToHub(fromHub, toHub)
+            .orElseThrow(ResourceNotFoundException::new);
+
+        List <HubRouteCheckpoint> checkpointList =
+            checkpointRepository.findAllByHubRouteIdOrderBySequenceAsc(route.getHubRouteId());
+
+        return new HubRouteDetailsResponseDto(route, checkpointList);
+    }
+    
 
 
 }
