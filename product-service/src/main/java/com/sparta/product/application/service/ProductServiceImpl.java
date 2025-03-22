@@ -6,10 +6,14 @@ import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.domain.model.Product;
 import com.sparta.product.domain.repository.ProductRepository;
 import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
+import com.sparta.product.presentation.dto.request.SearchProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import com.sparta.product.presentation.dto.response.ReadProductResponseDto;
+import com.sparta.product.presentation.dto.response.SearchProductResponseDto;
 import com.sparta.product.presentation.dto.response.UpdateProductResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,5 +83,15 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(serviceDto.productId())
                 .orElseThrow(() -> new ResourceNotFoundException("찾을 수 없는 상품 입니다."));
         product.delete(serviceDto.userId());
+    }
+
+
+    /**
+     * 상품 검색
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<SearchProductResponseDto> searchProducts(SearchProductRequestDto requestDto, Pageable pageable) {
+        return productRepository.searchProducts(requestDto, pageable);
     }
 }
