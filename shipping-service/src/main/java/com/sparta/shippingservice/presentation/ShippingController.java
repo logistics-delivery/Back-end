@@ -1,12 +1,13 @@
 package com.sparta.shippingservice.presentation;
 
-import com.sparta.shippingservice.application.dto.request.CreateShippingRequestDto;
+import com.sparta.shippingservice.application.dto.request.CreateShippingWithRouteRequestDto;
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
+import com.sparta.shippingservice.application.dto.response.ShippingRouteResponseDto;
+import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResponseDto;
 import com.sparta.shippingservice.application.service.ShippingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,14 +21,14 @@ public class ShippingController {
     private final ShippingService shippingService;
 
     @PostMapping() // 배송 생성
-    public ResponseEntity<ShippingResponseDto> Shipping(@Valid @RequestBody CreateShippingRequestDto requestDto) {
-        ShippingResponseDto responseDto = shippingService.create(requestDto);
-
+    public ResponseEntity<ShippingWithRouteResponseDto> Shipping(@Valid @RequestBody CreateShippingWithRouteRequestDto request) {
+        ShippingWithRouteResponseDto responseDto = shippingService.create(request.shipping(), request.routeLog());
         return ResponseEntity.ok(responseDto);
+
     }
 
-    @GetMapping("/{id}") // 특정 배송 정보 조회
-    public ResponseEntity<ShippingResponseDto> getShippingById(@PathVariable("id") UUID id) {
+    @GetMapping("/{shippingId}") // 특정 배송 정보 조회
+    public ResponseEntity<ShippingResponseDto> getShippingById(@PathVariable("shippingId") UUID id) {
         ShippingResponseDto responseDto = shippingService.getShippingById(id);
         return ResponseEntity.ok(responseDto);
     }
@@ -39,15 +40,22 @@ public class ShippingController {
     }
 
 
-    @PatchMapping("/{id}") // 배송 내역 수정
-    public ResponseEntity<ShippingResponseDto> updateShipping(@PathVariable("id") UUID id, @Valid @RequestBody UpdateShippingRequestDto request) {
+    @PatchMapping("/{shippingId}") // 배송 내역 수정
+    public ResponseEntity<ShippingResponseDto> updateShipping(@PathVariable("shippingId") UUID id, @Valid @RequestBody UpdateShippingRequestDto request) {
         ShippingResponseDto ResponseDto = shippingService.updateShipping(id, request);
         return ResponseEntity.ok(ResponseDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ShippingResponseDto> deleteHub(@PathVariable("id") UUID id, @RequestParam long userId) {
+    @DeleteMapping("/{shippingId}")
+    public ResponseEntity<ShippingResponseDto> deleteHub(@PathVariable("shippingId") UUID id, @RequestParam long userId) {
         ShippingResponseDto responseDto = shippingService.deleteShipping(id, userId);
+        return ResponseEntity.ok(responseDto);
+    }
+
+
+    @GetMapping("/{shippingId}/{shippingLogId}") // 특정 배송 로그 조회
+    public ResponseEntity<ShippingRouteResponseDto> getLogById(@PathVariable("shippingId") UUID id, @PathVariable("shippingLogId") UUID logId) {
+        ShippingRouteResponseDto responseDto = shippingService.getLogById(id, logId);
         return ResponseEntity.ok(responseDto);
     }
 

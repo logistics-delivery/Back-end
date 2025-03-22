@@ -5,6 +5,8 @@ import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.domain.model.Product;
 import com.sparta.product.domain.repository.ProductRepository;
+import com.sparta.product.infrastructure.client.CompanyClient;
+import com.sparta.product.infrastructure.client.HubClient;
 import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
 import com.sparta.product.presentation.dto.request.SearchProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
@@ -26,6 +28,8 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final HubClient hubClient;
+    private final CompanyClient companyClient;
 
 
     /**
@@ -33,6 +37,8 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public CreateProductResponseDto createProduct(CreateProductRequestDto requestDto, Long userId) {
+        validateCompanyExists(requestDto.companyId());
+        validateHubExists(requestDto.hubId());
         Product product = productRepository.save(Product.createProduct(requestDto, userId));
         return CreateProductResponseDto.from(product);
     }
@@ -94,4 +100,21 @@ public class ProductServiceImpl implements ProductService {
     public Page<SearchProductResponseDto> searchProducts(SearchProductRequestDto requestDto, Pageable pageable) {
         return productRepository.searchProducts(requestDto, pageable);
     }
+
+
+    // 업체 존재 검증 메서드
+    private void validateCompanyExists(UUID companyId) {
+        if (!companyClient.existsById(companyId)) {
+            throw new ResourceNotFoundException("해당 업체가 존재하지 않습니다.");
+        }
+    }
+
+
+    // 허브 존재 검증 메서드
+    private void validateHubExists(UUID hubId) {
+        if (!hubClient.existsById(hubId)) {
+            throw new ResourceNotFoundException("해당 허브가 존재하지 않습니다.");
+        }
+    }
+
 }
