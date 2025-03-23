@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/shipping-managers")
 @RequiredArgsConstructor
@@ -24,6 +26,12 @@ public class ShippingManagerController {
     @PostMapping()
     public ResponseEntity<ShippingManagerResponseDto> create(@Valid @RequestBody ShippingManagerCreateRequestDto request, @RequestHeader("userId") Long userId){
         ShippingManagerResponseDto response = shippingManagerService.create(request, userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ShippingManagerResponseDto> getById(@PathVariable("id") UUID id){
+        ShippingManagerResponseDto response = shippingManagerService.getById(id);
         return ResponseEntity.ok(response);
     }
 
