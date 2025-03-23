@@ -25,7 +25,7 @@ public class HubShippingScanLog extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "hub_shipping_scan_log_id")
-    private Long hubShippingScanLogId;
+    private UUID hubShippingScanLogId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="hub_id", nullable = false)
