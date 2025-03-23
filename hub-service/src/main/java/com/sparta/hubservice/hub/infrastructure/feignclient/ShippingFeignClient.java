@@ -13,16 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name ="shipping-service", url="${shipping.service.url}")
 public interface ShippingFeignClient {
 
-    // 입고 처리
-    @PostMapping("/api/v1/shippings/{shipping_id}/inbound")
+    // 입고 처리 내용 전달
+    @PostMapping("/{shipping_id}/inbound")
     InboundStatusResponseDto inboundStatus(
         @PathVariable("shipping_id") UUID shippingId,
         @RequestBody InboundStatusRequestDto inboundStatusRequestDto);
 
-    // 출고 처리
-    @PostMapping("/api/v1/shippings/{shipping_id}/outbound")
+    // 출고 처리 내용 전달
+    @PostMapping("/{shipping_id}/outbound")
     OutboundStatusResponseDto outboundStatus(
         @PathVariable("shipping_id") UUID shippingId,
         @RequestBody OutboundStatusRequestDto outboundStatusRequestDto);
-
 }

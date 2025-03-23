@@ -4,6 +4,7 @@ import com.sparta.commonmodule.exception.ResourceNotFoundException;
 import com.sparta.hubservice.hub.domain.model.Hub;
 import com.sparta.hubservice.hub.domain.repository.HubRepository;
 import com.sparta.hubservice.hub_route.application.dijkstra.PathCalculate;
+import com.sparta.hubservice.hub_route.application.dto.response.CheckpointResponseDto;
 import com.sparta.hubservice.hub_route.application.dto.response.HubRouteCreateResponseDto;
 import com.sparta.hubservice.hub_route.application.dto.response.HubRouteDeleteResponseDto;
 import com.sparta.hubservice.hub_route.application.dto.response.HubRouteDetailsResponseDto;
@@ -117,7 +118,10 @@ public class HubRouteService {
         }
         checkpointRepository.saveAll(checkpointList);
 
-        return new HubRouteDetailsResponseDto(route, checkpointList);
+        List<CheckpointResponseDto> checkpoints =
+            checkpointList.stream().map(CheckpointResponseDto::new).toList();
+
+        return new HubRouteDetailsResponseDto(route, checkpoints);
     }
 
     // fromHub -> toHub 최단 경로 정보 조회
@@ -129,12 +133,10 @@ public class HubRouteService {
         HubRoute route = hubRouteRepository.findByFromHubAndToHub(fromHub, toHub)
             .orElseThrow(ResourceNotFoundException::new);
 
-        List <HubRouteCheckpoint> checkpointList =
-            checkpointRepository.findAllByHubRoute_OrderBySequenceAsc(route);
+        List<CheckpointResponseDto> checkpoints =
+            checkpointRepository.findAllByHubRoute_OrderBySequenceAsc(route)
+                .stream().map(CheckpointResponseDto::new).toList();
 
-        return new HubRouteDetailsResponseDto(route, checkpointList);
+        return new HubRouteDetailsResponseDto(route, checkpoints);
     }
-    
-
-
 }

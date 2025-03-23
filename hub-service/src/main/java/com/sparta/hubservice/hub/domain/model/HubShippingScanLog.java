@@ -25,7 +25,7 @@ public class HubShippingScanLog extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "hub_shipping_scan_log_id")
-    private Long hubShippingScanLogId;
+    private UUID hubShippingScanLogId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="hub_id", nullable = false)
@@ -64,10 +64,13 @@ public class HubShippingScanLog extends BaseEntity {
         return new HubShippingScanLog(hub,shippingId, ShippingStatus.INBOUND, userId);
     }
 
-    public static HubShippingScanLog createOutboundLog(Hub hub, UUID shippingId, Hub nextHub, Long userId) {
-        return new HubShippingScanLog(hub, shippingId, ShippingStatus.OUTBOUND, nextHub, userId);
+    public static HubShippingScanLog createOutboundLog(Hub hub, UUID shippingId, Long userId) {
+        return new HubShippingScanLog(hub, shippingId, ShippingStatus.OUTBOUND, userId);
     }
 
+    public void updateNextHub(Hub nextHub) {
+        this.nextHub = nextHub;
+    }
 
     public enum ShippingStatus {
         INBOUND, OUTBOUND
