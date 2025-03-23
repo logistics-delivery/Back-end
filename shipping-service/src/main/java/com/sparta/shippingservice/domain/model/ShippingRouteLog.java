@@ -47,8 +47,8 @@ public class ShippingRouteLog extends BaseEntity {
     @Column(name = "shipping_manager_id", nullable = false)
     private UUID shippingManagerId;
 
-    public ShippingRouteLog(Shipping shipping,UUID startHubId, UUID endHubId, Integer sequence, BigDecimal estimatedDistance, Integer estimatedTime, BigDecimal actualDistance, Integer actualTime, UUID shippingManagerId) {
-        this.shipping=shipping;
+    public ShippingRouteLog(UUID startHubId, UUID endHubId, Integer sequence, BigDecimal estimatedDistance, Integer estimatedTime, BigDecimal actualDistance, Integer actualTime, UUID shippingManagerId) {
+
         this.startHubId = startHubId;
         this.endHubId = endHubId;
         this.sequence = sequence;

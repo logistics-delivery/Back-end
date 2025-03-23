@@ -1,14 +1,17 @@
 package com.sparta.shippingservice.presentation;
 
 import com.sparta.shippingservice.application.dto.request.CreateShippingWithRouteRequestDto;
+import com.sparta.shippingservice.application.dto.request.ShippingSearchCondition;
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingRouteResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResponseDto;
 import com.sparta.shippingservice.application.service.ShippingService;
 
+import com.sparta.shippingservice.domain.model.Shipping;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +25,9 @@ public class ShippingController {
     private final ShippingService shippingService;
 
     @PostMapping() // 배송 생성
-    public ResponseEntity<ShippingWithRouteResponseDto> Shipping(@Valid @RequestBody CreateShippingWithRouteRequestDto request) {
-        ShippingWithRouteResponseDto responseDto = shippingService.create(request.shipping(), request.routeLog());
+    public ResponseEntity<ShippingWithRouteResponseDto> create (@Valid @RequestBody CreateShippingWithRouteRequestDto request,
+                                                                @RequestHeader("userId")Long userId) {
+        ShippingWithRouteResponseDto responseDto = shippingService.create(request.shipping(), request.routeLog(),userId);
         return ResponseEntity.ok(responseDto);
 
     }
@@ -42,13 +46,19 @@ public class ShippingController {
 
 
     @PatchMapping("/{shippingId}") // 배송 내역 수정
-    public ResponseEntity<ShippingResponseDto> updateShipping(@PathVariable("shippingId") UUID id, @Valid @RequestBody UpdateShippingRequestDto request) {
-        ShippingResponseDto ResponseDto = shippingService.updateShipping(id, request);
+    public ResponseEntity<ShippingResponseDto> updateShipping(@PathVariable("shippingId") UUID id, @Valid @RequestBody UpdateShippingRequestDto request, @RequestHeader("userId") Long userId ) {
+        ShippingResponseDto ResponseDto = shippingService.updateShipping(id, request,userId);
         return ResponseEntity.ok(ResponseDto);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<Shipping>> searchShippings(@ModelAttribute ShippingSearchCondition condition) {
+        Page<Shipping> result = shippingService.searchShipping(condition);
+        return ResponseEntity.ok(result);
+    }
+
     @DeleteMapping("/{shippingId}")
-    public ResponseEntity<ShippingResponseDto> deleteShipping(@PathVariable("shippingId") UUID id, @RequestParam long userId) {
+    public ResponseEntity<ShippingResponseDto> deleteShipping(@PathVariable("shippingId") UUID id, @RequestHeader("userId") long userId) {
         ShippingResponseDto responseDto = shippingService.deleteShipping(id, userId);
         return ResponseEntity.ok(responseDto);
     }

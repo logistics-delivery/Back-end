@@ -5,9 +5,11 @@ import com.sparta.shippingmanager.domain.model.ShippingManager;
 import com.sparta.shippingservice.application.dto.client.ShippingManagerResponseDto;
 import com.sparta.shippingservice.application.dto.request.CreateRouteLogRequestDto;
 import com.sparta.shippingservice.application.dto.request.CreateShippingRequestDto;
+import com.sparta.shippingservice.application.dto.request.ShippingSearchCondition;
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingRouteResponseDto;
+import com.sparta.shippingservice.application.dto.response.ShippingSearchResult;
 import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResponseDto;
 import com.sparta.shippingservice.domain.model.*;
 import com.sparta.shippingservice.domain.model.trans.RouteLogSelf;
@@ -16,8 +18,12 @@ import com.sparta.commonmodule.exception.*;
 
 import com.sparta.shippingservice.domain.repository.ShippingRouteRepository;
 import com.sparta.shippingservice.infrastructure.client.ShippingManagerClient;
+import com.sparta.shippingservice.infrastructure.repository.ShippingSearchRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,18 +39,21 @@ public class ShippingService {
     private final ShippingRepository shippingRepository;
     private final ShippingRouteRepository shippingRouteRepository;
     private final ShippingManagerClient shippingManagerClient;
+    private final ShippingSearchRepository searchRepository;
 
 //각 허브에 10명 / 업체에 10명
-    public ShippingWithRouteResponseDto create(@Valid CreateShippingRequestDto request , @Valid CreateRouteLogRequestDto logDto) {
+
+    @Transactional
+    public ShippingWithRouteResponseDto create(@Valid CreateShippingRequestDto request , @Valid CreateRouteLogRequestDto logDto,Long userId) {
+
         ShippingManagerResponseDto manager = shippingManagerClient.assignManager();
         if(manager.managerType() != ManagerType.CARRIER){
             throw new InvalidParameterException("배송 담당자는 업체 소속이어야 합니다.");
         }
 
-        Shipping shipping = request.of(manager.id()).toShipping();
+        Shipping shipping = request.of(manager.id()).toShipping(userId);
 
         RouteLogSelf routeLogSelf = new RouteLogSelf(
-                shipping,
                 logDto.startHubId(),
                 logDto.endHubId(),
                 logDto.sequence(),
@@ -88,19 +97,29 @@ public class ShippingService {
     }
 
     @Transactional
-    public ShippingResponseDto updateShipping(UUID shippingId, @Valid UpdateShippingRequestDto request) {
+    public ShippingResponseDto updateShipping(UUID shippingId, @Valid UpdateShippingRequestDto request ,Long userId) {
         Shipping shipping = findShipping(shippingId);
-        shipping.updateShipping(request.of().toShipping());
+        shipping.updateShipping(request.of().toShipping(userId),userId);
         return ShippingResponseDto.from(shipping);
 
     }
 
+    @Transactional
     public ShippingResponseDto deleteShipping(UUID shippingId, long userId) {
         Shipping shipping = findShipping(shippingId);
         shipping.delete(userId);
         shipping.setStatus(ShippingStatus.CANCELED);
         shippingRepository.save(shipping);
         return ShippingResponseDto.from(shipping);
+    }
+
+    public Page<Shipping> searchShipping(ShippingSearchCondition condition) {
+        ShippingSearchResult result = searchRepository.search(condition);
+        return new PageImpl<>(
+                result.getContent(),
+                PageRequest.of(result.getPage(), result.getPageSize()),
+                result.getTotalCount()
+        );
     }
 
     @Transactional(readOnly = true)
@@ -129,6 +148,7 @@ public class ShippingService {
                 )).collect(Collectors.toList());
     }
 
+    @Transactional
     public ShippingRouteResponseDto deleteShippingLog(UUID shippingId,UUID shippingLogId, long userId) {
         ShippingRouteLog routeLog = shippingRouteRepository.findByIdAndShippingId(shippingLogId, shippingId)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 배송에 속하지 않는 배송 경로 로그입니다."));
