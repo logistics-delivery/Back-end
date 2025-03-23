@@ -2,6 +2,7 @@ package com.sparta.hubservice.hub.presentation.controller;
 
 import com.sparta.hubservice.hub.application.service.HubShippingScanService;
 import com.sparta.hubservice.hub.infrastructure.feignclient.dto.InboundStatusResponseDto;
+import com.sparta.hubservice.hub.infrastructure.feignclient.dto.OutboundStatusResponseDto;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class HubShippingScanController {
 
     private final HubShippingScanService hubShippingScanService;
 
+    // 입고 처리
     @PostMapping("/{hub_id}/{shipping_id}/inbound-log")
     public ResponseEntity<InboundStatusResponseDto> inboundStatus(
         @PathVariable("hub_id") UUID hubId,
@@ -31,6 +33,17 @@ public class HubShippingScanController {
     }
 
     // 출고 처리
+    @PostMapping("/{hub_id}/{shipping_id}/outbound-log")
+    public ResponseEntity<OutboundStatusResponseDto> outboundStatus(
+        @PathVariable("hub_id") UUID hubId,
+        @PathVariable("shipping_id") UUID shippingId,
+        @RequestParam("user_id") Long userId,
+        @RequestParam("next_hub_id") UUID nextHubId
+    ){
+        OutboundStatusResponseDto responseDto =
+            hubShippingScanService.createOutbound(hubId, shippingId, nextHubId, userId);
 
+        return ResponseEntity.ok(responseDto);
+    }
 
 }
