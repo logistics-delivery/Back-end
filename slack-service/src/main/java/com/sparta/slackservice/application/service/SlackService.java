@@ -1,10 +1,14 @@
 package com.sparta.slackservice.application.service;
 
+import com.sparta.commonmodule.exception.ResourceNotFoundException;
 import com.sparta.slackservice.application.dto.SlackRequestDto;
 import com.sparta.slackservice.application.dto.SlackResponseDto;
+import com.sparta.slackservice.application.dto.SlackSearchRequestDto;
 import com.sparta.slackservice.domain.model.Slack;
 import com.sparta.slackservice.infastructure.JpaSlackRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +41,12 @@ public class SlackService {
         return findingSlack(slackId);
     }
 
+    //메세지 조회(전체)
+    @Transactional(readOnly = true)
+    public Page<SlackResponseDto> searchSlack(SlackSearchRequestDto requestDto, Pageable pageable) {
+        return slackRepository.searchSlack(requestDto,pageable);
+    }
+
     //메세지 수정
     public SlackResponseDto modifySlack(UUID slackId, SlackRequestDto requestDto, Long userId) {
         Slack slack = findingSlack(slackId);
@@ -53,6 +63,7 @@ public class SlackService {
     private Slack findingSlack(UUID slackId) {
         return slackRepository.findById(slackId).orElseThrow(() -> new RuntimeException("Slack not found"));
     }
+
 
 
 }

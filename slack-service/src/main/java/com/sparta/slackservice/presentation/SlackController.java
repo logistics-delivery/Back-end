@@ -2,12 +2,16 @@ package com.sparta.slackservice.presentation;
 
 import com.sparta.slackservice.application.dto.SlackRequestDto;
 import com.sparta.slackservice.application.dto.SlackResponseDto;
+import com.sparta.slackservice.application.dto.SlackSearchRequestDto;
 import com.sparta.slackservice.application.service.SlackService;
 import com.sparta.slackservice.application.service.SlackWebhookService;
 import com.sparta.slackservice.domain.model.Slack;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +43,15 @@ public class SlackController {
     @GetMapping("{id}")
     public ResponseEntity<Slack> getSlack(@PathVariable("id") UUID slackId) {
         return ResponseEntity.ok(slackService.getSlack(slackId));
+    }
+
+    @Operation(summary = "메세지 조회(전체)", description = "메세지 조회(전체) api입니다.")
+    @PostMapping("/search")
+    public ResponseEntity<Page<SlackResponseDto>> searchSlack(
+            @RequestBody SlackSearchRequestDto requestDto,
+            @PageableDefault(page = 0, size = 10, sort = "createdAt") Pageable pageable) {
+        Page<SlackResponseDto> responseDto= slackService.searchSlack(requestDto,pageable);
+        return ResponseEntity.ok(responseDto);
     }
 
     @Operation(summary = "메세지 수정", description = "메세지 수정 api입니다.")
