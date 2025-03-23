@@ -26,6 +26,12 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
+    // 업체 존재 확인
+    @GetMapping("/{id}/exists")
+    public boolean existsById(@PathVariable UUID id) {
+        return companyService.existsById(id);
+    }
+
     // 생성
     @Operation(summary = "Company 등록", description = "Company 생성 api 입니다.")
     @PostMapping

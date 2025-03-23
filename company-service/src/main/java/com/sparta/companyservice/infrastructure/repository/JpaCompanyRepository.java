@@ -9,4 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface JpaCompanyRepository extends JpaRepository<Company, UUID>, CompanyQueryRepository {
+    boolean existsByIdAndDeletedAtIsNull(UUID id);
 }
