@@ -1,5 +1,8 @@
 package com.sparta.shippingservice.application.service;
 
+import com.sparta.shippingmanager.domain.model.ManagerType;
+import com.sparta.shippingmanager.domain.model.ShippingManager;
+import com.sparta.shippingservice.application.dto.client.ShippingManagerResponseDto;
 import com.sparta.shippingservice.application.dto.request.CreateRouteLogRequestDto;
 import com.sparta.shippingservice.application.dto.request.CreateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
@@ -12,6 +15,7 @@ import com.sparta.shippingservice.domain.repository.ShippingRepository;
 import com.sparta.commonmodule.exception.*;
 
 import com.sparta.shippingservice.domain.repository.ShippingRouteRepository;
+import com.sparta.shippingservice.infrastructure.client.ShippingManagerClient;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,11 +32,17 @@ import java.util.stream.Collectors;
 public class ShippingService {
     private final ShippingRepository shippingRepository;
     private final ShippingRouteRepository shippingRouteRepository;
+    private final ShippingManagerClient shippingManagerClient;
 
 
     @Transactional
     public ShippingWithRouteResponseDto create(@Valid CreateShippingRequestDto request , @Valid CreateRouteLogRequestDto logDto) {
-        Shipping shipping = request.of().toShipping();
+        ShippingManagerResponseDto manager = shippingManagerClient.assignManager();
+        if(manager.managerType() != ManagerType.CARRIER){
+            throw new InvalidParameterException("배송 담당자는 업체 소속이어야 합니다.");
+        }
+
+        Shipping shipping = request.of(manager.id()).toShipping();
 
         RouteLogSelf routeLogSelf = new RouteLogSelf(
                 shipping,

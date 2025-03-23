@@ -1,4 +1,4 @@
-package com.sparta.shippingservice.domain.model;
+package com.sparta.shippingmanager.domain.model;
 
 public enum ManagerType {
     HUB, // 허브 배송 담당자

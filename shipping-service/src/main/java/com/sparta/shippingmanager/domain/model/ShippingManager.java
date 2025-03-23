@@ -1,4 +1,4 @@
-package com.sparta.shippingservice.domain.model;
+package com.sparta.shippingmanager.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -12,7 +12,7 @@ import java.util.UUID;
 public class ShippingManager extends BaseEntity {
 
     @Id
-    @Column(name = "shipping_manager_id", updatable = false, nullable = false)
+    @Column(name = "shipping_managers_id", updatable = false, nullable = false)
     private UUID id;
 
     @Column(nullable = false)
@@ -24,6 +24,15 @@ public class ShippingManager extends BaseEntity {
 
     @Column(nullable = false)
     private Integer shippingOrder;
+
+    @Column(nullable = false)
+    private Boolean isActive;
+
+    private Integer count =0;
+
+    public void increaseCount(){
+        this.count++;
+    }
 
 
 }
