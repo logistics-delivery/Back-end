@@ -21,7 +21,7 @@ public record ShippingManagerSelf(
                 this.count
 
         );
-        manager.increaseCount(1);
+       // manager.increaseCount();
         return manager;
     }
         }

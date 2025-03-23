@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class ShippingManagerService {
                 findFirst().
                 orElseThrow(() -> new ResourceNotFoundException(" 배정 가능한 담당자가 없습니다."));
 
-        manager.increaseCount(MIN_ORDER);
+        //manager.increaseCount(MIN_ORDER);
 
         nextManagerOrder(manager.getShippingOrder());
 
@@ -39,6 +41,11 @@ public class ShippingManagerService {
         repository.save(shippingManager);
         return ShippingManagerResponseDto.from(shippingManager);
 
+    }
+
+    public ShippingManagerResponseDto getById(UUID managerId){
+        ShippingManager manager = repository.findById(managerId).orElseThrow(() -> new ResourceNotFoundException("해당 ID의 배송자는 존재하지 않습니다."));
+        return ShippingManagerResponseDto.from(manager);
     }
 
 
