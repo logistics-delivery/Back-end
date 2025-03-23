@@ -46,7 +46,7 @@ public class ShippingManager extends BaseEntity {
         }
     }
 
-    public Integer increaseCount(int count){
+    public Integer increaseCount(){
         if (count <10) {
             count++;
         }else{

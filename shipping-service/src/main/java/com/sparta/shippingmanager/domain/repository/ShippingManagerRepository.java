@@ -3,6 +3,8 @@ import com.sparta.shippingmanager.domain.model.ShippingManager;
 
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 
 public interface ShippingManagerRepository {
@@ -12,5 +14,7 @@ public interface ShippingManagerRepository {
 
     List<ShippingManager> findNextManagerWithLock();
     ShippingManager save(ShippingManager shippingManager);
+
+    Optional<ShippingManager> findById(UUID id);
 
 }
