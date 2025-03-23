@@ -19,7 +19,7 @@ public class HubShippingScanController {
 
     private final HubShippingScanService hubShippingScanService;
 
-    // 입고 처리
+    // 입고 처리 저장
     @PostMapping("/{hub_id}/{shipping_id}/inbound-log")
     public ResponseEntity<InboundStatusResponseDto> inboundStatus(
         @PathVariable("hub_id") UUID hubId,
@@ -32,16 +32,15 @@ public class HubShippingScanController {
         return ResponseEntity.ok(responseDto);
     }
 
-    // 출고 처리
+    // 출고 처리 저장
     @PostMapping("/{hub_id}/{shipping_id}/outbound-log")
     public ResponseEntity<OutboundStatusResponseDto> outboundStatus(
         @PathVariable("hub_id") UUID hubId,
         @PathVariable("shipping_id") UUID shippingId,
-        @RequestParam("user_id") Long userId,
-        @RequestParam("next_hub_id") UUID nextHubId
+        @RequestParam("user_id") Long userId
     ){
         OutboundStatusResponseDto responseDto =
-            hubShippingScanService.createOutbound(hubId, shippingId, nextHubId, userId);
+            hubShippingScanService.createOutbound(hubId, shippingId, userId);
 
         return ResponseEntity.ok(responseDto);
     }

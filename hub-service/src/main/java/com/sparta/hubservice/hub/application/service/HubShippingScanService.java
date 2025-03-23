@@ -23,6 +23,7 @@ public class HubShippingScanService {
     private final HubRepository hubRepository;
     private final ShippingService shippingService;
 
+    // 입고 처리 로그 저장 feign client 호출
     @Transactional
     public InboundStatusResponseDto createInbound(UUID hubId, UUID shippingId, Long userId) {
         Hub hub = hubRepository.findById(hubId).orElseThrow(ResourceNotFoundException::new);
@@ -36,17 +37,24 @@ public class HubShippingScanService {
         return shippingService.inboundStatus(hubShippingScanLog);
     }
 
+    // 출고 처리 로그 저장 후 feign client 호출
     @Transactional
-    public OutboundStatusResponseDto createOutbound(UUID hubId, UUID shippingId, UUID nextHubId, Long userId) {
+    public OutboundStatusResponseDto createOutbound(UUID hubId, UUID shippingId, Long userId) {
         Hub hub = hubRepository.findById(hubId).orElseThrow(ResourceNotFoundException::new);
-        Hub nextHub = hubRepository.findById(nextHubId).orElseThrow(ResourceNotFoundException::new);
 
         HubShippingScanLog hubShippingScanLog =
-            HubShippingScanLog.createOutboundLog(hub, shippingId, nextHub, userId);
+            HubShippingScanLog.createOutboundLog(hub, shippingId, userId);
 
         hubShippingScanRepository.save(hubShippingScanLog);
         log.info("Success Save OutboundLog - HubShippingScanLog: {}", hubShippingScanLog);
 
-        return shippingService.outboundStatus(hubShippingScanLog);
+        // feign client
+        OutboundStatusResponseDto responseDto =  shippingService.outboundStatus(hubShippingScanLog);
+
+        // 받아온 정보로 nextHub 값 update
+        Hub nextHub = hubRepository.findById(responseDto.getNextHubId()).orElseThrow(ResourceNotFoundException::new);
+        hubShippingScanLog.updateNextHub(nextHub);
+
+        return responseDto;
     }
 }
