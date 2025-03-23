@@ -1,4 +1,4 @@
-package com.sparta.shippingservice.infrastructure;
+package com.sparta.shippingservice.infrastructure.repository;
 
 import com.sparta.shippingservice.domain.model.ShippingRouteLog;
 import com.sparta.shippingservice.domain.repository.ShippingRouteRepository;
