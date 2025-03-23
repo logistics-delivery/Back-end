@@ -1,5 +1,6 @@
 package com.sparta.product.presentation;
 
+import com.sparta.commonmodule.aop.RoleCheck;
 import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.application.service.ProductServiceImpl;
@@ -35,7 +36,7 @@ public class ProductController {
     @Operation(summary = "Product 등록", description = "Product 생성 api 입니다.")
     @PostMapping
     public ResponseEntity<CreateProductResponseDto> createProduct(@RequestBody CreateProductRequestDto requestDto,
-                                                                  @RequestHeader(value = "X-User-Id", required = true) Long userId) {
+                                                                  @RequestHeader(value = "user_id", required = true) Long userId) {
         return ResponseEntity.ok(productServiceImpl.createProduct(requestDto, userId));
     }
 
@@ -75,7 +76,7 @@ public class ProductController {
      */
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable UUID productId,
-                                              @RequestHeader(value = "X-User-Id", required = true) Long userId) {
+                                              @RequestHeader(value = "user_id", required = true) Long userId) {
         productServiceImpl.deleteProduct(
                 DeleteProductServiceRequestDto.of(userId, productId));
         return ResponseEntity.noContent().build();

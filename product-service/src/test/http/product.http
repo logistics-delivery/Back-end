@@ -1,7 +1,7 @@
 ### 상품 생성
-POST http://localhost:8083/api/v1/products
+POST http://localhost:8080/api/v1/products
 Content-Type: application/json
-X-User-Id: 12345  # 사용자 ID (Long 타입)
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMyIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2cyMzA0IiwiaXNzIjoidXNlci1zZXJ2aWNlIiwiaWF0IjoxNzQyNzUyMzc0LCJleHAiOjE3NDI3NTU5NzR9.66__SMvFE-Ig1EHxPTKCgSW8TZVsfoLcuvqYfc4Orb2S7YOYYvL7fUm0b-He6y3jhN6GHbenHEB6Ndcycbhx0A
 
 {
   "name": "마른오징어3",
@@ -15,7 +15,8 @@ X-User-Id: 12345  # 사용자 ID (Long 타입)
 
 
 ### 상품 단일 조회
-GET http://localhost:8083/api/v1/products/a8fe0567-e857-4427-a612-555328391a36
+GET http://localhost:8080/api/v1/products/46264445-3961-4e20-bb06-e009f9f9d62e
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMyIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2cyMzA0IiwiaXNzIjoidXNlci1zZXJ2aWNlIiwiaWF0IjoxNzQyNzQ1Mzg1LCJleHAiOjE3NDI3NDg5ODV9.asqBMEXnv_y044peyuX4peGHdcZXCqyrkWFyu8oEHGC_FoJjLjdpr-mYkjdeEbEYJdUkfhpBs8NWzaLPGq6mLw
 Content-Type: application/json
 
 
@@ -37,8 +38,8 @@ Content-Type: application/json
 
 
 ### 상품 삭제
-DELETE http://localhost:8083/api/v1/products/225dc81a-7b96-4905-83b9-16945fef9a7d
-X-User-Id: 12345  # 사용자 ID (Long 타입)
+DELETE http://localhost:8080/api/v1/products/64597bbf-a016-4343-8a5c-f39cf122a4be
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMyIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2cyMzA0IiwiaXNzIjoidXNlci1zZXJ2aWNlIiwiaWF0IjoxNzQyNzUyNTM0LCJleHAiOjE3NDI3NTYxMzR9.DHkrq9nWvvvSJkCbnOyqQo85FuNBhA2kA6lCYpsWG-F4mDLxHZJ73goCDGUcywNMtDdpmW0Iv-cSV3fOg6BpWQ
 
 
 
