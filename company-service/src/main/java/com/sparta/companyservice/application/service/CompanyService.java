@@ -26,6 +26,11 @@ public class CompanyService {
 
     long userId = 1L; // 실제로는 인증된 사용자 ID 가져와야 함
 
+    @Transactional(readOnly = true)
+    public boolean existsById(UUID id) { // 업체 존재 확인
+        return companyRepository.existsByIdAndDeletedAtIsNull(id);
+    }
+
     @Transactional // 생성
     public CompanyDto createCompany(CompanyCreateDto dto) {
         validateHubExists(dto.hubId());
