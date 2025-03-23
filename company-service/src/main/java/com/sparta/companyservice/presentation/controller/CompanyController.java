@@ -2,6 +2,7 @@ package com.sparta.companyservice.presentation.controller;
 
 import com.sparta.companyservice.application.dto.CompanyDto;
 import com.sparta.companyservice.application.service.CompanyService;
+import com.sparta.companyservice.domain.model.CompanyType;
 import com.sparta.companyservice.presentation.request.CompanyCreateRequest;
 import com.sparta.companyservice.presentation.request.CompanyUpdateRequest;
 import com.sparta.companyservice.presentation.response.CompanyDeleteResponse;
@@ -10,39 +11,51 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/companies")
 @RequiredArgsConstructor
-@Tag(name = "Company Service", description = "업체 서비스 API")
+@Tag(name = "Company Service", description = "Company Service API")
 public class CompanyController {
 
     private final CompanyService companyService;
 
+    // 업체 존재 확인
+    @GetMapping("/{id}/exists")
+    public boolean existsById(@PathVariable UUID id) {
+        return companyService.existsById(id);
+    }
+
     // 생성
-    @Operation(summary = "Company 등록", description = "Company 등록 API")
+    @Operation(summary = "Company 등록", description = "Company 생성 api 입니다.")
     @PostMapping
     public ResponseEntity<CompanyResponse> createCompany(@Valid @RequestBody CompanyCreateRequest request) {
         CompanyDto createdCompany = companyService.createCompany(request.toDto());
         return ResponseEntity.ok(CompanyResponse.fromDto(createdCompany));
     }
 
-    // 전체 조회
-    @Operation(summary = "Company 전체 조회", description = "Company 전체 조회 API")
+    // 검색
+    @Operation(summary = "Company 조회", description = "Company 조회 api 입니다.")
     @GetMapping
-    public ResponseEntity<List<CompanyResponse>> getAllCompanies() {
-        List<CompanyDto> companies = companyService.getAllCompanies();
-        List<CompanyResponse> responses = companies.stream().map(CompanyResponse::fromDto).toList();
+    public ResponseEntity<Page<CompanyResponse>> searchCompanies(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) CompanyType type,
+            Pageable pageable
+    ) {
+        Page<CompanyDto> companies = companyService.searchCompanies(name, address, type, pageable);
+        Page<CompanyResponse> responses = companies.map(CompanyResponse::fromDto);
         return ResponseEntity.ok(responses);
     }
 
     // 단일 조회
-    @Operation(summary = "Company 단건 조회", description = "Company 단건 조회 API")
+    @Operation(summary = "Company 조회", description = "Company 단건 조회 api 입니다.")
     @GetMapping("/{companyId}")
     public ResponseEntity<CompanyResponse> getCompanyById(@PathVariable UUID companyId) {
         CompanyDto oneCompany = companyService.getCompanyById(companyId);
@@ -50,7 +63,7 @@ public class CompanyController {
     }
 
     // 수정
-    @Operation(summary = "Company 수정", description = "Company 수정 API")
+    @Operation(summary = "Company 수정", description = "Company 수정 api 입니다.")
     @PatchMapping("/{companyId}")
     public ResponseEntity<CompanyResponse> updateCompany(@PathVariable UUID companyId, @Valid @RequestBody CompanyUpdateRequest request) {
         CompanyDto updatedCompany = companyService.updateCompany(companyId, request.toDto());
@@ -58,7 +71,7 @@ public class CompanyController {
     }
 
     // 삭제
-    @Operation(summary = "Company 삭제", description = "Company 삭제 API")
+    @Operation(summary = "Company 삭제", description = "Company 삭제 api 입니다.")
     @DeleteMapping("/{companyId}")
     public ResponseEntity<CompanyDeleteResponse> deleteCompany(@PathVariable UUID companyId) {
         CompanyDeleteResponse deletedCompany = companyService.deleteCompany(companyId);

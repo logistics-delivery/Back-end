@@ -6,6 +6,7 @@ import com.sparta.orderservice.application.dto.OrderRequestDto;
 import com.sparta.orderservice.application.dto.OrderResponseDto;
 import com.sparta.orderservice.domain.model.Order;
 import com.sparta.orderservice.domain.model.OrderStatus;
+import com.sparta.orderservice.domain.repository.OrderQueryDSLRepository;
 import com.sparta.orderservice.domain.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
+
     private final OrderRepository orderRepository;
+    private final OrderQueryDSLRepository orderQueryDSLRepository;
 
 
     //주문 생성
@@ -97,4 +100,12 @@ public class OrderService {
         return OrderResponseDto.fromEntity(order);
     }
 
+    // 검색
+    @Transactional(readOnly = true)
+    public List<OrderResponseDto> searchOrders(String name, OrderStatus status) {
+        List<Order> result = orderQueryDSLRepository.searchOrders(name, status);
+        return result.stream()
+                .map(OrderResponseDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 }

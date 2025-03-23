@@ -55,20 +55,20 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserInfoResponseDto> getUserInfo(@RequestHeader("user_id") String userId) {
+    public ResponseEntity<UserInfoResponseDto> getUserInfo(@RequestHeader("user_id") Long userId) {
         UserInfoResponseDto userInfoResponseDto = userService.getUserInfo(userId);
         return ResponseEntity.ok(userInfoResponseDto);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Void> updateUser(@Valid @RequestBody UserUpdateRequestDto requestDto, @RequestHeader("user_id") String userId) {
+    public ResponseEntity<Void> updateUser(@Valid @RequestBody UserUpdateRequestDto requestDto, @RequestHeader("user_id") Long userId) {
         userService.updateUser(requestDto, userId);
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteUser(@RequestHeader("user_id") String userId) {
+    public ResponseEntity<Void> deleteUser(@RequestHeader("user_id") Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }

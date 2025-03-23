@@ -9,12 +9,17 @@ spring:
     jpa:
       hibernate:
         ddl-auto: update
-      open-in-view: false
-      show-sql: true
-      properties:
-        hibernate:
-          format_sql: true
-          default_batch_fetch_size: 10
+      show-sql: true  # 실행되는 SQL 쿼리 출력
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+springdoc:
+  api-docs:
+    version: openapi_3_1
+    enabled: true
+    path: /company-service/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
 
 eureka:
   client:
@@ -25,12 +30,3 @@ eureka:
 
 server:
   port: 8085
-
-springdoc:
-  api-docs:
-    version: openapi_3_1
-    enabled: true
-    path: /company-service/v3/api-docs
-  swagger-ui:
-    enabled: true
-    path: /swagger-ui.html
