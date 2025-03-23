@@ -35,12 +35,12 @@ public class CompanyController {
     // 생성
     @Operation(summary = "Company 등록", description = "Company 생성 api 입니다.")
     @PostMapping
-    public ResponseEntity<CompanyResponse> createCompany(@Valid @RequestBody CompanyCreateRequest request) {
-        CompanyDto createdCompany = companyService.createCompany(request.toDto());
+    public ResponseEntity<CompanyResponse> createCompany(@Valid @RequestBody CompanyCreateRequest request, @RequestHeader("user_id") Long userId) {
+        CompanyDto createdCompany = companyService.createCompany(request.toDto(), userId);
         return ResponseEntity.ok(CompanyResponse.fromDto(createdCompany));
     }
 
-    // 검색
+    // 전체 목록 조회 & 검색
     @Operation(summary = "Company 조회", description = "Company 조회 api 입니다.")
     @GetMapping
     public ResponseEntity<Page<CompanyResponse>> searchCompanies(
@@ -65,16 +65,16 @@ public class CompanyController {
     // 수정
     @Operation(summary = "Company 수정", description = "Company 수정 api 입니다.")
     @PatchMapping("/{companyId}")
-    public ResponseEntity<CompanyResponse> updateCompany(@PathVariable UUID companyId, @Valid @RequestBody CompanyUpdateRequest request) {
-        CompanyDto updatedCompany = companyService.updateCompany(companyId, request.toDto());
+    public ResponseEntity<CompanyResponse> updateCompany(@PathVariable UUID companyId, @Valid @RequestBody CompanyUpdateRequest request, @RequestHeader("user_id") Long userId) {
+        CompanyDto updatedCompany = companyService.updateCompany(companyId, request.toDto(), userId);
         return ResponseEntity.ok(CompanyResponse.fromDto(updatedCompany));
     }
 
     // 삭제
     @Operation(summary = "Company 삭제", description = "Company 삭제 api 입니다.")
     @DeleteMapping("/{companyId}")
-    public ResponseEntity<CompanyDeleteResponse> deleteCompany(@PathVariable UUID companyId) {
-        CompanyDeleteResponse deletedCompany = companyService.deleteCompany(companyId);
+    public ResponseEntity<CompanyDeleteResponse> deleteCompany(@PathVariable UUID companyId, @RequestHeader("user_id") Long userId) {
+        CompanyDeleteResponse deletedCompany = companyService.deleteCompany(companyId, userId);
         return ResponseEntity.ok(deletedCompany);
     }
 
