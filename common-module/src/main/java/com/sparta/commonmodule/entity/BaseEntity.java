@@ -2,11 +2,8 @@ package com.sparta.commonmodule.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MappedSuperclass;
-
 import java.time.LocalDateTime;
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +30,11 @@ public class BaseEntity {
     private Long createdBy;
 
     @LastModifiedDate
-    @Column(name = "updated_at", nullable = true)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @LastModifiedBy
-    @Column(name = "updated_by", nullable = true)
+    @Column(name = "updated_by")
     private Long updatedBy;
 
 
