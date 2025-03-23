@@ -31,4 +31,7 @@ public class OrderRequestDto {
     private BigDecimal totalPrice;
 
     private String requestDetail;
+
+    @NotNull(message = "quantity는 필수입니다.") //
+    private Integer quantity;
 }
