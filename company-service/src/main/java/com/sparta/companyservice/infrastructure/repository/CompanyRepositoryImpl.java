@@ -32,5 +32,12 @@ public class CompanyRepositoryImpl implements CompanyRepository {
     public Page<Company> searchCompanies(String name, String address, CompanyType type, Pageable pageable) {
         return jpaCompanyRepository.searchCompanies(name, address, type, pageable);
     }
+
+    @Override
+    public boolean existsByIdAndDeletedAtIsNull(UUID id) {
+        return jpaCompanyRepository.existsByIdAndDeletedAtIsNull(id);
+    }
+
+
 }
 
