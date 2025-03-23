@@ -6,13 +6,15 @@ import com.sparta.shippingmanager.domain.model.ShippingManager;
 import java.util.UUID;
 
 public record ShippingManagerResponseDto(
-        UUID id,
-        ManagerType managerType
+        ManagerType managerType,
+        UUID shippingManagerId,
+        Integer shippingOrder
 ) {
     public static ShippingManagerResponseDto from(ShippingManager manager) {
         return new ShippingManagerResponseDto(
-                manager.getId(),
-                manager.getManagerType()
+                manager.getManagerType(),
+                manager.getShippingManagerId(),
+                manager.getShippingOrder()
         );
     }
 }

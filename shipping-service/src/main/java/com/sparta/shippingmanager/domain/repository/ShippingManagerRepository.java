@@ -3,7 +3,6 @@ import com.sparta.shippingmanager.domain.model.ShippingManager;
 
 
 import java.util.List;
-import java.util.Optional;
 
 
 public interface ShippingManagerRepository {
@@ -12,5 +11,6 @@ public interface ShippingManagerRepository {
     void updateAllManagerOrders(int max);
 
     List<ShippingManager> findNextManagerWithLock();
+    ShippingManager save(ShippingManager shippingManager);
 
 }
