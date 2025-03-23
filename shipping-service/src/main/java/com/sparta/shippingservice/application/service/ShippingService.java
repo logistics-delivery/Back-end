@@ -34,8 +34,7 @@ public class ShippingService {
     private final ShippingRouteRepository shippingRouteRepository;
     private final ShippingManagerClient shippingManagerClient;
 
-
-    @Transactional
+//각 허브에 10명 / 업체에 10명
     public ShippingWithRouteResponseDto create(@Valid CreateShippingRequestDto request , @Valid CreateRouteLogRequestDto logDto) {
         ShippingManagerResponseDto manager = shippingManagerClient.assignManager();
         if(manager.managerType() != ManagerType.CARRIER){
@@ -96,7 +95,6 @@ public class ShippingService {
 
     }
 
-    @Transactional
     public ShippingResponseDto deleteShipping(UUID shippingId, long userId) {
         Shipping shipping = findShipping(shippingId);
         shipping.delete(userId);
@@ -131,7 +129,6 @@ public class ShippingService {
                 )).collect(Collectors.toList());
     }
 
-    @Transactional
     public ShippingRouteResponseDto deleteShippingLog(UUID shippingId,UUID shippingLogId, long userId) {
         ShippingRouteLog routeLog = shippingRouteRepository.findByIdAndShippingId(shippingLogId, shippingId)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 배송에 속하지 않는 배송 경로 로그입니다."));
