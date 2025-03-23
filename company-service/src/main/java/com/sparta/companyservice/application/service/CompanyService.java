@@ -5,14 +5,17 @@ import com.sparta.companyservice.application.dto.CompanyCreateDto;
 import com.sparta.companyservice.application.dto.CompanyDto;
 import com.sparta.companyservice.application.dto.CompanyUpdateDto;
 import com.sparta.companyservice.domain.model.Company;
+import com.sparta.companyservice.domain.model.CompanyType;
 import com.sparta.companyservice.domain.repository.CompanyRepository;
 import com.sparta.companyservice.infrastructure.client.HubClient;
 import com.sparta.companyservice.presentation.response.CompanyDeleteResponse;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -38,11 +41,9 @@ public class CompanyService {
     }
 
     @Transactional(readOnly = true) // 전체 조회
-    public List<CompanyDto> getAllCompanies() {
-        return companyRepository.findAllByDeletedAtIsNull()
-                .stream()
-                .map(CompanyDto::fromEntity)
-                .toList();
+    public Page<CompanyDto> searchCompanies(String name, String address, CompanyType type, Pageable pageable) {
+        return companyRepository.searchCompanies(name, address, type, pageable)
+                .map(CompanyDto::fromEntity);
     }
 
     @Transactional(readOnly = true) // 단일 조회
@@ -73,7 +74,9 @@ public class CompanyService {
     /// //////////////////////////////////////////////////////////////////////////////////
 
     private void validateHubExists(UUID hubId) {
-        if (!hubClient.existsById(hubId)) {
+        try {
+            hubClient.getHubById(hubId);
+        } catch (FeignException.NotFound e) {
             throw new ResourceNotFoundException("해당 허브가 존재하지 않습니다.");
         }
     }
