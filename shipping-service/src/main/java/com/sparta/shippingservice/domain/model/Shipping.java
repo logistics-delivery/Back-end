@@ -38,7 +38,8 @@ public class Shipping extends BaseEntity {
     @Column(name = "status", nullable = false, length = 50)
     private ShippingStatus status = ShippingStatus.PENDING; // 기본값 설정
 
-    public Shipping(UUID orderId, String shippingAddress, String receiverName, UUID shippingManagerId, ShippingStatus status) {
+    public Shipping(Long userId,UUID orderId, String shippingAddress, String receiverName, UUID shippingManagerId, ShippingStatus status) {
+        super(userId);
         this.orderId = orderId;
         this.shippingAddress = shippingAddress;
         this.receiverName = receiverName;
@@ -47,7 +48,8 @@ public class Shipping extends BaseEntity {
     }
 
 
-    public Shipping updateShipping(Shipping shipping) {
+    public Shipping updateShipping(Shipping shipping,Long userId) {
+        super.update(userId);
         if (this.status == ShippingStatus.DELIVERED) {
             throw new IllegalStateException("배송이 완료된 후에는 정보를 변경할 수 없습니다.");
         }

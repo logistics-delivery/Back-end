@@ -22,8 +22,9 @@ public class ShippingController {
     private final ShippingService shippingService;
 
     @PostMapping() // 배송 생성
-    public ResponseEntity<ShippingWithRouteResponseDto> Shipping(@Valid @RequestBody CreateShippingWithRouteRequestDto request) {
-        ShippingWithRouteResponseDto responseDto = shippingService.create(request.shipping(), request.routeLog());
+    public ResponseEntity<ShippingWithRouteResponseDto> create (@Valid @RequestBody CreateShippingWithRouteRequestDto request,
+                                                                @RequestHeader("userId")Long userId) {
+        ShippingWithRouteResponseDto responseDto = shippingService.create(request.shipping(), request.routeLog(),userId);
         return ResponseEntity.ok(responseDto);
 
     }
@@ -42,13 +43,13 @@ public class ShippingController {
 
 
     @PatchMapping("/{shippingId}") // 배송 내역 수정
-    public ResponseEntity<ShippingResponseDto> updateShipping(@PathVariable("shippingId") UUID id, @Valid @RequestBody UpdateShippingRequestDto request) {
-        ShippingResponseDto ResponseDto = shippingService.updateShipping(id, request);
+    public ResponseEntity<ShippingResponseDto> updateShipping(@PathVariable("shippingId") UUID id, @Valid @RequestBody UpdateShippingRequestDto request, @RequestHeader("userId") Long userId ) {
+        ShippingResponseDto ResponseDto = shippingService.updateShipping(id, request,userId);
         return ResponseEntity.ok(ResponseDto);
     }
 
     @DeleteMapping("/{shippingId}")
-    public ResponseEntity<ShippingResponseDto> deleteShipping(@PathVariable("shippingId") UUID id, @RequestParam long userId) {
+    public ResponseEntity<ShippingResponseDto> deleteShipping(@PathVariable("shippingId") UUID id, @RequestHeader("userId") long userId) {
         ShippingResponseDto responseDto = shippingService.deleteShipping(id, userId);
         return ResponseEntity.ok(responseDto);
     }

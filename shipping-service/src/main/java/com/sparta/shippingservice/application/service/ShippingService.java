@@ -35,13 +35,13 @@ public class ShippingService {
     private final ShippingManagerClient shippingManagerClient;
 
 //각 허브에 10명 / 업체에 10명
-    public ShippingWithRouteResponseDto create(@Valid CreateShippingRequestDto request , @Valid CreateRouteLogRequestDto logDto) {
+    public ShippingWithRouteResponseDto create(@Valid CreateShippingRequestDto request , @Valid CreateRouteLogRequestDto logDto,Long userId) {
         ShippingManagerResponseDto manager = shippingManagerClient.assignManager();
         if(manager.managerType() != ManagerType.CARRIER){
             throw new InvalidParameterException("배송 담당자는 업체 소속이어야 합니다.");
         }
 
-        Shipping shipping = request.of(manager.id()).toShipping();
+        Shipping shipping = request.of(manager.id()).toShipping(userId);
 
         RouteLogSelf routeLogSelf = new RouteLogSelf(
                 shipping,
@@ -88,9 +88,9 @@ public class ShippingService {
     }
 
     @Transactional
-    public ShippingResponseDto updateShipping(UUID shippingId, @Valid UpdateShippingRequestDto request) {
+    public ShippingResponseDto updateShipping(UUID shippingId, @Valid UpdateShippingRequestDto request ,Long userId) {
         Shipping shipping = findShipping(shippingId);
-        shipping.updateShipping(request.of().toShipping());
+        shipping.updateShipping(request.of().toShipping(userId),userId);
         return ShippingResponseDto.from(shipping);
 
     }
