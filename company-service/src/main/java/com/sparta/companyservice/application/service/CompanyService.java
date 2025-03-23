@@ -24,15 +24,13 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final HubClient hubClient;
 
-    long userId = 1L; // 실제로는 인증된 사용자 ID 가져와야 함
-
     @Transactional(readOnly = true)
     public boolean existsById(UUID id) { // 업체 존재 확인
         return companyRepository.existsByIdAndDeletedAtIsNull(id);
     }
 
     @Transactional // 생성
-    public CompanyDto createCompany(CompanyCreateDto dto) {
+    public CompanyDto createCompany(CompanyCreateDto dto, long userId) {
         validateHubExists(dto.hubId());
         Company company = Company.create(
                 dto.name(),
@@ -57,7 +55,7 @@ public class CompanyService {
     }
 
     @Transactional // 수정
-    public CompanyDto updateCompany(UUID id, CompanyUpdateDto dto) {
+    public CompanyDto updateCompany(UUID id, CompanyUpdateDto dto, long userId) {
         Company company = findCompany(id);
 
         // hubId가 변경된 경우 유효한 허브Id인지 유효성 검사
@@ -70,7 +68,7 @@ public class CompanyService {
     }
 
     @Transactional // 삭제
-    public CompanyDeleteResponse deleteCompany(UUID id) {
+    public CompanyDeleteResponse deleteCompany(UUID id, long userId) {
         Company company = findCompany(id);
         company.delete(userId);
         return CompanyDeleteResponse.of(id);

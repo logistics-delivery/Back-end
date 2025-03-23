@@ -36,6 +36,28 @@ Content-Type: application/json
 }
 
 
+### 상품 수정(재고 감소 성공)
+PUT http://localhost:8083/api/v1/products/fabd981b-844a-47f9-a15c-60ae362c2eb7/decrease
+Content-Type: application/json
+
+{
+  "companyId": "550e8400-e29b-41d4-a716-446655440000",
+  "hubId": "123e4567-e89b-12d3-a456-426614174000",
+  "quantity": 30
+}
+
+
+### 상품 수정(재고 감소 실패)
+PUT http://localhost:8083/api/v1/products/fabd981b-844a-47f9-a15c-60ae362c2eb7/decrease
+Content-Type: application/json
+
+{
+  "companyId": "550e8400-e29b-41d4-a716-446655440000",
+  "hubId": "123e4567-e89b-12d3-a456-426614174000",
+  "quantity": 100
+}
+
+
 ### 상품 삭제
 DELETE http://localhost:8083/api/v1/products/225dc81a-7b96-4905-83b9-16945fef9a7d
 X-User-Id: 12345  # 사용자 ID (Long 타입)
@@ -57,3 +79,8 @@ GET http://localhost:8083/api/v1/products/search?hubId=123e4567-e89b-12d3-a456-4
 
 ### 상품 검색 (업체 ID로 검색)
 GET http://localhost:8083/api/v1/products/search?companyId=550e8400-e29b-41d4-a716-446655440001&page=0&size=10&sort=createdAt,asc
+
+
+
+
+
