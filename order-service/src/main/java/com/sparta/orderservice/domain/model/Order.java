@@ -1,5 +1,6 @@
 package com.sparta.orderservice.domain.model;
 
+import com.querydsl.core.annotations.QueryEntity;
 import com.sparta.commonmodule.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@QueryEntity
 @Entity
 @Table(name = "p_order")
 @Getter

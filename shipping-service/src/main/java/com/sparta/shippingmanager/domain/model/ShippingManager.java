@@ -30,10 +30,30 @@ public class ShippingManager extends BaseEntity {
 
     private Integer count =0;
 
-    public void increaseCount(){
-        this.count++;
+
+    public ShippingManager(Long userId, UUID shippingManagerId, ManagerType managerType, Boolean isActive, Integer count) {
+        super(userId);
+        this.shippingManagerId = shippingManagerId;
+        this.managerType = managerType;
+        this.isActive = isActive;
+        this.count = count;
     }
 
+    @PrePersist
+    public void prePersist(){
+        if(this.id == null){
+            this.id = UUID.randomUUID();
+        }
+    }
+
+    public Integer increaseCount(int count){
+        if (count <10) {
+            count++;
+        }else{
+            count = 0;
+        }
+        return this.shippingOrder = count;
+    }
 
 }
 

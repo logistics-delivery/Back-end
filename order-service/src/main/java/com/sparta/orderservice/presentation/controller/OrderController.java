@@ -3,6 +3,7 @@ package com.sparta.orderservice.presentation.controller;
 import com.sparta.orderservice.application.dto.OrderRequestDto;
 import com.sparta.orderservice.application.dto.OrderResponseDto;
 import com.sparta.orderservice.application.service.OrderService;
+import com.sparta.orderservice.domain.model.OrderStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -69,6 +70,16 @@ public class OrderController {
             @PathVariable("id") UUID id,
             @RequestParam("reason") String cancelReason) {
         return ResponseEntity.ok(orderService.cancelOrder(id, cancelReason));
+    }
+
+    // 주문 검색
+    @GetMapping("/search")
+    @Operation(summary = "Order 검색", description = "Order 검색 api 입니다.")
+    public ResponseEntity<List<OrderResponseDto>> searchOrders(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) OrderStatus status
+    ) {
+        return ResponseEntity.ok(orderService.searchOrders(name, status));
     }
 
 
