@@ -21,18 +21,17 @@ public record CreateShippingRequestDto(
     @Size(min = 2, max = 100, message = "수령인 이름은 2~100자 사이여야 합니다.")
     String receiverName,
 
-    UUID shippingManagerId,
 
     @NotNull(message = "배송 상태는 필수입니다.")
     ShippingStatus status
 
 ) {
-    public ShippingSelf of(){
+    public ShippingSelf of( UUID managerId){
         return new ShippingSelf(
             this.orderId(),
             this.shippingAddress(),
             this.receiverName(),
-            this.shippingManagerId(),
+                managerId, //외부에서 받아온 값 주입
             this.status()
 
         );
