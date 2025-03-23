@@ -20,6 +20,7 @@ import javax.naming.AuthenticationException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final JpaUserRepository userRepository;
@@ -55,15 +56,12 @@ public class UserService {
     public void updateUser(UserUpdateRequestDto requestDto, Long userId) {
         User user = findUserInfo(userId);
         UserRoleEnum userRole = checkUserRole(requestDto.getTokenValue());
-        user.updateUser(encryptPassword(requestDto.getPassword()), requestDto, userRole.getAuthority());
-
-        userRepository.save(user);
+        user.updateUser(encryptPassword(requestDto.getPassword()), requestDto, userRole.getAuthority(), userId);
     }
     //회원정보 삭제
     public void deleteUser(Long userId) {
         User user = findUserInfo(userId);
         user.delete(userId);
-        userRepository.save(user);
     }
 
     //비밀번호 인증
