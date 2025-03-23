@@ -1,5 +1,6 @@
 package com.sparta.hubservice.hub_route.infrastructure.repository;
 
+import com.sparta.hubservice.hub_route.domain.model.HubRoute;
 import com.sparta.hubservice.hub_route.domain.model.HubRouteCheckpoint;
 import com.sparta.hubservice.hub_route.domain.repository.HubRouteCheckpointRepository;
 import com.sparta.hubservice.hub_route.infrastructure.persistence.JPAHubRouteCheckpointRepository;
@@ -15,8 +16,8 @@ public class HubRouteCheckpointRepositoryImpl implements HubRouteCheckpointRepos
     private final JPAHubRouteCheckpointRepository jpaHubRouteCheckpointRepository;
 
     @Override
-    public List<HubRouteCheckpoint> findAllByHubRouteId(UUID hubRouteId) {
-        return jpaHubRouteCheckpointRepository.findAllByHubRouteId(hubRouteId);
+    public List<HubRouteCheckpoint> findAllByHubRoute(HubRoute hubRoute) {
+        return jpaHubRouteCheckpointRepository.findAllByHubRoute(hubRoute);
     }
 
     @Override
@@ -25,7 +26,7 @@ public class HubRouteCheckpointRepositoryImpl implements HubRouteCheckpointRepos
     }
 
     @Override
-    public List<HubRouteCheckpoint> findAllByHubRouteIdOrderBySequenceAsc(UUID hubRouteId) {
-        return jpaHubRouteCheckpointRepository.findAllByHubRouteIdOrderBySequenceAsc(hubRouteId);
+    public List<HubRouteCheckpoint> findAllByHubRoute_OrderBySequenceAsc(HubRoute hubRoute) {
+        return jpaHubRouteCheckpointRepository.findAllByHubRoute_OrderBySequenceAsc(hubRoute);
     }
 }

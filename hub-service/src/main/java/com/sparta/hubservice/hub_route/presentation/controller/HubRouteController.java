@@ -45,54 +45,52 @@ public class HubRouteController {
     // 특정 출발 허브 → 도착 허브 경로 조회 (direct)
     @GetMapping("/{from_hub_id}/{to_hub_id}/direct")
     public ResponseEntity<HubRouteResponseDto> getDirectHubRoute(
-        @PathVariable("from_hub_id") String fromHubId,
-        @PathVariable("to_hub_id") String toHubId) {
-        HubRouteResponseDto response =  hubRouteService.getDirectHubRoute(UUID.fromString(fromHubId), UUID.fromString(toHubId));
+        @PathVariable("from_hub_id") UUID fromHubId,
+        @PathVariable("to_hub_id") UUID toHubId) {
+        HubRouteResponseDto response =  hubRouteService.getDirectHubRoute(fromHubId, toHubId);
         return ResponseEntity.ok(response);
     }
 
     // (정해진) 허브 간 경로 생성 (direct)
-    // Todo : 더미데이터 필요
     @PostMapping("/{from_hub_id}/{to_hub_id}/direct")
     public ResponseEntity<HubRouteCreateResponseDto> createDirectHubRoute(
-        @PathVariable("from_hub_id") String fromHubId,
-        @PathVariable("to_hub_id") String toHubId,
+        @PathVariable("from_hub_id") UUID fromHubId,
+        @PathVariable("to_hub_id") UUID toHubId,
         @RequestParam Long userId) {
         HubRouteCreateResponseDto response =
-            hubRouteService.createDirectHubRoute(userId, UUID.fromString(fromHubId), UUID.fromString(toHubId));
+            hubRouteService.createDirectHubRoute(userId, fromHubId, toHubId);
         return ResponseEntity.ok(response);
     }
 
     // 허브 간 경로 정보 삭제
     @DeleteMapping("/{hub_route_id}")
     public ResponseEntity<HubRouteDeleteResponseDto> deleteHubRoute(
-        @PathVariable("hub_route_id") String hubRouteId,
+        @PathVariable("hub_route_id") UUID hubRouteId,
         @RequestParam Long userId) {
-        HubRouteDeleteResponseDto response = hubRouteService.deleteHubRoute(UUID.fromString(hubRouteId), userId);
+        HubRouteDeleteResponseDto response = hubRouteService.deleteHubRoute(hubRouteId, userId);
         return ResponseEntity.ok(response);
     }
 
     // form -> to 최단경로 생성 (다이렉트는 항상 최단경로)
-    // Todo : route 모두 생성 후 라우트체크포인트 한 번에 생성시키기
     @PostMapping("/{from_hub_id}/{to_hub_id}/path")
     public ResponseEntity<HubRouteDetailsResponseDto> createPathHubRoute(
-        @PathVariable("from_hub_id") String fromHubId,
-        @PathVariable("to_hub_id") String toHubId,
+        @PathVariable("from_hub_id") UUID fromHubId,
+        @PathVariable("to_hub_id") UUID toHubId,
         @RequestParam Long userId
     ){
         HubRouteDetailsResponseDto response =
-            hubRouteService.createPathHubRoute(UUID.fromString(fromHubId), UUID.fromString(toHubId), userId);
+            hubRouteService.createPathHubRoute(fromHubId, toHubId, userId);
         return ResponseEntity.ok(response);
     }
 
     // fromHub -> toHub 최단 경로 정보 조회
     @GetMapping("/{from_hub_id}/{to_hub_id}/path")
     public ResponseEntity<HubRouteDetailsResponseDto> getPathHubRoute(
-        @PathVariable("from_hub_id") String fromHubId,
-        @PathVariable("to_hub_id") String toHubId
+        @PathVariable("from_hub_id") UUID fromHubId,
+        @PathVariable("to_hub_id") UUID toHubId
     ){
         HubRouteDetailsResponseDto responseDto =
-            hubRouteService.getPathHubRoute(UUID.fromString(fromHubId), UUID.fromString(toHubId));
+            hubRouteService.getPathHubRoute(fromHubId, toHubId);
         return ResponseEntity.ok(responseDto);
     }
 
