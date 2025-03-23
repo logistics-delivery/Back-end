@@ -20,6 +20,7 @@ import javax.naming.AuthenticationException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final JpaUserRepository userRepository;
@@ -46,24 +47,21 @@ public class UserService {
 
     //회원정보 조회(본인)
     @Transactional(readOnly = true)
-    public UserInfoResponseDto getUserInfo(String userId) {
+    public UserInfoResponseDto getUserInfo(Long userId) {
         User user = findUserInfo(userId);
         return new UserInfoResponseDto(user);
     }
 
     //회원정보 수정
-    public void updateUser(UserUpdateRequestDto requestDto, String userId) {
+    public void updateUser(UserUpdateRequestDto requestDto, Long userId) {
         User user = findUserInfo(userId);
         UserRoleEnum userRole = checkUserRole(requestDto.getTokenValue());
-        user.updateUser(encryptPassword(requestDto.getPassword()), requestDto, userRole.getAuthority());
-
-        userRepository.save(user);
+        user.updateUser(encryptPassword(requestDto.getPassword()), requestDto, userRole.getAuthority(), userId);
     }
     //회원정보 삭제
-    public void deleteUser(String userId) {
+    public void deleteUser(Long userId) {
         User user = findUserInfo(userId);
-        user.delete(Long.parseLong(userId));
-        userRepository.save(user);
+        user.delete(userId);
     }
 
     //비밀번호 인증
@@ -100,8 +98,8 @@ public class UserService {
         }
     }
     //회원 존재여부
-    private User findUserInfo(String userId) {
-        return userRepository.findById(Long.parseLong(userId))
+    private User findUserInfo(Long userId) {
+        return userRepository.findById(userId)
                 .orElseThrow(()->new IllegalArgumentException("존재하지않는 회원입니다."));
     }
 

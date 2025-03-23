@@ -1,8 +1,7 @@
 package com.sparta.shippingservice.application.dto.request;
 
-import com.sparta.shippingservice.domain.model.RouteLogSelf;
+import com.sparta.shippingservice.domain.model.trans.RouteLogSelf;
 import com.sparta.shippingservice.domain.model.Shipping;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 

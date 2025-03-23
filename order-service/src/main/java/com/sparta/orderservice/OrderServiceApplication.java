@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.sparta")
 @Import(SwaggerConfig.class)
 public class OrderServiceApplication {
 

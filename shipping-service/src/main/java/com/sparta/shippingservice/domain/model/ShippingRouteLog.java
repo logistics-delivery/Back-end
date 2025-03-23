@@ -1,6 +1,7 @@
 package com.sparta.shippingservice.domain.model;
 
 
+import com.sparta.commonmodule.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ShippingRouteLog {
+public class ShippingRouteLog extends BaseEntity {
 
     @Id
     @Column(name = "shipping_route_log_id", nullable = false, updatable = false)

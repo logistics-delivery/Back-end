@@ -4,6 +4,8 @@ import com.sparta.commonmodule.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -28,6 +30,9 @@ public class Shipping extends BaseEntity {
 
     @Column(name = "shipping_manager_id", nullable = false)
     private UUID shippingManagerId;
+
+    @OneToMany(mappedBy = "shipping",cascade = CascadeType.PERSIST)
+    private List<ShippingRouteLog> routeLogs = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
