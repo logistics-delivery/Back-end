@@ -2,6 +2,7 @@ package com.sparta.product.application.service;
 
 import com.sparta.commonmodule.exception.ResourceNotFoundException;
 import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
+import com.sparta.product.application.dto.DecreaseProductQuantityServiceRequestDto;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.domain.model.Product;
 import com.sparta.product.domain.repository.ProductRepository;
@@ -9,10 +10,7 @@ import com.sparta.product.infrastructure.client.CompanyClient;
 import com.sparta.product.infrastructure.client.HubClient;
 import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
 import com.sparta.product.presentation.dto.request.SearchProductRequestDto;
-import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
-import com.sparta.product.presentation.dto.response.ReadProductResponseDto;
-import com.sparta.product.presentation.dto.response.SearchProductResponseDto;
-import com.sparta.product.presentation.dto.response.UpdateProductResponseDto;
+import com.sparta.product.presentation.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -100,6 +98,26 @@ public class ProductServiceImpl implements ProductService {
     public Page<SearchProductResponseDto> searchProducts(SearchProductRequestDto requestDto, Pageable pageable) {
         return productRepository.searchProducts(requestDto, pageable);
     }
+
+
+    /**
+     *  상품 수정(재고 감소)
+     */
+    @Override
+    public DecreaseProductQuantityResponseDto decreaseProductQuantity(DecreaseProductQuantityServiceRequestDto serviceDto) {
+        Product product = productRepository.findByIdAndHubId(serviceDto.productId(), serviceDto.hubId())
+                .orElseThrow(() -> new ResourceNotFoundException("해당 허브에 상품이 존재하지 않습니다."));
+
+        try {
+            // 재고 감소 성공
+            product.decreaseQuantity(serviceDto.quantity());
+            return DecreaseProductQuantityResponseDto.success(product, serviceDto.quantity());
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            // 재고 감소 실패 (재고 부족, 최소 수량 미만 등)
+            return DecreaseProductQuantityResponseDto.failure(product);
+        }
+    }
+
 
 
     // 업체 존재 검증 메서드
