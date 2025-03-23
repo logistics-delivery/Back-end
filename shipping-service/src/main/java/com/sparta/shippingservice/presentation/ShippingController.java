@@ -1,14 +1,17 @@
 package com.sparta.shippingservice.presentation;
 
 import com.sparta.shippingservice.application.dto.request.CreateShippingWithRouteRequestDto;
+import com.sparta.shippingservice.application.dto.request.ShippingSearchCondition;
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingRouteResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResponseDto;
 import com.sparta.shippingservice.application.service.ShippingService;
 
+import com.sparta.shippingservice.domain.model.Shipping;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +49,12 @@ public class ShippingController {
     public ResponseEntity<ShippingResponseDto> updateShipping(@PathVariable("shippingId") UUID id, @Valid @RequestBody UpdateShippingRequestDto request, @RequestHeader("userId") Long userId ) {
         ShippingResponseDto ResponseDto = shippingService.updateShipping(id, request,userId);
         return ResponseEntity.ok(ResponseDto);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<Shipping>> searchShippings(@ModelAttribute ShippingSearchCondition condition) {
+        Page<Shipping> result = shippingService.searchShipping(condition);
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/{shippingId}")

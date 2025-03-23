@@ -57,7 +57,6 @@ public class Shipping extends BaseEntity {
        if(shipping.getOrderId()!=null) this.orderId = shipping.getOrderId();
        if(shipping.getShippingAddress()!=null) this.shippingAddress=shipping.getShippingAddress();
        if(shipping.getReceiverName()!=null) this.receiverName = shipping.getReceiverName();
-       if(shipping.getStatus()!=null) this.status=shipping.getStatus();
        return this;
     }
 
@@ -71,25 +70,4 @@ public class Shipping extends BaseEntity {
     }
 
 
-
-
-
-
-//    public void updateShippingAddress(String newAddress) {
-//        if (this.status == ShippingStatus.DELIVERED) {
-//            throw new IllegalStateException("배송이 완료된 후에는 주소를 변경할 수 없습니다.");
-//        }
-//        this.shippingAddress = newAddress;
-//    }
-//
-//    public void updateReceiverName(String newReceiverName) {
-//        if (this.status == ShippingStatus.DELIVERED) {
-//            throw new IllegalStateException("배송이 완료된 후에는 수령인 정보를 변경할 수 없습니다.");
-//        }
-//        this.receiverName = newReceiverName;
-//    }
-//
-//    public void markAsDelivered() {
-//        this.status = ShippingStatus.DELIVERED;
-//    }
 }
