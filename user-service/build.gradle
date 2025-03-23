@@ -20,3 +20,6 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
+test {
+    useJUnitPlatform() // JUnit 5 사용 시 필요
+}

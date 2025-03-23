@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Getter
@@ -30,7 +31,7 @@ public class User extends BaseEntity {
     @Column(length = 30, nullable = false)
     private String email;
 
-    @Column(name = "slack_name", length = 30, nullable = false)
+    @Column(name = "slack_name", length = 30)
     private String slackName;
 
     @Column(nullable = false)
@@ -44,6 +45,8 @@ public class User extends BaseEntity {
         this.email = email;
         this.slackName = slackName;
         this.role = role;
+        setCreatedBy(getId());
+        setCreatedAt(LocalDateTime.now());
     }
 
     @Builder
@@ -55,11 +58,14 @@ public class User extends BaseEntity {
     }
 
 
-    public void updateUser(String encryptedpassword, UserUpdateRequestDto requestDto, String userRole) {
+    public void updateUser(String encryptedpassword, UserUpdateRequestDto requestDto, String userRole, Long userId) {
+        super.update(userId);
+        setUpdatedAt(LocalDateTime.now());
         Optional.ofNullable(requestDto.getUsername()).ifPresent(username -> this.username = username);
         Optional.ofNullable(encryptedpassword).ifPresent(password -> this.password = encryptedpassword);
         Optional.ofNullable(requestDto.getEmail()).ifPresent(email -> this.email = email);
         Optional.ofNullable(requestDto.getSlackName()).ifPresent(slackName -> this.slackName = slackName);
         Optional.ofNullable(userRole).ifPresent(role -> this.role = userRole);
     }
+
 }
