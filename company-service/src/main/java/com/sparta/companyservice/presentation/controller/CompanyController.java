@@ -35,7 +35,7 @@ public class CompanyController {
 
     // 생성
     @Operation(summary = "Company 등록", description = "Company 생성 api 입니다.")
-    @RoleCheck("ROLE_MASTER, ROLE_HUB_MANAGER")
+    @RoleCheck("ROLE_MASTER, ROLE_HUB")
     @PostMapping
     public ResponseEntity<CompanyResponse> createCompany(@Valid @RequestBody CompanyCreateRequest request, @RequestHeader("user_id") Long userId) {
         CompanyDto createdCompany = companyService.createCompany(request.toDto(), userId);
@@ -66,7 +66,7 @@ public class CompanyController {
 
     // 수정
     @Operation(summary = "Company 수정", description = "Company 수정 api 입니다.")
-    @RoleCheck("ROLE_MASTER, ROLE_HUB_MANAGER, ROLE_COMPANY_MANAGER")
+    @RoleCheck("ROLE_MASTER, ROLE_HUB, ROLE_COMPANY")
     @PatchMapping("/{companyId}")
     public ResponseEntity<CompanyResponse> updateCompany(@PathVariable UUID companyId, @Valid @RequestBody CompanyUpdateRequest request, @RequestHeader("user_id") Long userId) {
         CompanyDto updatedCompany = companyService.updateCompany(companyId, request.toDto(), userId);
@@ -75,7 +75,7 @@ public class CompanyController {
 
     // 삭제
     @Operation(summary = "Company 삭제", description = "Company 삭제 api 입니다.")
-    @RoleCheck("ROLE_MASTER, ROLE_HUB_MANAGER")
+    @RoleCheck("ROLE_MASTER, ROLE_HUB")
     @DeleteMapping("/{companyId}")
     public ResponseEntity<CompanyDeleteResponse> deleteCompany(@PathVariable UUID companyId, @RequestHeader("user_id") Long userId) {
         CompanyDeleteResponse deletedCompany = companyService.deleteCompany(companyId, userId);
