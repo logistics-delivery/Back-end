@@ -139,5 +139,4 @@ public class HubRouteService {
 
         return new HubRouteDetailsResponseDto(route, checkpoints);
     }
-
 }
