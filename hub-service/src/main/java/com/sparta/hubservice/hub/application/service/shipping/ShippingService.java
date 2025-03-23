@@ -4,6 +4,8 @@ import com.sparta.hubservice.hub.domain.model.HubShippingScanLog;
 import com.sparta.hubservice.hub.infrastructure.feignclient.ShippingFeignClient;
 import com.sparta.hubservice.hub.infrastructure.feignclient.dto.InboundStatusRequestDto;
 import com.sparta.hubservice.hub.infrastructure.feignclient.dto.InboundStatusResponseDto;
+import com.sparta.hubservice.hub.infrastructure.feignclient.dto.OutboundStatusRequestDto;
+import com.sparta.hubservice.hub.infrastructure.feignclient.dto.OutboundStatusResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,4 +22,7 @@ public class ShippingService {
         return shippingFeignClient.inboundStatus(log.getShippingId(), new InboundStatusRequestDto(log));
     }
 
+    public OutboundStatusResponseDto outboundStatus(HubShippingScanLog log) {
+        return shippingFeignClient.outboundStatus(log.getShippingId(), new OutboundStatusRequestDto(log));
+    }
 }
