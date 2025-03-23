@@ -10,8 +10,9 @@ public record ShippingSelf(UUID orderId,
                            String receiverName,
                            UUID shippingManagerId,
                            ShippingStatus status)  {
-    public Shipping toShipping(){ // DTO - > entity 전환
+    public Shipping toShipping(Long userId){ // DTO - > entity 전환
         return new Shipping(
+                userId,
             this.orderId,
             this.shippingAddress,
             this.receiverName,

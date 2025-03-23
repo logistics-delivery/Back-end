@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record RouteLogSelf(
-        Shipping shipping,
+
         UUID startHubId,
         UUID endHubId,
         Integer sequence,
@@ -19,7 +19,6 @@ public record RouteLogSelf(
 ) {
     public ShippingRouteLog toShippingRouteLog() {
         return new ShippingRouteLog(
-                this.shipping,
                 this.startHubId,
                 this.endHubId,
                 this.sequence,

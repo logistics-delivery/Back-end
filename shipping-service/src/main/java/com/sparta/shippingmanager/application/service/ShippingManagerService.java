@@ -35,14 +35,14 @@ public class ShippingManagerService {
         return manager;
 
     }
-
+    @Transactional
     public ShippingManagerResponseDto create(ShippingManagerCreateRequestDto request,Long userId){
         ShippingManager shippingManager = request.of().toShippingManager(userId);
         repository.save(shippingManager);
         return ShippingManagerResponseDto.from(shippingManager);
 
     }
-
+    @Transactional(readOnly = true)
     public ShippingManagerResponseDto getById(UUID managerId){
         ShippingManager manager = repository.findById(managerId).orElseThrow(() -> new ResourceNotFoundException("해당 ID의 배송자는 존재하지 않습니다."));
         return ShippingManagerResponseDto.from(manager);
