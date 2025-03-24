@@ -34,7 +34,7 @@ public class HubShippingScanService {
         hubShippingScanRepository.save(hubShippingScanLog);
         log.info("Success Save InboundLog - HubShippingScanLog: {}", hubShippingScanLog);
 
-        return shippingService.inboundStatus(hubShippingScanLog);
+        return shippingService.inboundStatus(hubShippingScanLog, userId);
     }
 
     // 출고 처리 로그 저장 후 feign client 호출
@@ -49,7 +49,7 @@ public class HubShippingScanService {
         log.info("Success Save OutboundLog - HubShippingScanLog: {}", hubShippingScanLog);
 
         // feign client
-        OutboundStatusResponseDto responseDto =  shippingService.outboundStatus(hubShippingScanLog);
+        OutboundStatusResponseDto responseDto =  shippingService.outboundStatus(hubShippingScanLog,  userId);
 
         // 받아온 정보로 nextHub 값 update
         Hub nextHub = hubRepository.findById(responseDto.getNextHubId()).orElseThrow(ResourceNotFoundException::new);

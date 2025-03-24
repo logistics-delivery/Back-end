@@ -1,0 +1,18 @@
+### 내부 로직에 feign client 호출 존재 : Shipping-service 함께 실행중이여야 가능
+
+@hub_id =
+@shipping_id =
+@host = http://localhost:8080
+@access_token = eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4MzA4MzAsImV4cCI6MTc0MjgzNDQzMH0.VHGVmFH9iCNpx1y6Y8Xk1dgncD-5TZjr1L5JLZJYHaqQuKjpZR9MVGspnff7Mqb2Db6mUCdAFtZYBfxKgU1RUw
+
+### Hub - 상품 입고 처리
+POST {{host}}/api/v1/hub-shipping-scan/{{hub_id}}/{{shipping_id}}/inbound-log
+Content-Type: application/json
+Authorization: {{access_token}}
+
+###
+
+### Hub - 상품 출고 처리
+POST {{host}}/api/v1/hub-shipping-scan/{{hub_id}}/{{shipping_id}}/outbound-log
+Content-Type: application/json
+Authorization: {{access_token}}
