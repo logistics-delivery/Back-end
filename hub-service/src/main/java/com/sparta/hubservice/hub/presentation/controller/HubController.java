@@ -1,5 +1,6 @@
 package com.sparta.hubservice.hub.presentation.controller;
 
+import com.sparta.commonmodule.aop.RoleCheck;
 import com.sparta.hubservice.hub.application.dto.response.HubCreateResponseDto;
 import com.sparta.hubservice.hub.application.dto.response.HubDeleteResponseDto;
 import com.sparta.hubservice.hub.application.dto.request.HubRequestDto;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,22 +58,25 @@ public class HubController {
     }
 
     // 허브 생성
+    @RoleCheck("ROLE_MASTER")
     @PostMapping
-    public ResponseEntity<HubCreateResponseDto> createHub(@RequestBody @Valid HubRequestDto requestDto, @RequestParam Long userId) {
+    public ResponseEntity<HubCreateResponseDto> createHub(@RequestBody @Valid HubRequestDto requestDto,@RequestHeader("user-id") Long userId) {
         HubCreateResponseDto responseDto = hubService.createHub(requestDto, userId);
         return ResponseEntity.ok(responseDto);
     }
 
     // 허브 수정
+    @RoleCheck("ROLE_MASTER")
     @PutMapping("{hub_id}")
-    public ResponseEntity<HubUpdateResponseDto> updateHub(@PathVariable("hub_id") UUID hubId, @RequestParam String address,  @RequestParam Long userId) {
+    public ResponseEntity<HubUpdateResponseDto> updateHub(@PathVariable("hub_id") UUID hubId, @RequestParam String address,  @RequestHeader("user-id") Long userId) {
         HubUpdateResponseDto responseDto = hubService.updateHub(hubId, address, userId);
         return ResponseEntity.ok(responseDto);
     }
 
     // 허브 삭제
+    @RoleCheck("ROLE_MASTER")
     @DeleteMapping("{hub_id}")
-    public ResponseEntity<HubDeleteResponseDto> deleteHub(@PathVariable("hub_id") UUID hubId, @RequestParam Long userId) {
+    public ResponseEntity<HubDeleteResponseDto> deleteHub(@PathVariable("hub_id") UUID hubId, @RequestHeader("user-id") Long userId) {
         HubDeleteResponseDto responseDto = hubService.deleteHub(hubId, userId);
         return ResponseEntity.ok(responseDto);
     }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class HubShippingScanController {
     public ResponseEntity<InboundStatusResponseDto> inboundStatus(
         @PathVariable("hub_id") UUID hubId,
         @PathVariable("shipping_id") UUID shippingId,
-        @RequestParam("user_id") Long userId){
+        @RequestHeader("user-id") Long userId){
 
         InboundStatusResponseDto responseDto =
             hubShippingScanService.createInbound(hubId, shippingId, userId);
@@ -37,7 +38,7 @@ public class HubShippingScanController {
     public ResponseEntity<OutboundStatusResponseDto> outboundStatus(
         @PathVariable("hub_id") UUID hubId,
         @PathVariable("shipping_id") UUID shippingId,
-        @RequestParam("user_id") Long userId
+        @RequestHeader("user-id") Long userId
     ){
         OutboundStatusResponseDto responseDto =
             hubShippingScanService.createOutbound(hubId, shippingId, userId);
