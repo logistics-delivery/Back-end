@@ -32,7 +32,7 @@ public class ShippingHubScanLog extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="shipping_id", nullable = false)
-    private Shipping shippingId;
+    private Shipping shipping;
 
     @CreatedDate
     @Column(nullable = false,  updatable = false)
@@ -44,27 +44,27 @@ public class ShippingHubScanLog extends BaseEntity {
     @Column(name = "next_hub_id", nullable = true)
     private UUID nextHubId;
 
-    public ShippingHubScanLog(UUID hubId,Shipping shippingId, ShippingStatus status, Long userId) {
+    public ShippingHubScanLog(UUID hubId,Shipping shipping, ShippingStatus status, Long userId) {
         super(userId);
         this.hubId = hubId;
-        this.shippingId = shippingId;
+        this.shipping = shipping;
         this.status = status;
     }
 
-    public ShippingHubScanLog(UUID hubId,Shipping shippingId, ShippingStatus status, UUID nextHubId, Long userId) {
+    public ShippingHubScanLog(UUID hubId,Shipping shipping, ShippingStatus status, UUID nextHubId, Long userId) {
         super(userId);
         this.hubId = hubId;
-        this.shippingId = shippingId;
+        this.shipping = shipping;
         this.status = status;
         this.nextHubId = nextHubId;
     }
 
-    public static ShippingHubScanLog createInboundLog(UUID hubId, Shipping shippingId, Long userId) {
-        return new ShippingHubScanLog(hubId,shippingId, ShippingStatus.INBOUND, userId);
+    public static ShippingHubScanLog createInboundLog(UUID hubId, Shipping shipping, Long userId) {
+        return new ShippingHubScanLog(hubId,shipping, ShippingStatus.INBOUND, userId);
     }
 
-    public static ShippingHubScanLog createOutboundLog(UUID hubId, Shipping shippingId, Long userId) {
-        return new ShippingHubScanLog(hubId, shippingId, ShippingStatus.OUTBOUND, userId);
+    public static ShippingHubScanLog createOutboundLog(UUID hubId, Shipping shipping, Long userId) {
+        return new ShippingHubScanLog(hubId, shipping, ShippingStatus.OUTBOUND, userId);
     }
 
     public enum ShippingStatus {

@@ -22,10 +22,9 @@ public class InboundStatusResponseDto {
     private LocalDateTime timestamp;
 
     public InboundStatusResponseDto(ShippingHubScanLog log, String message) {
-        this.shippingStatus = log.getStatus();
-        this.timestamp = log.getTimestamp();
+        this.shippingStatus = ShippingStatus.INBOUND;
         this.hubId =  log.getHubId();
-        this.shippingId = log.getShippingId().getId();
+        this.shippingId = log.getShipping().getId();
         this.message = message;
     }
 

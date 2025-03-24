@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class ShippingHubScanLogRepositoryImpl implements ShippingHubScanLogRepository {
 
-    private JpaShippingHubScanLogRepository jpaRepository;
+    private final JpaShippingHubScanLogRepository jpaRepository;
 
     @Override
     public void save(ShippingHubScanLog log) {
