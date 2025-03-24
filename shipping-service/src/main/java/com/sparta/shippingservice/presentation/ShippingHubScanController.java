@@ -1,6 +1,5 @@
 package com.sparta.shippingservice.presentation;
 
-import com.sparta.hubservice.hub.application.service.shipping.ShippingService;
 import com.sparta.shippingservice.application.service.ShippingHubScanService;
 import com.sparta.shippingservice.infrastructure.hub_feign.dto.InboundStatusRequestDto;
 import com.sparta.shippingservice.infrastructure.hub_feign.dto.InboundStatusResponseDto;

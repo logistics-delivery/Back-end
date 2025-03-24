@@ -19,10 +19,5 @@ public class InboundStatusRequestDto {
     private ShippingStatus status;
     private LocalDateTime timestamp;
 
-    public InboundStatusRequestDto(ShippingHubScanLog log) {
-        this.hubId = log.getHubId();
-        this.status = log.getStatus();
-        this.timestamp = log.getTimestamp();
-    }
 
 }
