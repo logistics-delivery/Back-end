@@ -3,15 +3,18 @@ spring:
     name: order-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/delivery
+    url: jdbc:postgresql://postgres:5432/maindb
     username: admin
     password: 1234
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: order_service
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
 eureka:
