@@ -3,7 +3,6 @@ Logistics-delivery
 
  # 프로젝트 소개
 
- > 물류 관리 시스템이 달성해야 하는 기술적 목표와, 우리팀이 집중한 구현 목표를 포함한 간략한 개요
  ## 핵심기술 목표
  
 ### 1. MSA 기반 시스템 설계 및 구현
@@ -81,11 +80,11 @@ Logistics-delivery
  # 설계 산출물
 
 
- - [[도메인 다이어그램]]
- - [[테이블 설계서]]
- - [[ERD]]
- - [[API 명세서]]
- - [[인프라 설계서]]
+ - [[도메인 다이어그램]](https://github.com/logistics-delivery/Back-end/wiki/%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8-&-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%8B%B4%EB%8B%B9%EC%9E%90-%EB%AA%A9%EB%A1%9D)
+ - [[테이블 설계서]](https://github.com/logistics-delivery/Back-end/wiki/%ED%85%8C%EC%9D%B4%EB%B8%94-%EB%AA%85%EC%84%B8%EC%84%9C)
+ - [[ERD]](https://github.com/logistics-delivery/Back-end/wiki/ERD-%EB%AA%85%EC%84%B8%EC%84%9C)
+ - [[API 명세서]](https://github.com/logistics-delivery/Back-end/wiki/API-%EB%AA%85%EC%84%B8%EC%84%9C)
+ - [[인프라 설계서]](https://github.com/logistics-delivery/Back-end/wiki/%EC%9D%B8%ED%94%84%EB%9D%BC-%EC%84%A4%EA%B3%84%EC%84%9C)
  - [[Conventions]] : 우리 조의 개발 규칙
      - [[Commit Message Conventions]]
      - [[Java Code Style]]
@@ -135,9 +134,9 @@ Logistics-delivery
 | **역할**                |   **담당자**        |  **세부 업무**                     |
 |-------------------------|:---------------------:|------------------------------------|
 | **인증인가,<br> 사용자API** | 신다은<br>(팀장)      | - 회원가입,로그인 등의 사용자 정보CRUD 구현 <br> - 로그인 성공 시 JWT 토큰을 생성하여 사용자에게 전달되도록 함 <br> - JWT 토큰을 사용하여 회원정보를 인증, 내부payload값을 추출하여 서브모듈에서 사용가능하도록 구현 <br> - 인증된 정보를 바탕으로 사용자의 권한이 요청 url에 접근가능한지 gateway에서 우선적으로 인가처리를 할 수 있도록 구현 <br> - 세부 API 기능별로 AOP에서 인가처리를 추가적으로 진행하도록 구현|
-|**슬랙API**|신다은<br>(팀장) | - 슬랙 메세지 관리 CRUD 구현<br> - 슬랙 외부 API를 연동하여 메세지 발송 시 실제 슬랙 사이트로 알림메세지가 전송되도록 함. <br> - Base Entity를 사용한 생성,수정,삭제 기록 저장 및 SoftDelete 구현|
-|**허브API**|이소현<br>(테크리드) | - |
+|**슬랙API**|신다은<br>(팀장) | - 슬랙 메세지 관리 CRUD 구현<br> - 슬랙 외부 API를 연동하여 메세지 발송 시 실제 슬랙 사이트로 알림메세지가 전송되도록 함. <br> - Base Entity를 사용한 생성,수정,삭제 기록 저장 및 SoftDelete 구현<br> - QueryDSL을 이용한 슬랙 메세지 검색기능 구현|
+|**허브API**|이소현<br>(테크리드) | - 허브 정보, 허브간 경로 CRUD 구현<br> - 허브 검색 기능 (Query DSL) 구현<br> - 최단 경로를 위한 허브간 경로 체크포인트 생성 및 조회 구현<br> -허브 내 배송품 입고 및 출고 처리 기능 구현 |
 |**상품API**|서진영<br>(테크리드) | - |
 |**배송API**|권길남 | - |
-|**업체API**|원지윤 | - |
-|**주문API**|이용재 | - |
+|**업체API**|원지윤 | -  Company-service CRUD 개발 및 Spring Boot 기반 4계층 아키텍처 적용<br> - QueryDSL 기반 동적 검색 조건 및 페이징 기능 구현<br> - HTTP API 테스트, 도메인 및 서비스 계층 테스트 코드 작성|
+|**주문API**|이용재 | - 주문 CRUD 구현<br> - 주문 생성 시 Product 서비스에 재고 차감 요청 기능 연동 (FeignClient 사용)<br> - 주문 생성 시 Shipping 서비스에 배송 생성 요청 기능 연동 (FeignClient 사용)<br> - Slack 도메인 연동을 위한 주문 + 배송 정보 응답 API 제공<br> - QueryDSL을 활용한 주문 검색 기능 구현 (주문명 + 상태 검색)|
