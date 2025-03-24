@@ -33,9 +33,9 @@ public class ShippingController {
 
 
     @Operation(summary = "배송 등록",description = "배송 생성 API 입니다")
-    @RoleCheck("ROLE_MASTER")
+   // @RoleCheck("ROLE_MASTER")
     @PostMapping() // 배송 생성
-    public ResponseEntity<ShippingWithRouteResponseDto> create (@Valid @RequestBody CreateShippingRequestDto request, @RequestHeader("user_Id")Long userId) {
+    public ResponseEntity<ShippingWithRouteResponseDto> create (@Valid @RequestBody CreateShippingRequestDto request, @RequestHeader("user_id")Long userId) {
         ShippingWithRouteResponseDto responseDto = shippingService.create(request,userId);
         return ResponseEntity.ok(responseDto);
 
