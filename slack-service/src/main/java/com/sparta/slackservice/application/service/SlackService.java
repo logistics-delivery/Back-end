@@ -50,7 +50,7 @@ public class SlackService {
     //메세지 수정
     public SlackResponseDto modifySlack(UUID slackId, SlackRequestDto requestDto, Long userId) {
         Slack slack = findingSlack(slackId);
-        slack.modifySlack(requestDto,userId);
+        slack.modifySlack(requestDto);
         return new SlackResponseDto(slack);
     }
 

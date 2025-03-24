@@ -1,5 +1,6 @@
 package com.sparta.slackservice.presentation;
 
+import com.sparta.commonmodule.aop.RoleCheck;
 import com.sparta.slackservice.application.dto.SlackRequestDto;
 import com.sparta.slackservice.application.dto.SlackResponseDto;
 import com.sparta.slackservice.application.dto.SlackSearchRequestDto;
@@ -39,12 +40,14 @@ public class SlackController {
         return ResponseEntity.ok("전송성공");
     }
 
+    @RoleCheck("ROLE_MASTER")
     @Operation(summary = "메세지 조회(단건)", description = "메세지 조회(단건) api입니다.")
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Slack> getSlack(@PathVariable("id") UUID slackId) {
         return ResponseEntity.ok(slackService.getSlack(slackId));
     }
 
+    @RoleCheck("ROLE_MASTER")
     @Operation(summary = "메세지 조회(전체)", description = "메세지 조회(전체) api입니다.")
     @PostMapping("/search")
     public ResponseEntity<Page<SlackResponseDto>> searchSlack(
@@ -54,12 +57,14 @@ public class SlackController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @RoleCheck("ROLE_MASTER")
     @Operation(summary = "메세지 수정", description = "메세지 수정 api입니다.")
     @PutMapping("/modify/{id}")
     public ResponseEntity<?> modifySlack(@RequestHeader("user_id") Long userId,@PathVariable("id") UUID slackId, @RequestBody SlackRequestDto requestDto) {
         return ResponseEntity.ok(slackService.modifySlack(slackId, requestDto, userId));
     }
 
+    @RoleCheck("ROLE_MASTER")
     @Operation(summary = "메세지 삭제", description = "메세지 삭제 api입니다.")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSlack(@PathVariable("id") UUID slackId, @RequestHeader("user_id") Long userId) {

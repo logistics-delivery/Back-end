@@ -1,0 +1,8 @@
+### 👩🏻‍💻 Hub Route Checkpoint 테이블 더미데이터에 필요한 코드 -> 중복 있는 상태
+###
+
+### 서울 -> 부산
+POST http://localhost:8082/api/v1/hub-routes/eff77800-604d-441d-a736-63f1f7d25e51/ac20c293-6951-4916-bd0f-d32f6b3b815b/path?userId=123
+
+### 대전 -> 경상북도
+POST http://localhost:8082/api/v1/hub-routes/984feadc-b1db-43c5-81bc-a24ec5001ddc/c27c2ba8-4011-4d68-991e-19315c19a192/path?userId=123

@@ -7,7 +7,6 @@ import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -19,7 +18,6 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PRIVATE)
-@SQLRestriction("is_deleted IS FALSE")
 public class Product extends BaseEntity {
 
     @Id

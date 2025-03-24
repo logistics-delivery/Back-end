@@ -2,11 +2,8 @@ package com.sparta.commonmodule.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MappedSuperclass;
-
 import java.time.LocalDateTime;
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +40,7 @@ public class BaseEntity {
 
     @Column(name = "is_deleted")
     @ColumnDefault("FALSE")
-    private Boolean isDeleted = false;
+    private Boolean isDeleted;
 
 
     @Column(name = "deleted_at", nullable = true)

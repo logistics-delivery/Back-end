@@ -39,6 +39,13 @@ public class JGraphTPathFinder implements PathFinder {
     @Override
     public List<Hub> getShortPath(Hub start, Hub end){
         GraphPath<Hub, HubRoute> path = new DijkstraShortestPath<>(graph).getPath(start, end);
+
+        if (path == null) {
+            throw new IllegalArgumentException(String.format(
+                "허브 간 최단 경로가 존재하지 않습니다 : %s → %s", start.getName(), end.getName()
+            ));
+        }
+
         return path.getVertexList();
     }
 
