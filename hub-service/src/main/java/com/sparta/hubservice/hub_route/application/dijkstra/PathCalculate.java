@@ -45,43 +45,18 @@ public class PathCalculate {
             }
         }
 
-/*
-        // 그래프 정의
-        Map<Hub, List<HubRoute>> graph = new HashMap<>();
-        List<Hub> hubs = hubRepository.findAll();
-        for (Hub hub : hubs) {
-            List<HubRoute> routes = hubRouteRepository.findByFromHub(hub)
-                .orElse(Collections.emptyList());
-
-            graph.putIfAbsent(hub, new ArrayList<>());
-            graph.get(hub).addAll(routes);
-
-            for (HubRoute route : routes) {
-                Hub to = route.getToHub();
-                graph.putIfAbsent(to, new ArrayList<>()); // ★ 중요!
-                HubRoute reversed = new HubRoute(to, route.getFromHub(), userId);
-                graph.get(to).add(reversed);
-            }
-        }
-
- */
-
         // 직접 정의한 dijkstra를 이용한 체크포인트 리스트 생성
         DijkstraPathFinder dijkstraPathFinder = new DijkstraPathFinder(graph);
         List<Hub> sequencePathByDijkstra = dijkstraPathFinder.getShortPath(fromHub, toHub);
-/*
+
         // JGraphT 라이브러리를 사용한 체크포인트 리스트 생성
         JGraphTPathFinder jgraphT = new JGraphTPathFinder(graph);
         List<Hub> sequencePathByJGraphT = jgraphT.getShortPath(fromHub, toHub);
 
-        if(sequencePathByDijkstra.equals(sequencePathByJGraphT)){
+        if(sequencePathByDijkstra.equals(sequencePathByJGraphT)) {
             log.info("Checking checkpoint path validity : dijkstraPath same JGraphT");
-            return sequencePathByDijkstra;
         }
 
-        log.info("done checking checkpoint path validity");
-        return sequencePathByJGraphT;
-*/
         return sequencePathByDijkstra;
     }
 
