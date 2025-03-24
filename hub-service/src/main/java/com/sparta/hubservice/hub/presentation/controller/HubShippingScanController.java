@@ -28,7 +28,7 @@ public class HubShippingScanController {
     public ResponseEntity<InboundStatusResponseDto> inboundStatus(
         @PathVariable("hub_id") UUID hubId,
         @PathVariable("shipping_id") UUID shippingId,
-        @RequestHeader("user-id") Long userId){
+        @RequestHeader("user_id") Long userId){
 
         InboundStatusResponseDto responseDto =
             hubShippingScanService.createInbound(hubId, shippingId, userId);
@@ -42,7 +42,7 @@ public class HubShippingScanController {
     public ResponseEntity<OutboundStatusResponseDto> outboundStatus(
         @PathVariable("hub_id") UUID hubId,
         @PathVariable("shipping_id") UUID shippingId,
-        @RequestHeader("user-id") Long userId
+        @RequestHeader("user_id") Long userId
     ){
         OutboundStatusResponseDto responseDto =
             hubShippingScanService.createOutbound(hubId, shippingId, userId);

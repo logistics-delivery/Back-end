@@ -67,16 +67,23 @@ public class HubController {
     @Operation(summary = "Hub 생성", description = "허브 생성 api")
     @RoleCheck("ROLE_MASTER")
     @PostMapping
-    public ResponseEntity<HubCreateResponseDto> createHub(@RequestBody @Valid HubRequestDto requestDto,@RequestHeader("user-id") Long userId) {
+    public ResponseEntity<HubCreateResponseDto> createHub(
+        @RequestBody @Valid HubRequestDto requestDto,
+        @RequestHeader("user_id") Long userId) {
         HubCreateResponseDto responseDto = hubService.createHub(requestDto, userId);
         return ResponseEntity.ok(responseDto);
     }
 
     // 허브 수정
     @Operation(summary = "Hub 수정", description = "허브 수정 api")
+
     @RoleCheck("ROLE_MASTER")
     @PutMapping("{hub_id}")
-    public ResponseEntity<HubUpdateResponseDto> updateHub(@PathVariable("hub_id") UUID hubId, @RequestParam String address,  @RequestHeader("user-id") Long userId) {
+    public ResponseEntity<HubUpdateResponseDto> updateHub(
+        @PathVariable("hub_id") UUID hubId,
+        @RequestParam String address,
+        @RequestHeader("user_id") Long userId) {
+
         HubUpdateResponseDto responseDto = hubService.updateHub(hubId, address, userId);
         return ResponseEntity.ok(responseDto);
     }
@@ -85,7 +92,7 @@ public class HubController {
     @Operation(summary = "Hub 삭제", description = "허브 삭제 api")
     @RoleCheck("ROLE_MASTER")
     @DeleteMapping("{hub_id}")
-    public ResponseEntity<HubDeleteResponseDto> deleteHub(@PathVariable("hub_id") UUID hubId, @RequestHeader("user-id") Long userId) {
+    public ResponseEntity<HubDeleteResponseDto> deleteHub(@PathVariable("hub_id") UUID hubId, @RequestHeader("user_id") Long userId) {
         HubDeleteResponseDto responseDto = hubService.deleteHub(hubId, userId);
         return ResponseEntity.ok(responseDto);
     }

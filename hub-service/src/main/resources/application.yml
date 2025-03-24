@@ -41,10 +41,3 @@ springdoc:
 shipping:
   service:
     url: http://localhost:8081/api/v1/shippings
-
-naver:
-  api:
-    geocode:
-      url: "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode"
-      client-id: "2e9tbpntbr"
-      client-secret: "XHNl0SXFKvSoIzTc7QJeZGayDRRDHyKjKiHz9hq4"
