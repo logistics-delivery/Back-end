@@ -17,12 +17,11 @@ public class ShippingService {
 
     private final ShippingFeignClient shippingFeignClient;
 
-    public InboundStatusResponseDto inboundStatus(HubShippingScanLog log){
-        // Todo: feign client 호출 응답값에 대한 예외 처리 (common.exception 코드도 추가)
-        return shippingFeignClient.inboundStatus(log.getShippingId(), new InboundStatusRequestDto(log));
+    public InboundStatusResponseDto inboundStatus(HubShippingScanLog log, Long userId) {
+        return shippingFeignClient.inboundStatus(log.getShippingId(), userId, new InboundStatusRequestDto(log));
     }
 
-    public OutboundStatusResponseDto outboundStatus(HubShippingScanLog log) {
-        return shippingFeignClient.outboundStatus(log.getShippingId(), new OutboundStatusRequestDto(log));
+    public OutboundStatusResponseDto outboundStatus(HubShippingScanLog log, Long userId) {
+        return shippingFeignClient.outboundStatus(log.getShippingId(),userId, new OutboundStatusRequestDto(log));
     }
 }
