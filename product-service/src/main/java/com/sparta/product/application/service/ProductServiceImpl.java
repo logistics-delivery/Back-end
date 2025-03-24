@@ -3,6 +3,7 @@ package com.sparta.product.application.service;
 import com.sparta.commonmodule.exception.ResourceNotFoundException;
 import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
 import com.sparta.product.application.dto.DecreaseProductQuantityServiceRequestDto;
+import com.sparta.product.application.dto.IncreaseProductQuantityServiceRequestDto;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.domain.model.Product;
 import com.sparta.product.domain.repository.ProductRepository;
@@ -118,6 +119,20 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+
+    /**
+     *  상품 수정(재고 증가)
+     */
+    @Override
+    public IncreaseProductQuantityResponseDto increaseProductQuantity(IncreaseProductQuantityServiceRequestDto serviceDto) {
+        Product product = productRepository.findByIdAndHubId(serviceDto.productId(), serviceDto.hubId())
+                .orElseThrow(() -> new ResourceNotFoundException("해당 허브에 상품이 존재하지 않습니다."));
+
+        product.increaseQuantity(serviceDto.quantity());
+
+        return IncreaseProductQuantityResponseDto.success(product, serviceDto.quantity());
+
+    }
 
 
     // 업체 존재 검증 메서드

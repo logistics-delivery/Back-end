@@ -87,6 +87,14 @@ public class Product extends BaseEntity {
 
 
 
+    /**
+     *  상품 수정(재고 증가)
+     */
+    public void increaseQuantity(Integer quantity) {
+        this.quantity = this.quantity + quantity;
+    }
+
+
     private void validateDecreaseQuantity(Integer quantity) {
         if (quantity == null || quantity < 30) {
             throw new IllegalArgumentException("최소 30개 이상 요청해야 합니다.");
