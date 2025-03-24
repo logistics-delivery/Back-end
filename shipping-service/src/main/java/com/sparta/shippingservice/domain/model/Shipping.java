@@ -31,24 +31,25 @@ public class Shipping extends BaseEntity {
     @Column(name = "shipping_manager_id", nullable = false)
     private UUID shippingManagerId;
 
-    @OneToMany(mappedBy = "shipping",cascade = CascadeType.PERSIST)
-    private List<ShippingRouteLog> routeLogs = new ArrayList<>();
+    @OneToOne(mappedBy = "shipping",cascade = CascadeType.PERSIST)
+    private ShippingRouteLog routeLog;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
     private ShippingStatus status = ShippingStatus.PENDING; // 기본값 설정
 
-    public Shipping(Long userId,UUID orderId, String shippingAddress, String receiverName, UUID shippingManagerId, ShippingStatus status) {
+    public Shipping(Long userId, UUID id, UUID orderId, String shippingAddress, String receiverName, UUID shippingManagerId, ShippingRouteLog routeLog, ShippingStatus status) {
         super(userId);
+        this.id = id;
         this.orderId = orderId;
         this.shippingAddress = shippingAddress;
         this.receiverName = receiverName;
         this.shippingManagerId = shippingManagerId;
+        this.routeLog = routeLog;
         this.status = status;
     }
 
-
-    public Shipping updateShipping(Shipping shipping,Long userId) {
+    public Shipping updateShipping(Shipping shipping, Long userId) {
         super.update(userId);
         if (this.status == ShippingStatus.DELIVERED) {
             throw new IllegalStateException("배송이 완료된 후에는 정보를 변경할 수 없습니다.");
@@ -59,6 +60,11 @@ public class Shipping extends BaseEntity {
        if(shipping.getReceiverName()!=null) this.receiverName = shipping.getReceiverName();
        return this;
     }
+
+    public void add(ShippingRouteLog routeLog) {
+        this.routeLog = routeLog;
+    }
+
 
 
     @PrePersist
