@@ -1,5 +1,6 @@
 package com.sparta.shippingservice.presentation;
 
+import com.sparta.shippingservice.application.dto.request.CreateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.request.CreateShippingWithRouteRequestDto;
 import com.sparta.shippingservice.application.dto.request.ShippingSearchCondition;
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
@@ -9,15 +10,17 @@ import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResp
 import com.sparta.shippingservice.application.service.ShippingService;
 
 import com.sparta.shippingservice.domain.model.Shipping;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/shippings")
 @RequiredArgsConstructor
@@ -25,9 +28,8 @@ public class ShippingController {
     private final ShippingService shippingService;
 
     @PostMapping() // 배송 생성
-    public ResponseEntity<ShippingWithRouteResponseDto> create (@Valid @RequestBody CreateShippingWithRouteRequestDto request,
-                                                                @RequestHeader("userId")Long userId) {
-        ShippingWithRouteResponseDto responseDto = shippingService.create(request.shipping(), request.routeLog(),userId);
+    public ResponseEntity<ShippingWithRouteResponseDto> create (@Valid @RequestBody CreateShippingRequestDto request, @RequestHeader("userId")Long userId) {
+        ShippingWithRouteResponseDto responseDto = shippingService.create(request,userId);
         return ResponseEntity.ok(responseDto);
 
     }
@@ -52,8 +54,10 @@ public class ShippingController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<Shipping>> searchShippings(@ModelAttribute ShippingSearchCondition condition) {
-        Page<Shipping> result = shippingService.searchShipping(condition);
+    public ResponseEntity<Page<ShippingResponseDto>> searchShippings(@ModelAttribute ShippingSearchCondition condition, HttpServletRequest request) {
+        Page<ShippingResponseDto> result = shippingService.searchShipping(condition);
+        log.info("receiverName raw param: {}", request.getParameter("receiverName"));
+        log.info("receiverName from DTO: {}", condition.getReceiverName());
         return ResponseEntity.ok(result);
     }
 

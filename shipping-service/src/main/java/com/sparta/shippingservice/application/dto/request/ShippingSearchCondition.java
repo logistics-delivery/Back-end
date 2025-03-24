@@ -1,14 +1,11 @@
 package com.sparta.shippingservice.application.dto.request;
 
 import com.sparta.shippingservice.domain.model.ShippingStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
-
+@Setter
 @Getter
 @Builder
 @NoArgsConstructor

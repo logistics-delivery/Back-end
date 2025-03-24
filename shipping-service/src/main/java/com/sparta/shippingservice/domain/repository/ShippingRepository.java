@@ -1,6 +1,7 @@
 package com.sparta.shippingservice.domain.repository;
 
 
+import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.domain.model.Shipping;
 import org.springframework.stereotype.Repository;
 
