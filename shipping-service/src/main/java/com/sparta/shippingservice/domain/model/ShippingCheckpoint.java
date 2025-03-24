@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Setter
 @Entity
-@Table(name = "shipping_checkpoint")
+@Table(name = "p_shipping_checkpoint")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
