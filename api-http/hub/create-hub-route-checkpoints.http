@@ -1,0 +1,18 @@
+
+@seoul_hub =
+@busan_hub =
+@daejeon_hub =
+@Gyeongsangbukdo_hub =
+@host = http://localhost:8080
+@access_token = eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4MzA4MzAsImV4cCI6MTc0MjgzNDQzMH0.VHGVmFH9iCNpx1y6Y8Xk1dgncD-5TZjr1L5JLZJYHaqQuKjpZR9MVGspnff7Mqb2Db6mUCdAFtZYBfxKgU1RUw
+
+### 👩🏻‍💻 Hub Route Checkpoint 테이블 더미데이터에 필요한 코드 -> 중복 있는 상태
+###
+
+### 서울 -> 부산
+POST{{host}}/api/v1/hub-routes/{{seoul_hub}}/{{busan_hub}}/path
+Authorization: {{access_token}}
+
+### 대전 -> 경상북도
+POST {{host}}/api/v1/hub-routes/{{daejeon_hub}}/{{Gyeongsangbukdo_hub}}/path
+Authorization: {{access_token}}
