@@ -137,7 +137,7 @@ public class ProductServiceImpl implements ProductService {
 
     // 업체 존재 검증 메서드
     private void validateCompanyExists(UUID companyId) {
-        if (!companyClient.existsById(companyId)) {
+        if (!companyClient.getCompanyById(companyId)) {
             throw new ResourceNotFoundException("해당 업체가 존재하지 않습니다.");
         }
     }
@@ -145,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
 
     // 허브 존재 검증 메서드
     private void validateHubExists(UUID hubId) {
-        if (!hubClient.existsById(hubId)) {
+        if (!hubClient.getHubById(hubId)) {
             throw new ResourceNotFoundException("해당 허브가 존재하지 않습니다.");
         }
     }
