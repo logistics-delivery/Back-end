@@ -29,6 +29,15 @@ eureka:
   instance:
     prefer-ip-address: true
 
+springdoc:
+  api-docs:
+    version: openapi_3_1
+    enabled: true
+    path: /hub-service/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
 shipping:
   service:
     url: http://localhost:8081/api/v1/shippings
