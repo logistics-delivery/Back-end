@@ -34,7 +34,7 @@ public class SlackController {
     }
 
     @Operation(summary = "메세지 전송", description = "메세지 전송 api입니다.")
-    @GetMapping("/send/{id}")
+    @PostMapping("/send/{id}")
     public ResponseEntity<Object> sendSlack(@PathVariable("id") UUID slackId) {
         slackService.sendSlack(slackId);
         return ResponseEntity.ok("전송성공");
