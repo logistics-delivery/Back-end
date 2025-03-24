@@ -11,6 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SlackResponseDto {
     private UUID slackId;
+    private Long receiverId;
     private String slackName;
     private String message;
     private LocalDateTime sendedAt;
@@ -20,6 +21,7 @@ public class SlackResponseDto {
     public SlackResponseDto(Slack slack) {
         this.slackId = slack.getId();
         this.slackName = slack.getSlackName();
+        this.receiverId = slack.getReceiverId();
         this.message = slack.getMessage();
         this.sendedAt = slack.getSendedAt();
         this.sendingStatus = slack.isSendingStatus();
