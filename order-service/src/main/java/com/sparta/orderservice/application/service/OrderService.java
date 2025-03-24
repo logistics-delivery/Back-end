@@ -72,7 +72,6 @@ public class OrderService {
                 .status(OrderStatus.CREATED)
                 .build();
 
-        order.setCreatedBy(0L);  // createdBy 기본값 설정 (BaseEntity 상속으로 인해 필요)
         orderRepository.save(order);
 
         // 5. 배송 요청 DTO 생성
