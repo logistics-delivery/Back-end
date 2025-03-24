@@ -2,14 +2,18 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:postgresql://localhost:5001/user_db  # Docker의 PostgreSQL 컨테이너의 IP 또는 호스트와 포트를 사용
-    username: postgres_user  # PostgreSQL 사용자 이름
-    password: 12345  # PostgreSQL 비밀번호
+    url: jdbc:postgresql://postgres:5432/maindb
+    username: admin
+    password: 1234
     driver-class-name: org.postgresql.Driver
   jpa:
+    properties:
+      hibernate:
+        default_schema: user_service
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL에 맞는 Hibernate Dialect 설정
+    show-sql: true
   h2:
     console:
       enabled: false  # H2 콘솔 비활성화 (PostgreSQL 사용 시)
