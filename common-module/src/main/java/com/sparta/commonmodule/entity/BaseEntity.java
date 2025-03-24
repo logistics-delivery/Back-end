@@ -33,17 +33,17 @@ public class BaseEntity {
     private Long createdBy;
 
     @LastModifiedDate
-    @Column(name = "updated_at", nullable = true)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @LastModifiedBy
-    @Column(name = "updated_by", nullable = true)
+    @Column(name = "updated_by")
     private Long updatedBy;
 
 
     @Column(name = "is_deleted")
     @ColumnDefault("FALSE")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
 
     @Column(name = "deleted_at", nullable = true)

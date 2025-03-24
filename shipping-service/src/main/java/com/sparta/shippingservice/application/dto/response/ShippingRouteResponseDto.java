@@ -14,7 +14,8 @@ public record ShippingRouteResponseDto(
         Integer estimatedTime,
         BigDecimal actualDistance,
         Integer actualTime,
-        UUID shippingManagerId) {
+        UUID shippingManagerId
+) {
     public static ShippingRouteResponseDto from(ShippingRouteLog shippingRouteLog) {
         return new ShippingRouteResponseDto(
                 shippingRouteLog.getId(),

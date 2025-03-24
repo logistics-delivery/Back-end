@@ -20,7 +20,6 @@ public record CreateRouteLogRequestDto(
         UUID endHubId,
 
         @NotNull(message = "배송 순번은 필수입니다.")
-
         @Min(value = 1, message = "배송 순번은 1 이상이어야 합니다.")
         Integer sequence,
 
@@ -40,7 +39,6 @@ public record CreateRouteLogRequestDto(
 ) {
     public RouteLogSelf of() {
         return new RouteLogSelf(
-                this.shipping(),
                 this.startHubId(),
                 this.endHubId(),
                 this.sequence(),

@@ -8,7 +8,11 @@ import com.sparta.orderservice.domain.model.Order;
 import com.sparta.orderservice.domain.model.OrderStatus;
 import com.sparta.orderservice.domain.repository.OrderQueryDSLRepository;
 import com.sparta.orderservice.domain.repository.OrderRepository;
+import com.sparta.orderservice.infrastructure.client.ProductClient;
+import com.sparta.orderservice.infrastructure.client.dto.response.DecreaseProductQuantityResponseDto;
+import com.sparta.orderservice.infrastructure.client.dto.request.DecreaseProductQuantityServiceRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,12 +26,37 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    @Qualifier("orderQueryDSLRepositoryImpl")
     private final OrderQueryDSLRepository orderQueryDSLRepository;
+    private final ProductClient productClient;
+//    private final ProductClient productClient;
 
 
     //주문 생성
     @Transactional
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
+
+        // 1. 재고 차감 요청 DTO 생성
+        DecreaseProductQuantityServiceRequestDto reduceRequest =
+                DecreaseProductQuantityServiceRequestDto.builder()
+                        .productId(requestDto.getProductId())
+                        .companyId(requestDto.getSupplierId())     // supplierId → companyId
+                        .hubId(requestDto.getReceiverId())         // receiverId → hubId
+                        .quantity(1)                               // 기본 수량 예시
+                        .build();
+
+        // 2. FeignClient로 재고 차감 요청
+        UUID productId = reduceRequest.getProductId();
+
+        DecreaseProductQuantityResponseDto response =
+                productClient.decreaseProductQuantity(productId, reduceRequest);
+
+
+        // 3. 실패 시 예외 발생
+        if (!response.getIsSuccess()) {
+            throw new OperationNotAllowedException("재고 차감에 실패하여 주문을 생성할 수 없습니다.");
+        }
+
         Order order = Order.builder()
                 .name(requestDto.getName())
                 .supplierId(requestDto.getSupplierId())
@@ -47,15 +76,16 @@ public class OrderService {
 
     // 주문 전체 조회
     @Transactional(readOnly = true)
-    public List<OrderResponseDto> getALlOrders(){
+    public List<OrderResponseDto> getALlOrders() {
         List<Order> orders = orderRepository.findAll();
         return orders.stream()
                 .map(OrderResponseDto::fromEntity)
                 .collect(Collectors.toList());
     }
+
     // 주문 단일 조회
     @Transactional(readOnly = true)
-    public OrderResponseDto getOrderById(UUID orderId){
+    public OrderResponseDto getOrderById(UUID orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 주문을 찾을 수 없습니다."));
         return OrderResponseDto.fromEntity(order);

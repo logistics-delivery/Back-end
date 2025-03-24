@@ -16,6 +16,8 @@ public interface ProductRepository {
 
     Optional<Product> findById(UUID productId);
 
+    Optional<Product> findByIdAndHubId(UUID productId, UUID hubId);
+
     List<Product> findAll();
 
     Page<SearchProductResponseDto> searchProducts(SearchProductRequestDto requestDto, Pageable pageable);

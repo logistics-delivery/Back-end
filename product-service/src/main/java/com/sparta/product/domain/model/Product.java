@@ -7,6 +7,7 @@ import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PRIVATE)
+@SQLRestriction("is_deleted IS FALSE")
 public class Product extends BaseEntity {
 
     @Id
@@ -74,7 +76,29 @@ public class Product extends BaseEntity {
         return this;
     }
 
-    
+
+    /**
+     *  상품 수정(재고 감소)
+     */
+    public void decreaseQuantity(Integer quantity) {
+        validateDecreaseQuantity(quantity);
+        this.quantity = this.quantity - quantity;
+    }
+
+
+
+    private void validateDecreaseQuantity(Integer quantity) {
+        if (quantity == null || quantity < 30) {
+            throw new IllegalArgumentException("최소 30개 이상 요청해야 합니다.");
+        }
+        if (this.quantity < quantity) {
+            throw new IllegalStateException("재고가 부족합니다.");
+        }
+    }
+
+
+
+
     // DTO -> Entity 변환 메서드
     public static Product of(CreateProductResponseDto responseDto) {
         return Product.builder()
@@ -87,4 +111,6 @@ public class Product extends BaseEntity {
                 .hubId(responseDto.hubId())
                 .build();
     }
+
+
 }

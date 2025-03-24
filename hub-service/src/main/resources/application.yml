@@ -32,3 +32,6 @@ security:
   basic:
     enabled: false
 
+shipping:
+  service:
+    url: http://localhost:8081/api/v1/shippings
