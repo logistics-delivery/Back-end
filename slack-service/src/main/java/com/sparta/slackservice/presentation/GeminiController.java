@@ -30,14 +30,14 @@ public class GeminiController {
         //요청한 정보가져오기
         SlackNotificationDto slackNotificationDto = orderClient.getSlackNotificationInfo(id);
 
-        GeminiResponseDto responseDto = geminiService.createMessage(slackNotificationDto);
+        GeminiResponseDto responseDto = geminiService.generateResponse(slackNotificationDto);
         return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping("/create")
     public ResponseEntity<GeminiResponseDto> createMessage(@RequestBody SlackNotificationDto requestDto) {//주문정보 입력
         //요청한 정보가져오기
-        GeminiResponseDto responseDto = geminiService.createMessage(requestDto);
+        GeminiResponseDto responseDto = geminiService.generateResponse(requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
