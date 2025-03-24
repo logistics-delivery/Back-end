@@ -1,18 +1,31 @@
 
-@seoul_hub =
-@busan_hub =
-@daejeon_hub =
-@Gyeongsangbukdo_hub =
+@seoul_hub = d25f4291-d134-4f73-885a-0eb188a72649
+@busan_hub = 12bca245-3e19-400d-a421-6e3e42c56b1e
+@daejeon_hub = 9d23ac68-441f-4122-ac91-98c99896fcc4
+@Gyeongsangbukdo_hub = ec87005e-5160-4515-90ce-dcbbfb392678
 @host = http://localhost:8080
-@access_token = eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4MzA4MzAsImV4cCI6MTc0MjgzNDQzMH0.VHGVmFH9iCNpx1y6Y8Xk1dgncD-5TZjr1L5JLZJYHaqQuKjpZR9MVGspnff7Mqb2Db6mUCdAFtZYBfxKgU1RUw
+
+POST http://localhost:8080/api/v1/users/sign-in
+Content-Type: application/json
+
+{
+  "username": "asdf123",
+  "password": "asdfgA12@"
+}
+> {%
+  client.global.set("access_token", response.headers.valueOf("Authorization"))
+%}
 
 ### 👩🏻‍💻 Hub Route Checkpoint 테이블 더미데이터에 필요한 코드 -> 중복 있는 상태
 ###
 
 ### 서울 -> 부산
-POST{{host}}/api/v1/hub-routes/{{seoul_hub}}/{{busan_hub}}/path
-Authorization: {{access_token}}
+POST{{host}}/api/v1/hubs/hub-routes/{{seoul_hub}}/{{busan_hub}}/path
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzk2MzcsImV4cCI6MTc0Mjg0MzIzN30.QKV6EjSQn5-E9ok_o_teaxK12cIhF3OUsnrPKim4WY16BvO9H97lLIgZru8o3PCKAjoqXHsQhntk3sz8mUU0Cg
+Content-Type: application/json
 
 ### 대전 -> 경상북도
-POST {{host}}/api/v1/hub-routes/{{daejeon_hub}}/{{Gyeongsangbukdo_hub}}/path
-Authorization: {{access_token}}
+POST {{host}}/api/v1/hubs/hub-routes/{{daejeon_hub}}/{{Gyeongsangbukdo_hub}}/path
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzk2MzcsImV4cCI6MTc0Mjg0MzIzN30.QKV6EjSQn5-E9ok_o_teaxK12cIhF3OUsnrPKim4WY16BvO9H97lLIgZru8o3PCKAjoqXHsQhntk3sz8mUU0Cg
+Content-Type: application/json
+
