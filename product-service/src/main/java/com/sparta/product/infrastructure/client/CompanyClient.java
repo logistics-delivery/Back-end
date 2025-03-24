@@ -12,6 +12,6 @@ public interface CompanyClient {
     /**
      *  업체 존재 확인
      */
-    @GetMapping("/api/v1/companies/{id}/exists")
-    boolean existsById(@PathVariable("id") UUID id);
+    @GetMapping("/api/v1/companies/{companyId}")
+    boolean getCompanyById(@PathVariable("companyId") UUID companyId);
 }
