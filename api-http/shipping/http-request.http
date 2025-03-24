@@ -1,0 +1,14 @@
+###
+
+POST http://localhost:8088/api/v1/shippings
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "orderId": "550e8400-e29b-41d4-a716-446655440000",
+  "shippingAddress": "서울특별시 강남구 테헤란로 427",
+  "receiverName": "홍길동",
+  "status": "PENDING"
+}
+
+###
