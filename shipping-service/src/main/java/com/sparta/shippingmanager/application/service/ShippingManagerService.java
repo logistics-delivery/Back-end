@@ -2,10 +2,16 @@ package com.sparta.shippingmanager.application.service;
 
 import com.sparta.commonmodule.exception.ResourceNotFoundException;
 import com.sparta.shippingmanager.application.dto.request.ShippingManagerCreateRequestDto;
+import com.sparta.shippingmanager.application.dto.request.ShippingManagerSearchCondition;
+import com.sparta.shippingmanager.application.dto.response.ShippingManagerSearchResult;
 import com.sparta.shippingmanager.domain.model.ShippingManager;
 import com.sparta.shippingmanager.domain.repository.ShippingManagerRepository;
 import com.sparta.shippingmanager.application.dto.response.ShippingManagerResponseDto;
+import com.sparta.shippingmanager.infrastructure.ShippingManagerSearchRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +23,7 @@ import java.util.UUID;
 public class ShippingManagerService {
 
     private final ShippingManagerRepository repository;
+    private final ShippingManagerSearchRepository searchRepository;
 
     private static final int MAX_ORDER = 10;
     private static int MIN_ORDER =0;
@@ -46,6 +53,16 @@ public class ShippingManagerService {
     public ShippingManagerResponseDto getById(UUID managerId){
         ShippingManager manager = repository.findById(managerId).orElseThrow(() -> new ResourceNotFoundException("해당 ID의 배송자는 존재하지 않습니다."));
         return ShippingManagerResponseDto.from(manager);
+    }
+
+
+    public Page<ShippingManagerResponseDto> search(ShippingManagerSearchCondition condition) {
+        ShippingManagerSearchResult result = searchRepository.search(condition);
+        return new PageImpl<>(
+                result.getContent(),
+                PageRequest.of(result.getPage(), result.getPageSize()),
+                result.getTotalCount()
+        );
     }
 
 
