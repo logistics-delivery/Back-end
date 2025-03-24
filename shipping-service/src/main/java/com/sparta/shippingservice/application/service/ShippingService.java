@@ -18,6 +18,7 @@ import com.sparta.commonmodule.exception.*;
 
 import com.sparta.shippingservice.domain.repository.ShippingRouteRepository;
 import com.sparta.shippingservice.infrastructure.client.ShippingManagerClient;
+//import com.sparta.shippingservice.infrastructure.repository.ShippingSearchRepository;
 import com.sparta.shippingservice.infrastructure.repository.ShippingSearchRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -90,7 +91,6 @@ public class ShippingService {
                 shipping.getId(),
                 shipping.getShippingAddress(),
                 shipping.getReceiverName(),
-                shipping.getShippingManagerId(),
                 shipping.getStatus()
             ))
             .collect(Collectors.toList());
@@ -113,7 +113,7 @@ public class ShippingService {
         return ShippingResponseDto.from(shipping);
     }
 
-    public Page<Shipping> searchShipping(ShippingSearchCondition condition) {
+    public Page<ShippingResponseDto> searchShipping(ShippingSearchCondition condition) {
         ShippingSearchResult result = searchRepository.search(condition);
         return new PageImpl<>(
                 result.getContent(),

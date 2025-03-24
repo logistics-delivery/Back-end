@@ -1,11 +1,12 @@
 package com.sparta.shippingservice.infrastructure.repository;
 
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.shippingservice.application.dto.request.ShippingSearchCondition;
+import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingSearchResult;
-import com.sparta.shippingservice.domain.model.Shipping;
 import com.sparta.shippingservice.domain.model.ShippingStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,8 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 import static com.sparta.shippingservice.domain.model.QShipping.shipping;
+
+
 
 @Repository
 @RequiredArgsConstructor
@@ -27,8 +30,14 @@ public class ShippingSearchRepository {
             default -> 10;
         };
         int page = condition.getPage();
-        List<Shipping> content = queryFactory
-                .selectFrom(shipping)
+        List<ShippingResponseDto> content = queryFactory
+                .select(Projections.constructor(ShippingResponseDto.class,
+                        shipping.id,
+                        shipping.receiverName,
+                        shipping.shippingAddress,
+                        shipping.status
+                ))
+                .from(shipping)
                 .where(
                         containsShippingAddress(condition.getShippingAddress()),
                         containsReceiverName(condition.getReceiverName()),
@@ -61,7 +70,7 @@ public class ShippingSearchRepository {
         return StringUtils.hasText(address) ? shipping.shippingAddress.containsIgnoreCase(address) : null;
     }
     private BooleanExpression containsReceiverName(String name) {
-        return StringUtils.hasText(name) ? shipping.receiverName.eq(name) : null;
+        return StringUtils.hasText(name) ? shipping.receiverName.containsIgnoreCase(name) : null;
     }
 
     private BooleanExpression eqStatus(ShippingStatus status) {
