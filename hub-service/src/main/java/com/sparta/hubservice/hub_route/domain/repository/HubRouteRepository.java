@@ -2,13 +2,11 @@ package com.sparta.hubservice.hub_route.domain.repository;
 
 import com.sparta.hubservice.hub.domain.model.Hub;
 import com.sparta.hubservice.hub_route.domain.model.HubRoute;
-import feign.Param;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 
 public interface HubRouteRepository {
 

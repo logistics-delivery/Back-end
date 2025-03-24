@@ -2,7 +2,6 @@ package com.sparta.hubservice.hub_route.infrastructure.persistence;
 
 import com.sparta.hubservice.hub.domain.model.Hub;
 import com.sparta.hubservice.hub_route.domain.model.HubRoute;
-import com.sparta.hubservice.hub_route.domain.repository.HubRouteRepository;
 import feign.Param;
 import java.util.List;
 import java.util.Optional;

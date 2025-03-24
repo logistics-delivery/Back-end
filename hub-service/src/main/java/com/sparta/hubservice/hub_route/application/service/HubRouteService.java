@@ -14,7 +14,6 @@ import com.sparta.hubservice.hub_route.domain.model.HubRoute;
 import com.sparta.hubservice.hub_route.domain.model.HubRouteCheckpoint;
 import com.sparta.hubservice.hub_route.domain.repository.HubRouteCheckpointRepository;
 import com.sparta.hubservice.hub_route.domain.repository.HubRouteRepository;
-import jakarta.persistence.EntityExistsException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
