@@ -29,7 +29,7 @@ public class CompanyController {
 
     // 업체 존재 확인
     @GetMapping("/{id}/exists")
-    public boolean existsById(@PathVariable UUID id) {
+    public boolean existsById(@PathVariable("hubId") UUID id) {
         return companyService.existsById(id);
     }
 
