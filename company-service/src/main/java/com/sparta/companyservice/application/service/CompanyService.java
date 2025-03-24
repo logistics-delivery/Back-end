@@ -84,6 +84,11 @@ public class CompanyService {
         }
     }
 
+//    public void validateHubExists(UUID hubId) {
+//        // http 테스트 시 이 메서드 사용
+//    }
+
+
     private Company findCompany(UUID id) {
         return companyRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new ResourceNotFoundException("해당 업체를 찾을 수 없습니다."));
     }

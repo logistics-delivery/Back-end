@@ -8,6 +8,7 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
+@Table(name = "p_company")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Company extends BaseEntity {
