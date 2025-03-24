@@ -2,12 +2,10 @@ package com.sparta.product.presentation;
 
 import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
 import com.sparta.product.application.dto.DecreaseProductQuantityServiceRequestDto;
+import com.sparta.product.application.dto.IncreaseProductQuantityServiceRequestDto;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.application.service.ProductServiceImpl;
-import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
-import com.sparta.product.presentation.dto.request.DecreaseProductQuantityRequestDto;
-import com.sparta.product.presentation.dto.request.SearchProductRequestDto;
-import com.sparta.product.presentation.dto.request.UpdateProductRequestDto;
+import com.sparta.product.presentation.dto.request.*;
 import com.sparta.product.presentation.dto.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -99,6 +97,17 @@ public class ProductController {
                                                                                       @RequestBody DecreaseProductQuantityRequestDto requestDto) {
         return ResponseEntity.ok(productServiceImpl.decreaseProductQuantity(
                 DecreaseProductQuantityServiceRequestDto.of(requestDto, productId)));
+    }
+
+
+    /**
+     *  상품 수정(재고 증가)
+     */
+    @PutMapping("/{productId}/increase")
+    public ResponseEntity<IncreaseProductQuantityResponseDto> increaseProductQuantity(@PathVariable UUID productId,
+                                                                                      @RequestBody IncreaseProductQuantityRequestDto requestDto) {
+        return ResponseEntity.ok(productServiceImpl.increaseProductQuantity(
+                IncreaseProductQuantityServiceRequestDto.of(requestDto, productId)));
     }
 
 }

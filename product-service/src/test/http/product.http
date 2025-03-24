@@ -37,7 +37,8 @@ Content-Type: application/json
 
 
 ### 상품 수정(재고 감소 성공)
-PUT http://localhost:8083/api/v1/products/fabd981b-844a-47f9-a15c-60ae362c2eb7/decrease
+PUT http://localhost:8083/api/v1/products/d6183a42-df2e-44fa-8331-cf7a90a1f82e/decrease
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI3ODg3OTEsImV4cCI6MTc0Mjc5MjM5MX0.GTMZCuZ7-jfzYshDEfBdCAfelNFAexIogXxU6rzX3fNTaeQ0GPFilKyylO_E90PiX5DFUWBQ29oIChuMpUU-gg
 Content-Type: application/json
 
 {
@@ -55,6 +56,18 @@ Content-Type: application/json
   "companyId": "550e8400-e29b-41d4-a716-446655440000",
   "hubId": "123e4567-e89b-12d3-a456-426614174000",
   "quantity": 100
+}
+
+
+### 상품 수정(재고 증가)
+PUT http://localhost:8080/api/v1/products/d6183a42-df2e-44fa-8331-cf7a90a1f82e/increase
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI3ODg3OTEsImV4cCI6MTc0Mjc5MjM5MX0.GTMZCuZ7-jfzYshDEfBdCAfelNFAexIogXxU6rzX3fNTaeQ0GPFilKyylO_E90PiX5DFUWBQ29oIChuMpUU-gg
+Content-Type: application/json
+
+{
+  "companyId": "550e8400-e29b-41d4-a716-446655440000",
+  "hubId": "123e4567-e89b-12d3-a456-426614174000",
+  "quantity": 30
 }
 
 
