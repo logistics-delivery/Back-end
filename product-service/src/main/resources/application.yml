@@ -2,21 +2,22 @@ spring:
   application:
     name: product-service
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/msa-product
-    username: test
+    url: jdbc:postgresql://localhost:5001/maindb
+    username: admin
     password: 1234
+    driver-class-name: org.postgresql.Driver
   jpa:
     database: postgresql
-    show-sql: true
-    hibernate:
-      ddl-auto: create
     properties:
       hibernate:
         spring.jpa.open-in-view: false
         format_sql: true
         default_batch_fetch_size: 10
+        default_schema: product_service
         dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 server:
   port: 8083
