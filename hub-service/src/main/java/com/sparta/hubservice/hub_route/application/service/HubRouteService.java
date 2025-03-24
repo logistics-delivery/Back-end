@@ -99,15 +99,13 @@ public class HubRouteService {
         PathValueDto vlaues = pathCalculate.getValue(shortPath);
 
         // 다이렉트는 이미 최단 경로 -> 이미 route 정보가 있다면 패스
-        if(hubRouteRepository.findByFromHubAndToHub(fromHub, toHub).isPresent()){
-            throw new EntityExistsException("Hub route already exists");
-        }
+        //hubRouteRepository.findShortestRouteByFromAndTo(fromHub, toHub).orElseThrow(EntityExistsException::new);
 
         HubRoute route = new HubRoute(fromHub, toHub, vlaues.getTotalDuration(), vlaues.getTotalDistance(), userId);
-        route = hubRouteRepository.save(route);
+        hubRouteRepository.save(route);
 
         List<HubRouteCheckpoint> checkpointList = new ArrayList<>();
-        for(int i = 0; i < shortPath.size(); i++) {
+        for(int i = 1; i < shortPath.size()-1; i++) {
             HubRouteCheckpoint result = HubRouteCheckpoint.builder()
                 .checkpointHub(shortPath.get(i))
                 .hubRoute(route)
@@ -115,8 +113,9 @@ public class HubRouteService {
                 .sequence(i)
                 .build();
             checkpointList.add(result);
+            log.info("Creating checkpoint for hub route id " + route.getHubRouteId() + ", checkpoint : " + result);
+            checkpointRepository.save(result);
         }
-        checkpointRepository.saveAll(checkpointList);
 
         List<CheckpointResponseDto> checkpoints =
             checkpointList.stream().map(CheckpointResponseDto::new).toList();
@@ -130,7 +129,7 @@ public class HubRouteService {
         Hub fromHub = hubRepository.findById(fromHubId).orElseThrow(ResourceNotFoundException::new);
         Hub toHub = hubRepository.findById(toHubId).orElseThrow(ResourceNotFoundException::new);
 
-        HubRoute route = hubRouteRepository.findByFromHubAndToHub(fromHub, toHub)
+        HubRoute route = hubRouteRepository.findShortestRouteByFromAndTo(fromHub, toHub)
             .orElseThrow(ResourceNotFoundException::new);
 
         List<CheckpointResponseDto> checkpoints =

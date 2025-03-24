@@ -2,11 +2,13 @@ package com.sparta.hubservice.hub_route.domain.repository;
 
 import com.sparta.hubservice.hub.domain.model.Hub;
 import com.sparta.hubservice.hub_route.domain.model.HubRoute;
+import feign.Param;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 
 public interface HubRouteRepository {
 
@@ -22,5 +24,5 @@ public interface HubRouteRepository {
 
     Optional<List<HubRoute>> findByFromHub(Hub hub);
 
-    Optional<HubRoute> findByFromHubAndToHub(Hub fromHub, Hub toHub);
+    Optional<HubRoute> findShortestRouteByFromAndTo(Hub fromHub, Hub toHub);
 }
