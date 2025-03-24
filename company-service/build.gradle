@@ -13,6 +13,7 @@ dependencies {
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
     implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // QueryDSL
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
@@ -47,4 +48,8 @@ sourceSets {
 // clean 시 Q파일 삭제
 clean {
     delete file(querydslDir)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
