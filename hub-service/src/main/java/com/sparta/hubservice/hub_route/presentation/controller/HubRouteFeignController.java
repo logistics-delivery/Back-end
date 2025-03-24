@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/hub-route/feign")
+@RequestMapping("/api/v1/hubs/hub-route/feign")
 @Tag(name = "Hub Service", description = "허브 서비스 API")
 public class HubRouteFeignController {
 
