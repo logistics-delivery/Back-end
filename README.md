@@ -137,6 +137,6 @@ Logistics-delivery
 |**슬랙API**|신다은<br>(팀장) | - 슬랙 메세지 관리 CRUD 구현<br> - 슬랙 외부 API를 연동하여 메세지 발송 시 실제 슬랙 사이트로 알림메세지가 전송되도록 함. <br> - Base Entity를 사용한 생성,수정,삭제 기록 저장 및 SoftDelete 구현<br> - QueryDSL을 이용한 슬랙 메세지 검색기능 구현|
 |**허브API**|이소현<br>(테크리드) | - 허브 정보, 허브간 경로 CRUD 구현<br> - 허브 검색 기능 (Query DSL) 구현<br> - 최단 경로를 위한 허브간 경로 체크포인트 생성 및 조회 구현<br> -허브 내 배송품 입고 및 출고 처리 기능 구현 |
 |**상품API**|서진영<br>(테크리드) | - |
-|**배송API**|권길남 | - |
+|**배송API**|권길남 | - 배송, 배송 로그, 배송 담당자 CRUD 구현<br> - 배송 담당자 배정 알고리즘 구현<br> - QueryDSL을 사용한 배송정보 검색기능 구현 |
 |**업체API**|원지윤 | -  Company-service CRUD 개발 및 Spring Boot 기반 4계층 아키텍처 적용<br> - QueryDSL 기반 동적 검색 조건 및 페이징 기능 구현<br> - HTTP API 테스트, 도메인 및 서비스 계층 테스트 코드 작성|
 |**주문API**|이용재 | - 주문 CRUD 구현<br> - 주문 생성 시 Product 서비스에 재고 차감 요청 기능 연동 (FeignClient 사용)<br> - 주문 생성 시 Shipping 서비스에 배송 생성 요청 기능 연동 (FeignClient 사용)<br> - Slack 도메인 연동을 위한 주문 + 배송 정보 응답 API 제공<br> - QueryDSL을 활용한 주문 검색 기능 구현 (주문명 + 상태 검색)|
