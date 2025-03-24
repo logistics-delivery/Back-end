@@ -1,5 +1,6 @@
 package com.sparta.shippingservice.presentation;
 
+import com.sparta.shippingservice.application.dto.request.CreateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.request.CreateShippingWithRouteRequestDto;
 import com.sparta.shippingservice.application.dto.request.ShippingSearchCondition;
 import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
@@ -27,9 +28,8 @@ public class ShippingController {
     private final ShippingService shippingService;
 
     @PostMapping() // 배송 생성
-    public ResponseEntity<ShippingWithRouteResponseDto> create (@Valid @RequestBody CreateShippingWithRouteRequestDto request,
-                                                                @RequestHeader("userId")Long userId) {
-        ShippingWithRouteResponseDto responseDto = shippingService.create(request.shipping(), request.routeLog(),userId);
+    public ResponseEntity<ShippingWithRouteResponseDto> create (@Valid @RequestBody CreateShippingRequestDto request, @RequestHeader("userId")Long userId) {
+        ShippingWithRouteResponseDto responseDto = shippingService.create(request,userId);
         return ResponseEntity.ok(responseDto);
 
     }

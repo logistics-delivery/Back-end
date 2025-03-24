@@ -1,53 +1,70 @@
 package com.sparta.shippingservice.application.dto.request;
 
-import com.sparta.shippingservice.domain.model.trans.RouteLogSelf;
-import com.sparta.shippingservice.domain.model.Shipping;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import com.sparta.shippingservice.domain.model.ShippingCheckpoint;
+import com.sparta.shippingservice.domain.model.ShippingRouteLog;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
-public record CreateRouteLogRequestDto(
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor
+public class CreateRouteLogRequestDto {
+    private UUID hubRouteId;
+    private UUID fromHubId;
+    private UUID toHubId;
+    private int duration;
+    private BigDecimal distance;
+    private List<CheckpointSaveDto> checkpoints;
 
-        Shipping shipping,
-
-
-        @NotNull(message = "출발 허브 ID는 필수입니다.")
-        UUID startHubId,
-
-        @NotNull(message = "도착 허브 ID는 필수입니다.")
-        UUID endHubId,
-
-        @NotNull(message = "배송 순번은 필수입니다.")
-        @Min(value = 1, message = "배송 순번은 1 이상이어야 합니다.")
-        Integer sequence,
-
-        @NotNull(message = "예상 거리 입력은 필수입니다.")
-        BigDecimal estimatedDistance,
-
-        @NotNull(message = "예상 시간 입력은 필수입니다.")
-        @Min(value = 1, message = "예상 시간은 1분 이상이어야 합니다.")
-        Integer estimatedTime,
-
-        BigDecimal actualDistance,  // 실측 데이터는 선택값일 수 있음
-
-        Integer actualTime,         // 마찬가지로 선택값
-
-        @NotNull(message = "배송 담당자 ID는 필수입니다.")
-        UUID shippingManagerId
-) {
-    public RouteLogSelf of() {
-        return new RouteLogSelf(
-                this.startHubId(),
-                this.endHubId(),
-                this.sequence(),
-                this.estimatedDistance(),
-                this.estimatedTime(),
-                this.actualDistance(),
-                this.actualTime(),
-                this.shippingManagerId()
-        );
+    public ShippingRouteLog toEntity() {
+        ShippingRouteLog route = ShippingRouteLog.builder()
+                .hubRouteId(hubRouteId)
+                .fromHubId(fromHubId)
+                .toHubId(toHubId)
+                .duration(duration)
+                .distance(distance)
+                .build();
+        // 체크포인트 추가
+        if (checkpoints != null) {
+            for (CheckpointSaveDto cp : checkpoints) {
+                route.addCheckpoint(cp.toEntity());
+            }
+        }
+        return route;
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class CheckpointSaveDto {
+        private int orderIndex;
+        private UUID hubId;
+        private String hubName;
+        public ShippingCheckpoint toEntity() {
+            return ShippingCheckpoint.builder()
+                    .orderIndex(orderIndex)
+                    .hubId(hubId)
+                    .hubName(hubName)
+                    .build();
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+

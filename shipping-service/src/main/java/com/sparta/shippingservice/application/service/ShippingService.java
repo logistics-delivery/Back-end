@@ -12,13 +12,13 @@ import com.sparta.shippingservice.application.dto.response.ShippingRouteResponse
 import com.sparta.shippingservice.application.dto.response.ShippingSearchResult;
 import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResponseDto;
 import com.sparta.shippingservice.domain.model.*;
-import com.sparta.shippingservice.domain.model.trans.RouteLogSelf;
 import com.sparta.shippingservice.domain.repository.ShippingRepository;
 import com.sparta.commonmodule.exception.*;
 
 import com.sparta.shippingservice.domain.repository.ShippingRouteRepository;
+import com.sparta.shippingservice.infrastructure.client.HubClient;
+import com.sparta.shippingservice.infrastructure.client.HubRouteDetailsResponseDto;
 import com.sparta.shippingservice.infrastructure.client.ShippingManagerClient;
-//import com.sparta.shippingservice.infrastructure.repository.ShippingSearchRepository;
 import com.sparta.shippingservice.infrastructure.repository.ShippingSearchRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,11 +41,12 @@ public class ShippingService {
     private final ShippingRouteRepository shippingRouteRepository;
     private final ShippingManagerClient shippingManagerClient;
     private final ShippingSearchRepository searchRepository;
+    private final HubClient hubClient;
 
 //각 허브에 10명 / 업체에 10명
 
     @Transactional
-    public ShippingWithRouteResponseDto create(@Valid CreateShippingRequestDto request , @Valid CreateRouteLogRequestDto logDto,Long userId) {
+    public ShippingWithRouteResponseDto create(@Valid CreateShippingRequestDto request ,Long userId) {
 
         ShippingManagerResponseDto manager = shippingManagerClient.assignManager();
         if(manager.managerType() != ManagerType.CARRIER){
@@ -54,22 +55,12 @@ public class ShippingService {
 
         Shipping shipping = request.of(manager.id()).toShipping(userId);
 
-        RouteLogSelf routeLogSelf = new RouteLogSelf(
-                logDto.startHubId(),
-                logDto.endHubId(),
-                logDto.sequence(),
-                logDto.estimatedDistance(),
-                logDto.estimatedTime(),
-                logDto.actualDistance(),
-                logDto.actualTime(),
-                logDto.shippingManagerId()
-
-        );
-        ShippingRouteLog routeLog = routeLogSelf.toShippingRouteLog();
+        HubRouteDetailsResponseDto pathHubRoute = hubClient.createPathHubRoute(shipping.getRouteLog().getFromHubId(),shipping.getRouteLog().getToHubId());
+        ShippingRouteLog routeLog = pathHubRoute.toShippingRouteLog();
 
         // 양방향 연관관계 설정
         routeLog.setShipping(shipping);
-        shipping.getRouteLogs().add(routeLog);
+        shipping.add(routeLog);
 
         shippingRepository.save(shipping);
         return ShippingWithRouteResponseDto.from(shipping,routeLog);
@@ -131,22 +122,13 @@ public class ShippingService {
     }
 
     @Transactional(readOnly = true)
-    public List<ShippingRouteResponseDto> getLogAll(){
+    public List<ShippingRouteResponseDto> getLogAll() {
         List<ShippingRouteLog> result = shippingRouteRepository.findAll();
         return result.stream()
-                .map(shippingRouteLog->new ShippingRouteResponseDto(
-                        shippingRouteLog.getId(),
-                        shippingRouteLog.getStartHubId(),
-                        shippingRouteLog.getEndHubId(),
-                        shippingRouteLog.getSequence(),
-                        shippingRouteLog.getEstimatedDistance(),
-                        shippingRouteLog.getActualTime(),
-                        shippingRouteLog.getActualDistance(),
-                        shippingRouteLog.getEstimatedTime(),
-                        shippingRouteLog.getShippingManagerId()
-
-                )).collect(Collectors.toList());
+                .map(ShippingRouteResponseDto::from)
+                .collect(Collectors.toList());
     }
+
 
     @Transactional
     public ShippingRouteResponseDto deleteShippingLog(UUID shippingId,UUID shippingLogId, long userId) {
