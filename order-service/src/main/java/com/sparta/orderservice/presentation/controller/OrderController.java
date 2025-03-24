@@ -4,6 +4,7 @@ import com.sparta.orderservice.application.dto.OrderRequestDto;
 import com.sparta.orderservice.application.dto.OrderResponseDto;
 import com.sparta.orderservice.application.service.OrderService;
 import com.sparta.orderservice.domain.model.OrderStatus;
+import com.sparta.orderservice.infrastructure.client.dto.response.SlackNotificationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -80,6 +81,14 @@ public class OrderController {
             @RequestParam(required = false) OrderStatus status
     ) {
         return ResponseEntity.ok(orderService.searchOrders(name, status));
+    }
+
+    // slack 응답
+    @Operation(summary = "Slack 알림 응답", description = "Slack 도메인에서 주문 정보를 가져가기 위한 api입니다.")
+    @GetMapping("/{id}/slack-info")
+    public ResponseEntity<SlackNotificationDto> getSlackNotificationInfo(@PathVariable UUID id) {
+        SlackNotificationDto slackDto = orderService.getSlackNotificationDto(id);
+        return ResponseEntity.ok(slackDto);
     }
 
 
