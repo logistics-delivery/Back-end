@@ -1,9 +1,12 @@
 package com.sparta.hubservice.hub.domain.model;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 import com.sparta.commonmodule.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,14 +55,14 @@ public class Hub extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Hub hub = (Hub) o;
-        return hubId.equals(hub.hubId);
+        if (!(o instanceof Hub)) return false;
+        Hub other = (Hub) o;
+        return Objects.equals(this.hubId, other.hubId);  // 또는 비즈니스 키
     }
 
     @Override
     public int hashCode() {
-        return hubId.hashCode();
+        return Objects.hash(hubId); // id 기반으로
     }
 
 

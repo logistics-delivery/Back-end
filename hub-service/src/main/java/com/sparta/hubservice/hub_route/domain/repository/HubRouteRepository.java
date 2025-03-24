@@ -22,5 +22,5 @@ public interface HubRouteRepository {
 
     Optional<List<HubRoute>> findByFromHub(Hub hub);
 
-    Optional<HubRoute> findByFromHubAndToHub(Hub fromHub, Hub toHub);
+    Optional<HubRoute> findShortestRouteByFromAndTo(Hub fromHub, Hub toHub);
 }

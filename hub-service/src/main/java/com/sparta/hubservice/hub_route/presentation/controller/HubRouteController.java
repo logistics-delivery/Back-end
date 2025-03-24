@@ -30,7 +30,7 @@ public class HubRouteController {
     // 전체 허브 간 경로 목록 조회 (direct)
     @GetMapping
     public ResponseEntity<Page<HubRouteResponseDto>> getHubRoutes(
-        @PageableDefault(page = 0, size = 10, sort = "createdAt") Pageable pageable){
+        @PageableDefault(page = 0, size = 30, sort = "createdAt") Pageable pageable){
         Page<HubRouteResponseDto> responses = hubRouteService.getHubRoutes(pageable);
         return ResponseEntity.ok(responses);
     }

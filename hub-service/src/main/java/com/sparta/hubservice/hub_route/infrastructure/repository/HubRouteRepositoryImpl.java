@@ -50,7 +50,7 @@ public class HubRouteRepositoryImpl implements HubRouteRepository {
     }
 
     @Override
-    public Optional<HubRoute> findByFromHubAndToHub(Hub fromHub, Hub toHub) {
-        return jpaHubRouteRepository.findByFromHubAndToHub(fromHub, toHub);
+    public Optional<HubRoute> findShortestRouteByFromAndTo(Hub fromHub, Hub toHub) {
+        return jpaHubRouteRepository.findShortestRouteByFromAndTo(fromHub, toHub);
     }
 }
