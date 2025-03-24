@@ -59,7 +59,8 @@ public class DijkstraPathFinder implements PathFinder {
             visited.add(currentHub);
 
             // 현재 허브에서 연결된 모든 허브 경로 가져오기
-            List<HubRoute> routes = graph.get(currentHub);
+            List<HubRoute> routes = graph.getOrDefault(currentHub, List.of());
+
 
             for (HubRoute route : routes) {
                 Hub nextHub = route.getToHub();

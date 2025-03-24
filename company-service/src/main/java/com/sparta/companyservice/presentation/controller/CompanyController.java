@@ -35,7 +35,7 @@ public class CompanyController {
 
     // 생성
     @Operation(summary = "Company 등록", description = "Company 생성 api 입니다.")
-    @RoleCheck("ROLE_MASTER, ROLE_HUB_MANAGER")
+    @RoleCheck("ROLE_MASTER, ROLE_HUB")
     @PostMapping
     public ResponseEntity<CompanyResponse> createCompany(@Valid @RequestBody CompanyCreateRequest request, @RequestHeader("user_id") Long userId) {
         CompanyDto createdCompany = companyService.createCompany(request.toDto(), userId);
@@ -46,9 +46,9 @@ public class CompanyController {
     @Operation(summary = "Company 조회", description = "Company 조회 api 입니다.")
     @GetMapping
     public ResponseEntity<Page<CompanyResponse>> searchCompanies(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String address,
-            @RequestParam(required = false) CompanyType type,
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "address", required = false) String address,
+            @RequestParam(name = "type", required = false) CompanyType type,
             Pageable pageable
     ) {
         Page<CompanyDto> companies = companyService.searchCompanies(name, address, type, pageable);
@@ -59,25 +59,26 @@ public class CompanyController {
     // 단일 조회
     @Operation(summary = "Company 조회", description = "Company 단건 조회 api 입니다.")
     @GetMapping("/{companyId}")
-    public ResponseEntity<CompanyResponse> getCompanyById(@PathVariable UUID companyId) {
+    public ResponseEntity<CompanyResponse> getCompanyById(@PathVariable("companyId") UUID companyId
+    ) {
         CompanyDto oneCompany = companyService.getCompanyById(companyId);
         return ResponseEntity.ok(CompanyResponse.fromDto(oneCompany));
     }
 
     // 수정
     @Operation(summary = "Company 수정", description = "Company 수정 api 입니다.")
-    @RoleCheck("ROLE_MASTER, ROLE_HUB_MANAGER, ROLE_COMPANY_MANAGER")
+    @RoleCheck("ROLE_MASTER, ROLE_HUB, ROLE_COMPANY")
     @PatchMapping("/{companyId}")
-    public ResponseEntity<CompanyResponse> updateCompany(@PathVariable UUID companyId, @Valid @RequestBody CompanyUpdateRequest request, @RequestHeader("user_id") Long userId) {
+    public ResponseEntity<CompanyResponse> updateCompany(@PathVariable("companyId") UUID companyId, @Valid @RequestBody CompanyUpdateRequest request, @RequestHeader("user_id") Long userId) {
         CompanyDto updatedCompany = companyService.updateCompany(companyId, request.toDto(), userId);
         return ResponseEntity.ok(CompanyResponse.fromDto(updatedCompany));
     }
 
     // 삭제
     @Operation(summary = "Company 삭제", description = "Company 삭제 api 입니다.")
-    @RoleCheck("ROLE_MASTER, ROLE_HUB_MANAGER")
+    @RoleCheck("ROLE_MASTER, ROLE_HUB")
     @DeleteMapping("/{companyId}")
-    public ResponseEntity<CompanyDeleteResponse> deleteCompany(@PathVariable UUID companyId, @RequestHeader("user_id") Long userId) {
+    public ResponseEntity<CompanyDeleteResponse> deleteCompany(@PathVariable("companyId") UUID companyId, @RequestHeader("user_id") Long userId) {
         CompanyDeleteResponse deletedCompany = companyService.deleteCompany(companyId, userId);
         return ResponseEntity.ok(deletedCompany);
     }

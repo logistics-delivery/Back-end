@@ -5,7 +5,6 @@ import com.sparta.hubservice.hub_route.domain.model.HubRouteCheckpoint;
 import com.sparta.hubservice.hub_route.domain.repository.HubRouteCheckpointRepository;
 import com.sparta.hubservice.hub_route.infrastructure.persistence.JPAHubRouteCheckpointRepository;
 import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +28,10 @@ public class HubRouteCheckpointRepositoryImpl implements HubRouteCheckpointRepos
     public List<HubRouteCheckpoint> findAllByHubRoute_OrderBySequenceAsc(HubRoute hubRoute) {
         return jpaHubRouteCheckpointRepository.findAllByHubRoute_OrderBySequenceAsc(hubRoute);
     }
+
+    @Override
+    public void save(HubRouteCheckpoint result) {
+        jpaHubRouteCheckpointRepository.save(result);
+    }
+
 }

@@ -33,7 +33,7 @@ public class HubController {
     // 허브 목록 검색
     @GetMapping
     public ResponseEntity<Page<HubResponseDto>> getHubs(
-        @PageableDefault(page = 0, size = 10, sort = "createdAt") Pageable pageable) {
+        @PageableDefault(page = 0, size = 30, sort = "createdAt") Pageable pageable) {
         Page<HubResponseDto> responseDtos = hubService.getHubs(pageable);
         return ResponseEntity.ok(responseDtos);
     }
@@ -50,7 +50,7 @@ public class HubController {
     public ResponseEntity<Page<HubResponseDto>> getSearchHubs(
         @RequestParam(required = false) String name,
         @RequestParam(required = false) String address,
-        @PageableDefault(page = 0, size = 10, sort = "createdAt") Pageable pageable){
+        @PageableDefault(page = 0, size = 30, sort = "createdAt") Pageable pageable){
         Page<HubResponseDto> responseDto = hubService.getSearchHubs(name, address, pageable);
         return ResponseEntity.ok(responseDto);
     }

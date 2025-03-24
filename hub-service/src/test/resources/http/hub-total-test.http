@@ -1,0 +1,23 @@
+
+### 🔹 허브 목록 조회 (페이징)
+GET http://localhost:8082/api/v1/hubs
+Accept: application/json
+
+### 🔹 특정 허브 조회 (GET, UUID 사용)
+GET http://localhost:8082/api/v1/hubs/b252fddc-a4b1-420e-94c2-9a91bebee41a
+Accept: application/json
+
+### 🔹 허브 생성 (POST) -> ✨ create-hub.http 에서 테스트 및 더미데이터 생성
+
+### 🔹 허브 검색 (해당 단어 포함하는 모든 주소, 이름 검색 가능)
+GET http://localhost:8082/api/v1/hubs/search?address=서울특별시 송파구
+Accept: application/json
+
+### 🔹 허브 업데이트 (PUT, UUID 사용)
+PUT http://localhost:8082/api/v1/hubs/b252fddc-a4b1-420e-94c2-9a91bebee41a?userId=123&address=충남 홍성군 홍북읍 충남대로 21
+Accept: application/json
+
+
+### 🔹 허브 삭제 (DELETE, UUID 사용)
+DELETE http://localhost:8082/api/v1/hubs/984feadc-b1db-43c5-81bc-a24ec5001ddc?userId=123
+Accept: application/json
