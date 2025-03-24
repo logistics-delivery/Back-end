@@ -9,8 +9,12 @@ import com.sparta.orderservice.domain.model.OrderStatus;
 import com.sparta.orderservice.domain.repository.OrderQueryDSLRepository;
 import com.sparta.orderservice.domain.repository.OrderRepository;
 import com.sparta.orderservice.infrastructure.client.ProductClient;
+import com.sparta.orderservice.infrastructure.client.ShippingClient;
+import com.sparta.orderservice.infrastructure.client.dto.request.CreateShippingRequestDto;
+import com.sparta.orderservice.infrastructure.client.dto.response.CreateShippingResponseDto;
 import com.sparta.orderservice.infrastructure.client.dto.response.DecreaseProductQuantityResponseDto;
 import com.sparta.orderservice.infrastructure.client.dto.request.DecreaseProductQuantityServiceRequestDto;
+import com.sparta.orderservice.infrastructure.client.dto.response.SlackNotificationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -26,11 +30,12 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+
     @Qualifier("orderQueryDSLRepositoryImpl")
     private final OrderQueryDSLRepository orderQueryDSLRepository;
-    private final ProductClient productClient;
-//    private final ProductClient productClient;
 
+    private final ProductClient productClient;
+    private final ShippingClient shippingClient;
 
     //주문 생성
     @Transactional
@@ -42,7 +47,7 @@ public class OrderService {
                         .productId(requestDto.getProductId())
                         .companyId(requestDto.getSupplierId())     // supplierId → companyId
                         .hubId(requestDto.getReceiverId())         // receiverId → hubId
-                        .quantity(1)                               // 기본 수량 예시
+                        .quantity(1)                               // 기본 수량
                         .build();
 
         // 2. FeignClient로 재고 차감 요청
@@ -51,12 +56,12 @@ public class OrderService {
         DecreaseProductQuantityResponseDto response =
                 productClient.decreaseProductQuantity(productId, reduceRequest);
 
-
         // 3. 실패 시 예외 발생
         if (!response.getIsSuccess()) {
             throw new OperationNotAllowedException("재고 차감에 실패하여 주문을 생성할 수 없습니다.");
         }
 
+        // 4. 주문 저장
         Order order = Order.builder()
                 .name(requestDto.getName())
                 .supplierId(requestDto.getSupplierId())
@@ -68,8 +73,24 @@ public class OrderService {
                 .build();
 
         order.setCreatedBy(0L);  // createdBy 기본값 설정 (BaseEntity 상속으로 인해 필요)
-
         orderRepository.save(order);
+
+        // 5. 배송 요청 DTO 생성
+        CreateShippingRequestDto shippingRequest = CreateShippingRequestDto.builder()
+                .orderId(order.getOrderId())
+                .productId(order.getProductId())
+                .supplierId(order.getSupplierId())
+                .receiverId(order.getReceiverId())
+                .quantity(1)
+                .build();
+
+        // 6. FeignClient로 배송 요청
+        CreateShippingResponseDto shippingResponse = shippingClient.createShipping(shippingRequest);
+
+        // 7. 배송 실패 시 예외
+        if (!"READY".equals(shippingResponse.getStatus())) {
+            throw new OperationNotAllowedException("배송 생성 실패로 주문 생성 중단");
+        }
 
         return new OrderResponseDto(order);
     }
@@ -130,12 +151,31 @@ public class OrderService {
         return OrderResponseDto.fromEntity(order);
     }
 
-    // 검색
+    // 주문 검색
     @Transactional(readOnly = true)
     public List<OrderResponseDto> searchOrders(String name, OrderStatus status) {
         List<Order> result = orderQueryDSLRepository.searchOrders(name, status);
         return result.stream()
                 .map(OrderResponseDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    // 슬랙 알림용 DTO 생성 메서드
+    @Transactional(readOnly = true)
+    public SlackNotificationDto getSlackNotificationDto(UUID orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("해당 주문을 찾을 수 없습니다."));
+
+        CreateShippingResponseDto shipping = shippingClient.getShippingInfo(orderId);
+
+        return SlackNotificationDto.builder()
+                .orderId(order.getOrderId())
+                .shippingId(shipping.getShippingId())
+                .shippingStatus(shipping.getStatus())
+                .route(shipping.getRoute())
+                .hubName(shipping.getHubName())
+                .hubManagerName(shipping.getHubManagerName())
+                .message(shipping.getMessage())
+                .build();
     }
 }

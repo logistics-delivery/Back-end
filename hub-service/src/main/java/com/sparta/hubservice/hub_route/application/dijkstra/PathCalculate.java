@@ -49,6 +49,7 @@ public class PathCalculate {
         DijkstraPathFinder dijkstraPathFinder = new DijkstraPathFinder(graph);
         List<Hub> sequencePathByDijkstra = dijkstraPathFinder.getShortPath(fromHub, toHub);
 
+        /*
         // JGraphT 라이브러리를 사용한 체크포인트 리스트 생성
         JGraphTPathFinder jgraphT = new JGraphTPathFinder(graph);
         List<Hub> sequencePathByJGraphT = jgraphT.getShortPath(fromHub, toHub);
@@ -56,6 +57,7 @@ public class PathCalculate {
         if(sequencePathByDijkstra.equals(sequencePathByJGraphT)) {
             log.info("Checking checkpoint path validity : dijkstraPath same JGraphT");
         }
+        */
 
         return sequencePathByDijkstra;
     }

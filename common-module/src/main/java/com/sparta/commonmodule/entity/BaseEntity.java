@@ -40,7 +40,7 @@ public class BaseEntity {
 
     @Column(name = "is_deleted")
     @ColumnDefault("FALSE")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
 
     @Column(name = "deleted_at", nullable = true)

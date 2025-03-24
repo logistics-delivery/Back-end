@@ -5,7 +5,8 @@ Content-Type: application/json
     "username":"asdf123",
     "password":"asdfgA12@",
     "email":"asdf@naver.com",
-    "slackName": "asdggg"
+    "slackName": "asdggg",
+    "tokenValue": "mgbE4vogtrMGufz6PXkQNTV-KZtU4-Mz7_wcKf7r40kKTu8z4BD9l_kacdd4MzU3pQV6y3LB-yrmMvvXFKep2Q"
 }
 
 ###
@@ -41,5 +42,4 @@ Authorization: {{access_token}}
 ###
 
 DELETE http://localhost:8080/api/v1/users
-Content-Type: application/json
 Authorization: {{access_token}}

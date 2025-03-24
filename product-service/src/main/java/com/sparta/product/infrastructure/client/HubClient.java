@@ -12,6 +12,6 @@ public interface HubClient {
     /**
      *  허브 존재 확인
      */
-    @GetMapping("/api/v1/hubs/{id}/exists")
-    boolean existsById(@PathVariable("id") UUID id);
+    @GetMapping("/api/v1/hubs/{hub_id}")
+    boolean getHubById(@PathVariable("hub_id") UUID hubId);
 }

@@ -3,28 +3,32 @@ package com.sparta.hubservice.hub.presentation.controller;
 import com.sparta.hubservice.hub.application.service.HubShippingScanService;
 import com.sparta.hubservice.hub.infrastructure.feignclient.dto.InboundStatusResponseDto;
 import com.sparta.hubservice.hub.infrastructure.feignclient.dto.OutboundStatusResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/shipping-scan")
+@RequestMapping("/api/v1/hub-shipping-scan")
+@Tag(name = "Hub Service", description = "허브 서비스 API")
 public class HubShippingScanController {
 
     private final HubShippingScanService hubShippingScanService;
 
     // 입고 처리 저장
+    @Operation(summary = "Hub - 상품 입고처리", description = "허브 내 상품 입고처리 api")
     @PostMapping("/{hub_id}/{shipping_id}/inbound-log")
     public ResponseEntity<InboundStatusResponseDto> inboundStatus(
         @PathVariable("hub_id") UUID hubId,
         @PathVariable("shipping_id") UUID shippingId,
-        @RequestParam("user_id") Long userId){
+        @RequestHeader("user-id") Long userId){
 
         InboundStatusResponseDto responseDto =
             hubShippingScanService.createInbound(hubId, shippingId, userId);
@@ -33,11 +37,12 @@ public class HubShippingScanController {
     }
 
     // 출고 처리 저장
+    @Operation(summary = "Hub - 상품 출고처리", description = "허브 내 상품 출고처리 api")
     @PostMapping("/{hub_id}/{shipping_id}/outbound-log")
     public ResponseEntity<OutboundStatusResponseDto> outboundStatus(
         @PathVariable("hub_id") UUID hubId,
         @PathVariable("shipping_id") UUID shippingId,
-        @RequestParam("user_id") Long userId
+        @RequestHeader("user-id") Long userId
     ){
         OutboundStatusResponseDto responseDto =
             hubShippingScanService.createOutbound(hubId, shippingId, userId);

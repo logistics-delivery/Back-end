@@ -1,23 +1,24 @@
 server:
   port: 8082
+
 spring:
   application:
     name: hub-service
   config:
     import: "application-secret.yml"
   datasource:
-    url: jdbc:postgresql://localhost:5432/testdb
-    username: postgres
+    url: jdbc:postgresql://postgres:5432/maindb
+    username: admin
     password: 1234
     driver-class-name: org.postgresql.Driver
-
   jpa:
     properties:
       hibernate:
+        default_schema: hub_service
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update  # 테이블 자동 생성
-    show-sql: true  # SQL 로그 출력
+      ddl-auto: update
+    show-sql: true
 
 eureka:
   client:
@@ -28,9 +29,14 @@ eureka:
   instance:
     prefer-ip-address: true
 
-security:
-  basic:
-    enabled: false
+springdoc:
+  api-docs:
+    version: openapi_3_1
+    enabled: true
+    path: /hub-service/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
 
 shipping:
   service:
