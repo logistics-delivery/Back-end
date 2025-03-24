@@ -21,8 +21,6 @@ class UserControllerTest {
     @Autowired
     private UserService userService;
 
-    private String jwtToken;
-
     @Test
     void signUp() throws Exception {
         mockMvc.perform(post("/api/v1/users/sign-up")

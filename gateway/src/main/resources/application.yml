@@ -155,7 +155,7 @@ springdoc:
       url: /hub-service/v3/api-docs
     urls[3]:
       name: Company Service
-      url: /comp-service/v3/api-docs
+      url: /company-service/v3/api-docs
     urls[4]:
       name: Slack Service
       url: /slack-service/v3/api-docs

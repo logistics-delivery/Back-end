@@ -33,6 +33,7 @@ public class UserService {
         validDuplicatedNames(requestDto);
         UserRoleEnum role = checkUserRole(requestDto.getTokenValue());
         User user = requestDto.createUser(encryptPassword(requestDto.getPassword()), role);
+        user.setting(userRepository.save(user).getId());
         return userRepository.save(user).getId();
     }
     //로그인
@@ -56,7 +57,7 @@ public class UserService {
     public void updateUser(UserUpdateRequestDto requestDto, Long userId) {
         User user = findUserInfo(userId);
         UserRoleEnum userRole = checkUserRole(requestDto.getTokenValue());
-        user.updateUser(encryptPassword(requestDto.getPassword()), requestDto, userRole.getAuthority(), userId);
+        user.updateUser(encryptPassword(requestDto.getPassword()), requestDto, userRole.getAuthority());
     }
     //회원정보 삭제
     public void deleteUser(Long userId) {

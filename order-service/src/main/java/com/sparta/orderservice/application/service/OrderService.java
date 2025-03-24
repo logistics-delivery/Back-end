@@ -9,6 +9,9 @@ import com.sparta.orderservice.domain.model.OrderStatus;
 import com.sparta.orderservice.domain.repository.OrderQueryDSLRepository;
 import com.sparta.orderservice.domain.repository.OrderRepository;
 import com.sparta.orderservice.infrastructure.client.ProductClient;
+import com.sparta.orderservice.infrastructure.client.ShippingClient;
+import com.sparta.orderservice.infrastructure.client.dto.request.CreateShippingRequestDto;
+import com.sparta.orderservice.infrastructure.client.dto.response.CreateShippingResponseDto;
 import com.sparta.orderservice.infrastructure.client.dto.response.DecreaseProductQuantityResponseDto;
 import com.sparta.orderservice.infrastructure.client.dto.request.DecreaseProductQuantityServiceRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,7 @@ public class OrderService {
     @Qualifier("orderQueryDSLRepositoryImpl")
     private final OrderQueryDSLRepository orderQueryDSLRepository;
     private final ProductClient productClient;
+    private final ShippingClient shippingClient;
 //    private final ProductClient productClient;
 
 
@@ -68,8 +72,24 @@ public class OrderService {
                 .build();
 
         order.setCreatedBy(0L);  // createdBy 기본값 설정 (BaseEntity 상속으로 인해 필요)
-
         orderRepository.save(order);
+
+        // 5. 배송 요청 DTO 생성
+        CreateShippingRequestDto shippingRequest = CreateShippingRequestDto.builder()
+                .orderId(order.getOrderId())
+                .productId(order.getProductId())
+                .supplierId(order.getSupplierId())
+                .receiverId(order.getReceiverId())
+                .quantity(1)
+                .build();
+
+        // 6. FeignClient로 배송 요청
+        CreateShippingResponseDto shippingResponse = shippingClient.createShipping(shippingRequest);
+
+        // 7. 배송 실패 시 예외
+        if (!"READY".equals(shippingResponse.getStatus())) {
+            throw new OperationNotAllowedException("배송 생성 실패로 주문 생성 중단");
+        }
 
         return new OrderResponseDto(order);
     }

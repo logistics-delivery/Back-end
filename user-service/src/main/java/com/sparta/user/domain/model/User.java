@@ -45,22 +45,19 @@ public class User extends BaseEntity {
         this.email = email;
         this.slackName = slackName;
         this.role = role;
-        setCreatedBy(getId());
-        setCreatedAt(LocalDateTime.now());
     }
 
     @Builder
-    public User(String username, String password, String email, String slackName) {
+    public User(String username, String password, String email, String slackName,Long userId) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.slackName = slackName;
+        setCreatedBy(userId);
     }
 
 
-    public void updateUser(String encryptedpassword, UserUpdateRequestDto requestDto, String userRole, Long userId) {
-        super.update(userId);
-        setUpdatedAt(LocalDateTime.now());
+    public void updateUser(String encryptedpassword, UserUpdateRequestDto requestDto, String userRole) {
         Optional.ofNullable(requestDto.getUsername()).ifPresent(username -> this.username = username);
         Optional.ofNullable(encryptedpassword).ifPresent(password -> this.password = encryptedpassword);
         Optional.ofNullable(requestDto.getEmail()).ifPresent(email -> this.email = email);
@@ -68,4 +65,8 @@ public class User extends BaseEntity {
         Optional.ofNullable(userRole).ifPresent(role -> this.role = userRole);
     }
 
+    public void setting(Long userId) {
+        setCreatedBy(userId);
+        setUpdatedBy(userId);
+    }
 }
