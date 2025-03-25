@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Getter
 @Table(name = "p_slacks")
 @NoArgsConstructor
+@SQLRestriction("is_deleted IS FALSE")
 public class Slack extends BaseEntity {
 
     @Id

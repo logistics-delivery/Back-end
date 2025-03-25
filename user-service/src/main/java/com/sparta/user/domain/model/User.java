@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @Table(name = "p_users")
 @Entity
+@SQLRestriction("is_deleted IS FALSE")
 public class User extends BaseEntity {
 
     @Id
