@@ -13,9 +13,10 @@ import com.sparta.orderservice.infrastructure.client.ShippingClient;
 import com.sparta.orderservice.infrastructure.client.dto.request.CreateShippingRequestDto;
 import com.sparta.orderservice.infrastructure.client.dto.response.CreateShippingResponseDto;
 import com.sparta.orderservice.infrastructure.client.dto.response.DecreaseProductQuantityResponseDto;
-import com.sparta.orderservice.infrastructure.client.dto.request.DecreaseProductQuantityServiceRequestDto;
+import com.sparta.orderservice.infrastructure.client.dto.request.DecreaseProductQuantityRequestDto;
 import com.sparta.orderservice.infrastructure.client.dto.response.SlackNotificationDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -42,19 +44,16 @@ public class OrderService {
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
 
         // 1. 재고 차감 요청 DTO 생성
-        DecreaseProductQuantityServiceRequestDto reduceRequest =
-                DecreaseProductQuantityServiceRequestDto.builder()
-                        .productId(requestDto.getProductId())
+        DecreaseProductQuantityRequestDto reduceRequest =
+                DecreaseProductQuantityRequestDto.builder()
                         .companyId(requestDto.getSupplierId())     // supplierId → companyId
                         .hubId(requestDto.getReceiverId())         // receiverId → hubId
-                        .quantity(1)                               // 기본 수량
+                        .quantity(50)                              // 기본 수량
                         .build();
 
         // 2. FeignClient로 재고 차감 요청
-        UUID productId = reduceRequest.getProductId();
-
         DecreaseProductQuantityResponseDto response =
-                productClient.decreaseProductQuantity(productId, reduceRequest);
+                productClient.decreaseProductQuantity(requestDto.getProductId(), reduceRequest);
 
         // 3. 실패 시 예외 발생
         if (!response.getIsSuccess()) {
@@ -78,13 +77,13 @@ public class OrderService {
         CreateShippingRequestDto shippingRequest = CreateShippingRequestDto.builder()
                 .orderId(order.getOrderId())
                 .productId(order.getProductId())
-                .supplierId(order.getSupplierId())
-                .receiverId(order.getReceiverId())
-                .quantity(1)
+                .supplierId(order.getSupplierId())  // supplierId → companyId
+                .receiverId(order.getReceiverId())  // receiverId → hubId
+                .quantity(50)
                 .build();
 
         // 6. FeignClient로 배송 요청
-        CreateShippingResponseDto shippingResponse = shippingClient.createShipping(shippingRequest);
+        CreateShippingResponseDto shippingResponse = shippingClient.create(shippingRequest);
 
         // 7. 배송 실패 시 예외
         if (!"READY".equals(shippingResponse.getStatus())) {
@@ -93,6 +92,107 @@ public class OrderService {
 
         return new OrderResponseDto(order);
     }
+
+
+
+
+
+/*
+    @Transactional
+    public OrderResponseDto createOrder2(OrderRequestDto requestDto) {
+
+        Order order = Order.builder()
+                .name(requestDto.getName())
+                .supplierId(requestDto.getSupplierId())
+                .receiverId(requestDto.getReceiverId())
+                .productId(requestDto.getProductId())
+                .totalPrice(requestDto.getTotalPrice())
+                .requestDetail(requestDto.getRequestDetail())
+                .status(OrderStatus.CREATED)
+                .build();
+
+        orderRepository.save(order);
+
+
+        // 1. 재고 차감 요청 DTO 생성
+        DecreaseProductQuantityRequestDto reduceRequest =
+                DecreaseProductQuantityRequestDto.builder()
+                        .companyId(requestDto.getSupplierId())     // supplierId → companyId
+                        .hubId(requestDto.getReceiverId())         // receiverId → hubId
+                        .quantity(50)                              // 기본 수량
+                        .build();
+
+        // 재고 감소 성공 여부
+        boolean stockDecreased = false;
+
+        try {
+            // 2. FeignClient 재고 차감 요청
+            DecreaseProductQuantityResponseDto response =
+                    productClient.decreaseProductQuantity(requestDto.getProductId(), reduceRequest);
+            stockDecreased = true;
+
+            // 3. FeignClient 배송 생성 요청
+            CreateShippingResponseDto shippingResponse = shippingClient.create(shippingRequest);
+            UUID shippingId = shippingResponse.getShippingId();
+
+            // 4. 슬랙 생성 요청
+
+
+        } catch (Exception e) {
+
+            // 주문 재고 보상 트랜잭션 - 재고 복구
+            if (stockDecreased) {
+                compensateProduct(requestDto.getProductId(), reduceRequest.getQuantity());
+            }
+
+            // 배송 보상 트랜잭션 - 배송 삭제
+            if (shippingId != null) {
+                compensateShipping(shippingId);
+            }
+
+            throw new RuntimeException("주문 실패 및 보상 처리 완료", e);
+        }
+
+
+
+
+        return new OrderResponseDto(order);
+    }
+
+
+    // 주문 보상 트랜잭션 - 주문 삭제
+    private void compensateOrder(Order order) {
+        try {
+            orderRepository.delete(order);
+            log.info("주문 삭제 보상 완료");
+        } catch (Exception e) {
+            log.warn("주문 삭제 보상 실패", e);
+        }
+    }
+
+
+    // 주문 재고 보상 트랜잭션 - 재고 복구
+    private void compensateProduct(UUID productId, int quantity) {
+        try {
+            productClient.increaseProductQuantity(productId, quantity);
+            log.info("재고 복구 보상 완료");
+        } catch (Exception e) {
+            log.warn("재고 복구 보상 실패", e);
+        }
+    }
+
+    // 배송 보상 트랜잭션 - 배송 삭제
+    private void compensateShipping(UUID shippingId) {
+        try {
+            shippingClient.deleteShipping(shippingId);
+            log.info("배송 삭제 보상 완료");
+        } catch (Exception e) {
+            log.warn("배송 삭제 보상 실패", e);
+        }
+    }
+
+*/
+
 
     // 주문 전체 조회
     @Transactional(readOnly = true)

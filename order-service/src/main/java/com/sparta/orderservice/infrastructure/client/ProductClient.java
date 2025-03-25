@@ -1,7 +1,7 @@
 package com.sparta.orderservice.infrastructure.client;
 
 import com.sparta.orderservice.infrastructure.client.dto.response.DecreaseProductQuantityResponseDto;
-import com.sparta.orderservice.infrastructure.client.dto.request.DecreaseProductQuantityServiceRequestDto;
+import com.sparta.orderservice.infrastructure.client.dto.request.DecreaseProductQuantityRequestDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +15,6 @@ import java.util.UUID;
         @PutMapping("/{productId}/decrease")
         DecreaseProductQuantityResponseDto decreaseProductQuantity(
                 @PathVariable("productId") UUID productId,
-                @RequestBody DecreaseProductQuantityServiceRequestDto requestDto
+                @RequestBody DecreaseProductQuantityRequestDto requestDto
         );
     }

@@ -99,7 +99,6 @@ public class ProductController {
     /**
      *  상품 수정(재고 감소)
      */
-    @RoleCheck("ROLE_MASTER, ROLE_HUB, ROLE_COMPANY")
     @PutMapping("/{productId}/decrease")
     public ResponseEntity<DecreaseProductQuantityResponseDto> decreaseProductQuantity(@PathVariable UUID productId,
                                                                                       @RequestBody DecreaseProductQuantityRequestDto requestDto) {
@@ -111,7 +110,6 @@ public class ProductController {
     /**
      *  상품 수정(재고 증가)
      */
-    @RoleCheck("ROLE_MASTER, ROLE_HUB, ROLE_COMPANY")
     @PutMapping("/{productId}/increase")
     public ResponseEntity<IncreaseProductQuantityResponseDto> increaseProductQuantity(@PathVariable UUID productId,
                                                                                       @RequestBody IncreaseProductQuantityRequestDto requestDto) {
