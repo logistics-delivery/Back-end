@@ -56,8 +56,6 @@ public class ShippingController {
     @GetMapping("/search")
     public ResponseEntity<Page<ShippingResponseDto>> searchShippings(@ModelAttribute ShippingSearchCondition condition, HttpServletRequest request) {
         Page<ShippingResponseDto> result = shippingService.searchShipping(condition);
-        log.info("receiverName raw param: {}", request.getParameter("receiverName"));
-        log.info("receiverName from DTO: {}", condition.getReceiverName());
         return ResponseEntity.ok(result);
     }
 

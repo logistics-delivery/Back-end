@@ -2,12 +2,16 @@ package com.sparta.shippingmanager.presentation;
 
 import com.sparta.commonmodule.aop.RoleCheck;
 import com.sparta.shippingmanager.application.dto.request.ShippingManagerCreateRequestDto;
+import com.sparta.shippingmanager.application.dto.request.ShippingManagerSearchCondition;
 import com.sparta.shippingmanager.application.service.ShippingManagerService;
 import com.sparta.shippingmanager.domain.model.ShippingManager;
 import com.sparta.shippingmanager.application.dto.response.ShippingManagerResponseDto;
+import com.sparta.shippingmanager.infrastructure.ShippingManagerSearchRepository;
 import io.swagger.v3.oas.annotations.Operation;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +24,11 @@ public class ShippingManagerController {
 
     private final ShippingManagerService shippingManagerService;
 
+    private final ShippingManagerSearchRepository shippingManagerRepository;
+
+
     @Operation(summary = "업체 배송 담당자 지정",description = "업체 배송 담당자 지정 API 입니다")
+
     @GetMapping("/assign")  // 배송 담당자 할당
     public ShippingManager assignManager(){
         return shippingManagerService.assign();
@@ -44,5 +52,10 @@ public class ShippingManagerController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<ShippingManagerResponseDto>> search(@ModelAttribute ShippingManagerSearchCondition condition) {
+        Page<ShippingManagerResponseDto> result = shippingManagerService.search(condition);
+        return ResponseEntity.ok(result);
+    }
 
 }
