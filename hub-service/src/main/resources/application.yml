@@ -40,4 +40,4 @@ springdoc:
 
 shipping:
   service:
-    url: http://localhost:8080/api/v1/shippings
+    url: http://localhost:8081/api/v1/shippings

@@ -30,3 +30,12 @@ feign:
         url: http://localhost:8088
       hub-service:
         url: http://localhost:8082
+
+springdoc:
+  api-docs:
+    version: openapi_3_1
+    enabled: true
+    path: /product-service/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
