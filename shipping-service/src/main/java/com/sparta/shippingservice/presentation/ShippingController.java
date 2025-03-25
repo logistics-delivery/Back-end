@@ -1,6 +1,9 @@
 package com.sparta.shippingservice.presentation;
 
-import com.sparta.shippingservice.application.dto.request.*;
+import com.sparta.shippingservice.application.dto.request.CreateShippingRequestDto;
+import com.sparta.shippingservice.application.dto.request.CreateShippingWithRouteRequestDto;
+import com.sparta.shippingservice.application.dto.request.ShippingSearchCondition;
+import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingRouteResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResponseDto;
@@ -12,9 +15,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,22 +86,6 @@ public class ShippingController {
         return ResponseEntity.ok(responseDto);
 
     }
-
-
-    @GetMapping("/log/search")
-    public ResponseEntity<Page<ShippingRouteResponseDto>> searchShippingLogs(
-            @ModelAttribute ShippingRouteSearchCondition condition,
-            @PageableDefault(size = 10) Pageable pageable
-    ) {
-        int size = pageable.getPageSize();
-        if (size != 10 && size != 30 && size != 50) {
-            pageable = PageRequest.of(pageable.getPageNumber(), 10);
-        }
-
-        Page<ShippingRouteResponseDto> result = shippingService.searchShippingLogs(condition, pageable);
-        return ResponseEntity.ok(result);
-    }
-
 
 
 

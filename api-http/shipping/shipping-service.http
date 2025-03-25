@@ -1,0 +1,103 @@
+POST http://localhost:8080/api/v1/users/sign-up
+Content-Type: application/json
+
+{
+  "username":"asdf123",
+  "password":"asdfgA12@",
+  "email":"asdf@naver.com",
+  "slackName": "asdggg",
+  "tokenValue": "mgbE4vogtrMGufz6PXkQNTV-KZtU4-Mz7_wcKf7r40kKTu8z4BD9l_kacdd4MzU3pQV6y3LB-yrmMvvXFKep2Q"
+}
+
+
+
+###
+
+POST http://localhost:8080/api/v1/users/sign-in
+Content-Type: application/json
+
+{
+  "username": "asdf123",
+  "password": "asdfgA12@"
+}
+> {%
+    client.global.set("access_token", response.headers.valueOf("Authorization"))
+%}
+
+###
+GET http://localhost:8080/api/v1/users
+Authorization: {{access_token}}
+
+###
+POST http://localhost:8080/api/v1/shippings
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg5NDQsImV4cCI6MTc0Mjg0MjU0NH0.UueDPgZXhB0w1L_XhcE9fwC1BAdjiHe590Rh5HlSIxppfTTSZczHTgzUyLp6iZNR9_0iCqDfRJNPtE4qzdqV8A
+
+{
+  "orderId": "550e8400-e29b-41d4-a716-446655440000",
+  "shippingAddress": "서울특별시 강남구 테헤란로 427",
+  "receiverName": "홍길동",
+  "status": "PENDING"
+}
+
+
+###
+
+GET http://localhost:8080/api/v1/shipping/9ae52019-9b37-4bc0-b171-96da397337f3
+Authorization: {{access_token}}
+
+###
+GET http://localhost:8080/api/v1/shippings
+Authorization: {{access_token}}
+
+###
+PATCH http://localhost:8080/api/v1/shippings/f271488e-a691-42c6-ac21-e4f85f5af6a7
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "shipping": {
+    "orderId": "e0a8018e-7ecf-11ee-b962-0242ac120002",
+    "shippingAddress": "서울시 강남구 역삼동 123",
+    "receiverName": "홍이",
+    "status": "PENDING"
+  },
+  "routeLog": {
+    "startHubId": "11111111-aaaa-bbbb-cccc-111111111111",
+    "endHubId": "22222222-aaaa-bbbb-cccc-222222222222",
+    "sequence": 1,
+    "estimatedDistance": 12.34,
+    "estimatedTime": 25,
+    "actualDistance": 3.0,
+    "actualTime": 2,
+    "shippingManagerId": "d3e4e889-7134-4db7-bcf6-7cb8b527a1c1"
+  }
+}
+
+###
+
+DELETE http://localhost:8080/api/v1/shippings/cbc196b9-28e4-4d59-99ef-6191e753a38e
+Authorization: {{access_token}}
+###
+
+GET http://localhost:8080/api/v1/shippings/cbc196b9-28e4-4d59-99ef-6191e753a38e/286e62b7-e1e0-4474-89ba-17418508d1eb
+Authorization: {{access_token}}
+
+###
+GET http://localhost:8080/api/v1/shippings/log
+Authorization: {{access_token}}
+
+###
+POST http://localhost:8080/api/shipping-managers
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "shippingManagerId": "2f20c1b6-d3cb-4b1d-9c24-23b5d6e5b9af",
+  "managerType": "CARRIER",
+  "isActive": true,
+  "count": 0
+}
+
+
+
