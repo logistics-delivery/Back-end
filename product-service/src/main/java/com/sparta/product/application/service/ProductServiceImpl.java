@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -137,7 +138,7 @@ public class ProductServiceImpl implements ProductService {
 
     // 업체 존재 검증 메서드
     private void validateCompanyExists(UUID companyId) {
-        if (!companyClient.getCompanyById(companyId)) {
+        if (!companyClient.existsById(companyId)) {
             throw new ResourceNotFoundException("해당 업체가 존재하지 않습니다.");
         }
     }
@@ -145,9 +146,8 @@ public class ProductServiceImpl implements ProductService {
 
     // 허브 존재 검증 메서드
     private void validateHubExists(UUID hubId) {
-        if (!hubClient.getHubById(hubId)) {
-            throw new ResourceNotFoundException("해당 허브가 존재하지 않습니다.");
-        }
+        Optional.ofNullable(hubClient.getHubById(hubId))
+                .orElseThrow(() -> new ResourceNotFoundException("해당 허브가 존재하지 않습니다."));
     }
 
 }
