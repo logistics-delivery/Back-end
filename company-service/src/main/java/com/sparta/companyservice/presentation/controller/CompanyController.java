@@ -13,10 +13,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -51,7 +53,9 @@ public class CompanyController {
             @RequestParam(name = "type", required = false) CompanyType type,
             Pageable pageable
     ) {
-        Page<CompanyDto> companies = companyService.searchCompanies(name, address, type, pageable);
+        Pageable validatedPageable = validatePageSize(pageable); // 페이지 사이즈 검증
+
+        Page<CompanyDto> companies = companyService.searchCompanies(name, address, type, validatedPageable);
         Page<CompanyResponse> responses = companies.map(CompanyResponse::fromDto);
         return ResponseEntity.ok(responses);
     }
@@ -81,6 +85,12 @@ public class CompanyController {
     public ResponseEntity<CompanyDeleteResponse> deleteCompany(@PathVariable("companyId") UUID companyId, @RequestHeader("user_id") Long userId) {
         CompanyDeleteResponse deletedCompany = companyService.deleteCompany(companyId, userId);
         return ResponseEntity.ok(deletedCompany);
+    }
+
+    private Pageable validatePageSize(Pageable pageable) { // 페이지 사이즈 검증
+        List<Integer> allowedSizes = List.of(10, 30, 50);
+        int size = allowedSizes.contains(pageable.getPageSize()) ? pageable.getPageSize() : 10;
+        return PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
     }
 
 }
