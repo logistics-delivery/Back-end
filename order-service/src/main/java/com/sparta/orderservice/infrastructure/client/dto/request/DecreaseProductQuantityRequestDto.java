@@ -7,9 +7,8 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class DecreaseProductQuantityServiceRequestDto {
+public class DecreaseProductQuantityRequestDto {
 
-    private UUID productId;
     private UUID companyId;
     private UUID hubId;
     private Integer quantity;
