@@ -107,6 +107,7 @@ $ docker compose up -d
  
  - [게이트웨이에서의 인가처리오류](https://github.com/logistics-delivery/Back-end/wiki/%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%9D%B8%EA%B0%80%EC%B2%98%EB%A6%AC%28ReactiveSecurityContextHolder%29)
 - [QueryDSL Q파일 문제 트러블슈팅](https://github.com/logistics-delivery/Back-end/wiki/QueryDSL-Q%ED%8C%8C%EC%9D%BC-%EB%AC%B8%EC%A0%9C-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85)
+- [도메인형 3계층 vs 4계층 구조 설계](https://github.com/logistics-delivery/Back-end/wiki/%EB%8F%84%EB%A9%94%EC%9D%B8%ED%98%95-3%EA%B3%84%EC%B8%B5-vs-4%EA%B3%84%EC%B8%B5-%EA%B5%AC%EC%A1%B0-%EC%84%A4%EA%B3%84)
   
 **공통 관심 사항**
 
