@@ -23,7 +23,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CompanyService {
     private final CompanyRepository companyRepository;
-    private final CompanyQueryRepository companyQueryRepository;
     private final HubClient hubClient;
 
     @Transactional(readOnly = true)
@@ -47,7 +46,7 @@ public class CompanyService {
 
     @Transactional(readOnly = true) // 전체 조회
     public Page<CompanyDto> searchCompanies(String name, String address, CompanyType type, Pageable pageable) {
-        return companyQueryRepository.searchCompanies(name, address, type, pageable)
+        return companyRepository.searchCompanies(name, address, type, pageable)
                 .map(CompanyDto::fromEntity);
     }
 
