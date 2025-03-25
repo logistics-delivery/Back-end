@@ -114,7 +114,7 @@ $ docker compose up -d
  - [AuditorAwareImpl 구현 및 @SQLRestriction 설정](https://github.com/logistics-delivery/Back-end/wiki/AuditorAwareImpl-%EA%B5%AC%ED%98%84-%EB%B0%8F-@SQLRestriction-%EC%84%A4%EC%A0%95)
 - [Git 시크릿 키 보호 방법](https://github.com/logistics-delivery/Back-end/wiki/Git-%EC%8B%9C%ED%81%AC%EB%A6%BF-%ED%82%A4-%EB%B3%B4%ED%98%B8-%EB%B0%A9%EB%B2%95)
 - [Docker 명령어](https://github.com/logistics-delivery/Back-end/wiki/docker-%EB%AA%85%EB%A0%B9%EC%96%B4)
-- [설계 대비 API 구현률] : 
+- [설계 대비 API 구현률](https://github.com/logistics-delivery/Back-end/wiki/%EC%84%A4%EA%B3%84%EB%8C%80%EB%B9%84-API-%EA%B5%AC%ED%98%84%EB%A5%A0)
 
 
  # 시스템을 발전 시키기 위해 더 해본다면?
