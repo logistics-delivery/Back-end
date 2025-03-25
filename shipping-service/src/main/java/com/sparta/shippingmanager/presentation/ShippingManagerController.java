@@ -51,7 +51,8 @@ public class ShippingManagerController {
         ShippingManagerResponseDto response = shippingManagerService.getById(id);
         return ResponseEntity.ok(response);
     }
-
+    @Operation(summary = "배송 담당자 검색",description = "배송 담당자 검색 API 입니다")
+    @RoleCheck("ROLE_HUB,ROLE_MASTER,ROLE_SHIPPING")
     @GetMapping("/search")
     public ResponseEntity<Page<ShippingManagerResponseDto>> search(@ModelAttribute ShippingManagerSearchCondition condition) {
         Page<ShippingManagerResponseDto> result = shippingManagerService.search(condition);

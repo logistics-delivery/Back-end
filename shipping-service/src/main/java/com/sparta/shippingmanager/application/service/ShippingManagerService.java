@@ -26,7 +26,7 @@ public class ShippingManagerService {
     private final ShippingManagerSearchRepository searchRepository;
 
     private static final int MAX_ORDER = 10;
-    private static int MIN_ORDER =0;
+
 
     @Transactional
     public ShippingManager assign() {
@@ -35,7 +35,6 @@ public class ShippingManagerService {
                 findFirst().
                 orElseThrow(() -> new ResourceNotFoundException(" 배정 가능한 담당자가 없습니다."));
 
-        //manager.increaseCount(MIN_ORDER);
 
         nextManagerOrder(manager.getShippingOrder());
 
