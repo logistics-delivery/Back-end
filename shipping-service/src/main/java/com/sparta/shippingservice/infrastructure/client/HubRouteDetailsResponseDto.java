@@ -51,9 +51,7 @@ public class HubRouteDetailsResponseDto {
         }
         return routeLog;
     }
-    /**
-     * :흰색_확인_표시: Checkpoint 응답
-     */
+
     @Setter
     @Getter
     @Builder
