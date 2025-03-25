@@ -1,9 +1,6 @@
 package com.sparta.shippingservice.presentation;
 
-import com.sparta.shippingservice.application.dto.request.CreateShippingRequestDto;
-import com.sparta.shippingservice.application.dto.request.CreateShippingWithRouteRequestDto;
-import com.sparta.shippingservice.application.dto.request.ShippingSearchCondition;
-import com.sparta.shippingservice.application.dto.request.UpdateShippingRequestDto;
+import com.sparta.shippingservice.application.dto.request.*;
 import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingRouteResponseDto;
 import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResponseDto;
@@ -87,6 +84,13 @@ public class ShippingController {
 
     }
 
+    @GetMapping("/log/search")
+    public ResponseEntity<Page<ShippingRouteResponseDto>> searchShippingRoutes(
+            @ModelAttribute ShippingRouteSearchCondition condition
+    ) {
+        Page<ShippingRouteResponseDto> result = shippingService.searchRoutes(condition);
+        return ResponseEntity.ok(result);
+    }
 
 
 }

@@ -1,29 +1,24 @@
 package com.sparta.shippingservice.application.service;
 
 import com.sparta.shippingmanager.domain.model.ManagerType;
-import com.sparta.shippingmanager.domain.model.ShippingManager;
 import com.sparta.shippingservice.application.dto.client.ShippingManagerResponseDto;
 import com.sparta.shippingservice.application.dto.request.*;
-import com.sparta.shippingservice.application.dto.response.ShippingResponseDto;
-import com.sparta.shippingservice.application.dto.response.ShippingRouteResponseDto;
-import com.sparta.shippingservice.application.dto.response.ShippingSearchResult;
-import com.sparta.shippingservice.application.dto.response.ShippingWithRouteResponseDto;
+import com.sparta.shippingservice.application.dto.response.*;
 import com.sparta.shippingservice.domain.model.*;
 import com.sparta.shippingservice.domain.repository.ShippingRepository;
 import com.sparta.commonmodule.exception.*;
 
-import com.sparta.shippingservice.domain.repository.ShippingRouteQueryRepository;
 import com.sparta.shippingservice.domain.repository.ShippingRouteRepository;
 import com.sparta.shippingservice.infrastructure.client.HubClient;
 import com.sparta.shippingservice.infrastructure.client.HubRouteDetailsResponseDto;
 import com.sparta.shippingservice.infrastructure.client.ShippingManagerClient;
+import com.sparta.shippingservice.infrastructure.repository.ShippingLogSearchRepository;
 import com.sparta.shippingservice.infrastructure.repository.ShippingSearchRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +36,7 @@ public class ShippingService {
     private final ShippingManagerClient shippingManagerClient;
     private final ShippingSearchRepository searchRepository;
     private final HubClient hubClient;
-    private final ShippingRouteQueryRepository shippingRouteQueryRepository;
+    private final ShippingLogSearchRepository shippingLogSearchRepository;
 
 //각 허브에 10명 / 업체에 10명
 
@@ -140,6 +135,17 @@ public class ShippingService {
         return ShippingRouteResponseDto.from(routeLog);
     }
 
+    @Transactional(readOnly = true)
+    public Page<ShippingRouteResponseDto> searchRoutes(ShippingRouteSearchCondition condition) {
+        ShippingLogSearchResult result = shippingLogSearchRepository.search(condition);
+        return new PageImpl<>(
+                result.getContent(),
+                PageRequest.of(result.getPage(), result.getPageSize()),
+                result.getTotalCount()
+        );
+    }
+
+
 
 
     private Shipping findShipping(UUID shippingId) {
@@ -148,10 +154,6 @@ public class ShippingService {
         return shipping;
     }
 
-    @Transactional(readOnly = true) // 배송 로그 검색
-    public Page<ShippingRouteResponseDto> searchShippingLogs(ShippingRouteSearchCondition condition, Pageable pageable) {
-        Page<ShippingRouteLog> logs = shippingRouteQueryRepository.search(condition, pageable);
-        return logs.map(ShippingRouteResponseDto::from);
-    }
+
 
 }
