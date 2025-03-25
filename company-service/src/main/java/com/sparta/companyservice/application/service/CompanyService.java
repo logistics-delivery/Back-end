@@ -8,6 +8,7 @@ import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.domain.model.CompanyType;
 import com.sparta.companyservice.domain.repository.CompanyRepository;
 import com.sparta.companyservice.infrastructure.client.HubClient;
+import com.sparta.companyservice.infrastructure.querydsl.CompanyQueryRepository;
 import com.sparta.companyservice.presentation.response.CompanyDeleteResponse;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CompanyService {
     private final CompanyRepository companyRepository;
+    private final CompanyQueryRepository companyQueryRepository;
     private final HubClient hubClient;
 
     @Transactional(readOnly = true)
@@ -45,7 +47,7 @@ public class CompanyService {
 
     @Transactional(readOnly = true) // 전체 조회
     public Page<CompanyDto> searchCompanies(String name, String address, CompanyType type, Pageable pageable) {
-        return companyRepository.searchCompanies(name, address, type, pageable)
+        return companyQueryRepository.searchCompanies(name, address, type, pageable)
                 .map(CompanyDto::fromEntity);
     }
 
