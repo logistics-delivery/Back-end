@@ -13,7 +13,7 @@ import com.sparta.orderservice.infrastructure.client.ShippingClient;
 import com.sparta.orderservice.infrastructure.client.dto.request.CreateShippingRequestDto;
 import com.sparta.orderservice.infrastructure.client.dto.response.CreateShippingResponseDto;
 import com.sparta.orderservice.infrastructure.client.dto.response.DecreaseProductQuantityResponseDto;
-import com.sparta.orderservice.infrastructure.client.dto.request.DecreaseProductQuantityServiceRequestDto;
+import com.sparta.orderservice.infrastructure.client.dto.request.DecreaseProductQuantityRequestDto;
 import com.sparta.orderservice.infrastructure.client.dto.response.SlackNotificationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,19 +42,16 @@ public class OrderService {
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
 
         // 1. 재고 차감 요청 DTO 생성
-        DecreaseProductQuantityServiceRequestDto reduceRequest =
-                DecreaseProductQuantityServiceRequestDto.builder()
-                        .productId(requestDto.getProductId())
+        DecreaseProductQuantityRequestDto reduceRequest =
+                DecreaseProductQuantityRequestDto.builder()
                         .companyId(requestDto.getSupplierId())     // supplierId → companyId
                         .hubId(requestDto.getReceiverId())         // receiverId → hubId
-                        .quantity(1)                               // 기본 수량
+                        .quantity(50)                              // 기본 수량
                         .build();
 
         // 2. FeignClient로 재고 차감 요청
-        UUID productId = reduceRequest.getProductId();
-
         DecreaseProductQuantityResponseDto response =
-                productClient.decreaseProductQuantity(productId, reduceRequest);
+                productClient.decreaseProductQuantity(requestDto.getProductId(), reduceRequest);
 
         // 3. 실패 시 예외 발생
         if (!response.getIsSuccess()) {
