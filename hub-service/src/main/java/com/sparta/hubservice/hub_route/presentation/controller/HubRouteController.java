@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/hub-routes")
+@RequestMapping("/api/v1/hubs/hub-routes")
 @RequiredArgsConstructor
 @Tag(name = "Hub Service", description = "허브 서비스 API")
 public class HubRouteController {
@@ -60,7 +60,6 @@ public class HubRouteController {
 
     // (정해진) 허브 간 경로 생성 (direct)
     @Operation(summary = "Hub Route", description = "from->to 허브 간 경로 생성 api")
-    @RoleCheck("ROLE_MASTER")
     @PostMapping("/{from_hub_id}/{to_hub_id}/direct")
     public ResponseEntity<HubRouteCreateResponseDto> createDirectHubRoute(
         @PathVariable("from_hub_id") UUID fromHubId,
@@ -84,7 +83,6 @@ public class HubRouteController {
 
     // form -> to 최단경로 생성 (다이렉트는 항상 최단경로)
     @Operation(summary = "Hub Route - Checkpoint", description = "허브 간 최단 경로 생성 api")
-    @RoleCheck("ROLE_MASTER")
     @PostMapping("/{from_hub_id}/{to_hub_id}/path")
     public ResponseEntity<HubRouteDetailsResponseDto> createPathHubRoute(
         @PathVariable("from_hub_id") UUID fromHubId,
