@@ -107,6 +107,7 @@ $ docker compose up -d
  
  - [게이트웨이에서의 인가처리오류](https://github.com/logistics-delivery/Back-end/wiki/%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%9D%B8%EA%B0%80%EC%B2%98%EB%A6%AC%28ReactiveSecurityContextHolder%29)
 - [QueryDSL Q파일 문제 트러블슈팅](https://github.com/logistics-delivery/Back-end/wiki/QueryDSL-Q%ED%8C%8C%EC%9D%BC-%EB%AC%B8%EC%A0%9C-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85)
+- [도메인형 3계층 vs 4계층 구조 설계](https://github.com/logistics-delivery/Back-end/wiki/%EB%8F%84%EB%A9%94%EC%9D%B8%ED%98%95-3%EA%B3%84%EC%B8%B5-vs-4%EA%B3%84%EC%B8%B5-%EA%B5%AC%EC%A1%B0-%EC%84%A4%EA%B3%84)
   
 **공통 관심 사항**
 
@@ -114,7 +115,7 @@ $ docker compose up -d
  - [AuditorAwareImpl 구현 및 @SQLRestriction 설정](https://github.com/logistics-delivery/Back-end/wiki/AuditorAwareImpl-%EA%B5%AC%ED%98%84-%EB%B0%8F-@SQLRestriction-%EC%84%A4%EC%A0%95)
 - [Git 시크릿 키 보호 방법](https://github.com/logistics-delivery/Back-end/wiki/Git-%EC%8B%9C%ED%81%AC%EB%A6%BF-%ED%82%A4-%EB%B3%B4%ED%98%B8-%EB%B0%A9%EB%B2%95)
 - [Docker 명령어](https://github.com/logistics-delivery/Back-end/wiki/docker-%EB%AA%85%EB%A0%B9%EC%96%B4)
-- [설계 대비 API 구현률] : 
+- [설계 대비 API 구현률](https://github.com/logistics-delivery/Back-end/wiki/%EC%84%A4%EA%B3%84%EB%8C%80%EB%B9%84-API-%EA%B5%AC%ED%98%84%EB%A5%A0)
 
 
  # 시스템을 발전 시키기 위해 더 해본다면?
@@ -160,7 +161,7 @@ $ docker compose up -d
 | **인증인가,<br> 사용자API** | 신다은<br>(팀장)      | - 회원가입,로그인 등의 사용자 정보CRUD 구현 <br> - 로그인 성공 시 JWT 토큰을 생성하여 사용자에게 전달되도록 함 <br> - JWT 토큰을 사용하여 회원정보를 인증, 내부payload값을 추출하여 서브모듈에서 사용가능하도록 구현 <br> - 인증된 정보를 바탕으로 사용자의 권한이 요청 url에 접근가능한지 gateway에서 우선적으로 인가처리를 할 수 있도록 구현 <br> - gateway에서 기본 인가 처리 후, AOP와 Custom Annotation을 사용하여 각 API의 세부 기능별로 권한을 추가로 체크하는 접근 인가 기능을 구현.|
 |**슬랙API**|신다은<br>(팀장) | - 슬랙 메세지 관리 CRUD 구현<br> - 슬랙 외부 API를 연동하여 메세지 발송 시 실제 슬랙 사이트로 알림메세지가 전송되도록 함. <br> - Base Entity를 사용한 생성,수정,삭제 기록 저장 및 SoftDelete 구현<br> - QueryDSL을 이용한 슬랙 메세지 검색기능 구현|
 |**허브API**|이소현<br>(테크리드) | - 허브 정보, 허브간 경로 CRUD 구현<br> - 허브 검색 기능 (Query DSL) 구현<br> - 최단 경로를 위한 허브간 경로 체크포인트 생성 및 조회 구현<br> -허브 내 배송품 입고 및 출고 처리 기능 구현 |
-|**상품API**|서진영<br>(테크리드) | - 상품 CRUD 구현<br> - QueryDSL을 이용한 상품 검색 기능 구현<br> - 공통모듈에 swagger, Auditor Aware 구현 |
+|**상품API**|서진영<br>(테크리드) | - 상품 CRUD 및 QueryDSL 기반 검색 기능 구현<br> - Swagger 설정 및 Auditor Aware 등 공통 모듈 구축<br> - FeignClient를 통한 마이크로서비스 간 통신 처리<br> - DDD 기반 4계층 아키텍처 설계 및 적용<br> - 시스템 흐름에 대한 플로우 차트 작성 및 공유<br> - 프로젝트 내 미숙한 기술에 대한 문서화 및 설명을 통해 팀 기술 이해도 향상 기여|
 |**배송API**|권길남 | - 배송, 배송 로그, 배송 담당자 CRUD 구현<br> - 배송 담당자 배정 알고리즘 구현<br> - QueryDSL을 사용한 배송정보 검색기능 구현<br> - Docker 개발 환경세팅 |
 |**업체API**|원지윤 | -  Company-service CRUD 개발 및 Spring Boot 기반 4계층 아키텍처 적용<br> - QueryDSL 기반 동적 검색 조건 및 페이징 기능 구현<br> - HTTP API 테스트, 도메인 및 서비스 계층 테스트 코드 작성|
 |**주문API**|이용재 | - 주문 CRUD 구현<br> - 주문 생성 시 Product 서비스에 재고 차감 요청 기능 연동 (FeignClient 사용)<br> - 주문 생성 시 Shipping 서비스에 배송 생성 요청 기능 연동 (FeignClient 사용)<br> - Slack 도메인 연동을 위한 주문 + 배송 정보 응답 API 제공<br> - QueryDSL을 활용한 주문 검색 기능 구현 (주문명 + 상태 검색)|
