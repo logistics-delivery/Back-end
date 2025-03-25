@@ -87,21 +87,12 @@ Logistics-delivery
 
 
  - [[트러블 슈팅]] : 우리조의 기술적 고민과 원인 해결 과정
-     - [[트러블 슈팅 #1]] :
-         - 문제 현상
-         - 원인 파악 과정
-         - 해결을 위해 시도했던 다양한 기술적 접근
-         - 해결 과정
-         - 개선 효과
-     - [[트러블 슈팅 #2]]
-     - [[트러블 슈팅 #3]]
-     - [[트러블 슈팅 #4]]
-     - [[트러블 슈팅 #5]]
+     - [[게이트웨이에서의 인가처리오류]](https://github.com/logistics-delivery/Back-end/wiki/%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%9D%B8%EA%B0%80%EC%B2%98%EB%A6%AC%28ReactiveSecurityContextHolder%29)
  - [[공통 관심 사항]]
-     - 공통 관심 사항 구성 요소 및 다른 마이크로서비스에 가이드 방법
-     - [[공통 관심 사항 #1]]
-     - [[공통 관심 사항 #2]]
-     - [[공통 관심 사항 #3]]
+     - [[AOP @Rolecheck 사용방법]](https://github.com/logistics-delivery/Back-end/wiki/%EA%B3%B5%ED%86%B5%EB%AA%A8%EB%93%88-AOP-@RoleCheck-%EC%82%AC%EC%9A%A9%EB%B0%A9%EB%B2%95)
+     - [[AuditorAwareImpl 구현 및 @SQLRestriction 설정]](https://github.com/logistics-delivery/Back-end/wiki/AuditorAwareImpl-%EA%B5%AC%ED%98%84-%EB%B0%8F-@SQLRestriction-%EC%84%A4%EC%A0%95)
+     - [[Git 시크릿 키 보호 방법]](https://github.com/logistics-delivery/Back-end/wiki/Git-%EC%8B%9C%ED%81%AC%EB%A6%BF-%ED%82%A4-%EB%B3%B4%ED%98%B8-%EB%B0%A9%EB%B2%95)
+     - [[Docker 명령어]](https://github.com/logistics-delivery/Back-end/wiki/docker-%EB%AA%85%EB%A0%B9%EC%96%B4)
  - [[설계 대비 API 구현률]] : 이건 제가 드릴게요~!, 설계 API 수만 적어주세요
  - [[개발 측면에서 우리 조가 잘한 것들]]
      - 소통/협업
@@ -127,6 +118,6 @@ Logistics-delivery
 |**슬랙API**|신다은<br>(팀장) | - 슬랙 메세지 관리 CRUD 구현<br> - 슬랙 외부 API를 연동하여 메세지 발송 시 실제 슬랙 사이트로 알림메세지가 전송되도록 함. <br> - Base Entity를 사용한 생성,수정,삭제 기록 저장 및 SoftDelete 구현<br> - QueryDSL을 이용한 슬랙 메세지 검색기능 구현|
 |**허브API**|이소현<br>(테크리드) | - 허브 정보, 허브간 경로 CRUD 구현<br> - 허브 검색 기능 (Query DSL) 구현<br> - 최단 경로를 위한 허브간 경로 체크포인트 생성 및 조회 구현<br> -허브 내 배송품 입고 및 출고 처리 기능 구현 |
 |**상품API**|서진영<br>(테크리드) | - 상품 CRUD 구현<br> - QueryDSL을 이용한 상품 검색 기능 구현<br> - 공통모듈에 swagger, Auditor Aware 구현 |
-|**배송API**|권길남 | - 배송, 배송 로그, 배송 담당자 CRUD 구현<br> - 배송 담당자 배정 알고리즘 구현<br> - QueryDSL을 사용한 배송정보 검색기능 구현 |
+|**배송API**|권길남 | - 배송, 배송 로그, 배송 담당자 CRUD 구현<br> - 배송 담당자 배정 알고리즘 구현<br> - QueryDSL을 사용한 배송정보 검색기능 구현<br> - Docker 개발 환경세팅 |
 |**업체API**|원지윤 | -  Company-service CRUD 개발 및 Spring Boot 기반 4계층 아키텍처 적용<br> - QueryDSL 기반 동적 검색 조건 및 페이징 기능 구현<br> - HTTP API 테스트, 도메인 및 서비스 계층 테스트 코드 작성|
 |**주문API**|이용재 | - 주문 CRUD 구현<br> - 주문 생성 시 Product 서비스에 재고 차감 요청 기능 연동 (FeignClient 사용)<br> - 주문 생성 시 Shipping 서비스에 배송 생성 요청 기능 연동 (FeignClient 사용)<br> - Slack 도메인 연동을 위한 주문 + 배송 정보 응답 API 제공<br> - QueryDSL을 활용한 주문 검색 기능 구현 (주문명 + 상태 검색)|
