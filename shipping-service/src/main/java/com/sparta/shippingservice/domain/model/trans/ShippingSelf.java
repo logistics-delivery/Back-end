@@ -14,7 +14,7 @@ public record ShippingSelf(
     public Shipping toShipping(Long userId) {
         return new Shipping(
                 userId,
-                null, // 배송 ID는 생성 시 자동 UUID 설정
+                null, // 배송 ID는 생성 시 자동 UUID 설정 !
                 this.orderId,
                 this.shippingAddress,
                 this.receiverName,
