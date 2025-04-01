@@ -1,8 +1,6 @@
 package com.sparta.product.application.service;
 
 import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
-import com.sparta.product.application.dto.DecreaseProductQuantityServiceRequestDto;
-import com.sparta.product.application.dto.IncreaseProductQuantityServiceRequestDto;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
 import com.sparta.product.presentation.dto.request.SearchProductRequestDto;
@@ -27,8 +25,4 @@ public interface ProductService {
     void deleteProduct(DeleteProductServiceRequestDto serviceDto);
 
     Page<SearchProductResponseDto> searchProducts(SearchProductRequestDto requestDto, Pageable pageable);
-
-    DecreaseProductQuantityResponseDto decreaseProductQuantity(DecreaseProductQuantityServiceRequestDto serviceDto);
-
-    IncreaseProductQuantityResponseDto increaseProductQuantity(IncreaseProductQuantityServiceRequestDto serviceDto);
 }

@@ -2,8 +2,6 @@ package com.sparta.product.application.service;
 
 import com.sparta.commonmodule.exception.ResourceNotFoundException;
 import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
-import com.sparta.product.application.dto.DecreaseProductQuantityServiceRequestDto;
-import com.sparta.product.application.dto.IncreaseProductQuantityServiceRequestDto;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.domain.model.Product;
 import com.sparta.product.domain.repository.ProductRepository;
@@ -99,40 +97,6 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public Page<SearchProductResponseDto> searchProducts(SearchProductRequestDto requestDto, Pageable pageable) {
         return productRepository.searchProducts(requestDto, pageable);
-    }
-
-
-    /**
-     *  상품 수정(재고 감소)
-     */
-    @Override
-    public DecreaseProductQuantityResponseDto decreaseProductQuantity(DecreaseProductQuantityServiceRequestDto serviceDto) {
-        Product product = productRepository.findByIdAndHubId(serviceDto.productId(), serviceDto.hubId())
-                .orElseThrow(() -> new ResourceNotFoundException("해당 허브에 상품이 존재하지 않습니다."));
-
-        try {
-            // 재고 감소 성공
-            product.decreaseQuantity(serviceDto.quantity());
-            return DecreaseProductQuantityResponseDto.success(product, serviceDto.quantity());
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            // 재고 감소 실패 (재고 부족, 최소 수량 미만 등)
-            return DecreaseProductQuantityResponseDto.failure(product);
-        }
-    }
-
-
-    /**
-     *  상품 수정(재고 증가)
-     */
-    @Override
-    public IncreaseProductQuantityResponseDto increaseProductQuantity(IncreaseProductQuantityServiceRequestDto serviceDto) {
-        Product product = productRepository.findByIdAndHubId(serviceDto.productId(), serviceDto.hubId())
-                .orElseThrow(() -> new ResourceNotFoundException("해당 허브에 상품이 존재하지 않습니다."));
-
-        product.increaseQuantity(serviceDto.quantity());
-
-        return IncreaseProductQuantityResponseDto.success(product, serviceDto.quantity());
-
     }
 
 
