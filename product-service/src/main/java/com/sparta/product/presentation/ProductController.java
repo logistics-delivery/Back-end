@@ -2,8 +2,6 @@ package com.sparta.product.presentation;
 
 import com.sparta.commonmodule.aop.RoleCheck;
 import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
-import com.sparta.product.application.dto.DecreaseProductQuantityServiceRequestDto;
-import com.sparta.product.application.dto.IncreaseProductQuantityServiceRequestDto;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.application.service.ProductServiceImpl;
 import com.sparta.product.presentation.dto.request.*;
@@ -96,25 +94,6 @@ public class ProductController {
     }
 
 
-    /**
-     *  상품 수정(재고 감소)
-     */
-    @PutMapping("/{productId}/decrease")
-    public ResponseEntity<DecreaseProductQuantityResponseDto> decreaseProductQuantity(@PathVariable UUID productId,
-                                                                                      @RequestBody DecreaseProductQuantityRequestDto requestDto) {
-        return ResponseEntity.ok(productServiceImpl.decreaseProductQuantity(
-                DecreaseProductQuantityServiceRequestDto.of(requestDto, productId)));
-    }
 
-
-    /**
-     *  상품 수정(재고 증가)
-     */
-    @PutMapping("/{productId}/increase")
-    public ResponseEntity<IncreaseProductQuantityResponseDto> increaseProductQuantity(@PathVariable UUID productId,
-                                                                                      @RequestBody IncreaseProductQuantityRequestDto requestDto) {
-        return ResponseEntity.ok(productServiceImpl.increaseProductQuantity(
-                IncreaseProductQuantityServiceRequestDto.of(requestDto, productId)));
-    }
 
 }
