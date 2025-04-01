@@ -23,6 +23,16 @@ public class StockController {
     private final StockService stockService;
 
     /**
+     *  재고 생성
+     */
+    @PostMapping
+    public ResponseEntity<CreateStockResponseDto> createStock(@RequestBody CreateStockRequestDto requestDto,
+                                                              @RequestHeader(value = "user_id", required = true) Long user_id){
+        return ResponseEntity.ok(stockService.createStock(requestDto));
+    }
+
+
+    /**
      *  재고 감소
      */
     @PutMapping("/{productId}/decrease")
