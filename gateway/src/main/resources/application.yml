@@ -81,6 +81,20 @@ spring:
             - RewritePath=/product-service/api/v1/products/(?<segment>.*), /api/v1/products/$\{segment}
 
 
+        # Stock
+        - id: stock-service
+          uri: lb://stock-service
+          predicates:
+            - Path=/api/v1/stocks/**
+        - id: stock-docs
+          uri: lb://stock-service
+          predicates:
+            - Path=/stock-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/stock-service/api/v1/stocks/(?<segment>.*), /api/v1/stocks/$\{segment}
+
+
         # Slack
         - id: slack-service
           uri: lb://slack-service
@@ -165,3 +179,6 @@ springdoc:
     urls[6]:
       name: Product Service
       url: /product-service/v3/api-docs
+    urls[7]:
+      name: Stock Service
+      url: /stock-service/v3/api-docs
