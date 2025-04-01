@@ -35,6 +35,18 @@ public class Stock extends BaseEntity {
 
 
     /**
+     *  재고 생성
+     */
+    public static Stock createStock(UUID productId, UUID hubId,  Integer quantity) {
+        return Stock.builder()
+                .productId(productId)
+                .hubId(hubId)
+                .quantity(quantity)
+                .build();
+    }
+
+
+    /**
      *  재고 감소
      */
     public void decreaseStock(Integer quantity) {

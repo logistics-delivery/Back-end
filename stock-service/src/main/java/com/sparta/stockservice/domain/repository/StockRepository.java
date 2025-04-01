@@ -7,5 +7,7 @@ import java.util.UUID;
 
 public interface StockRepository {
 
+    Stock save(Stock stock);
+
     Optional<Stock> findByProductIdAndHubId(UUID productId, UUID hubId);
 }

@@ -22,6 +22,17 @@ public class StockServiceImpl implements StockService {
 
 
     /**
+     *  재고 생성
+     */
+    @Override
+    public CreateStockResponseDto createStock(CreateStockRequestDto requestDto) {
+       Stock stock = stockRepository.save(Stock.createStock(requestDto.productId(), requestDto.hubId(), requestDto.quantity()));
+       return CreateStockResponseDto.from(stock);
+    }
+
+
+
+    /**
      *  재고 감소
      */
     @Override

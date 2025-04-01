@@ -10,6 +10,8 @@ import com.sparta.stockservice.presentation.dto.response.IncreaseStockResponseDt
 
 public interface StockService {
 
+    CreateStockResponseDto createStock(CreateStockRequestDto requestDto);
+
     DecreaseStockResponseDto decreaseStock(DecreaseStockServiceRequestDto serviceDto);
 
     IncreaseStockResponseDto increaseStock(IncreaseStockServiceRequestDto serviceDto);
