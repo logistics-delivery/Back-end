@@ -37,7 +37,7 @@ public class CompanyController {
 
     // 생성
     @Operation(summary = "Company 등록", description = "Company 생성 api 입니다.")
-    @RoleCheck("ROLE_MASTER, ROLE_HUB")
+    @RoleCheck("ROLE_COMPANY")
     @PostMapping
     public ResponseEntity<CompanyResponse> createCompany(@Valid @RequestBody CompanyCreateRequest request, @RequestHeader("user_id") Long userId) {
         CompanyDto createdCompany = companyService.createCompany(request.toDto(), userId);

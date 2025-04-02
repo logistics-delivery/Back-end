@@ -4,16 +4,27 @@ Content-Type: application/json
 
 ###
 
-### 업체 생성
-POST http://localhost:8085/api/v1/companies
+POST http://localhost:8080/api/v1/users/sign-in
 Content-Type: application/json
-user_id: 12345
-role: ROLE_MASTER
+
+{
+  "username":"company123",
+  "password":"Company123@"
+}
+> {%
+    client.global.set("access_token", response.headers.valueOf("Authorization"))
+%}
+
+
+### 업체 생성
+POST http://localhost:8080/api/v1/companies
+Content-Type: application/json
+Authorization: {{access_token}}
 
 {
   "name": "원두 로스팅 업체",
   "type": "PRODUCER",
-  "hubId": "123e4567-e89b-12d3-a456-426614174000",
+  "hubId": "d25f4291-d134-4f73-885a-0eb188a72649",
   "address": "경기도 과천시"
 }
 

@@ -24,6 +24,7 @@ public class SlackService {
 
     //슬랙 메세지 생성
     public SlackResponseDto createSlack(String slack_name, SlackRequestDto requestDto, Long userId) {
+
         Slack slack = slackRepository.save(requestDto.createSlack(slack_name, userId));
         return new SlackResponseDto(slack);
     }
