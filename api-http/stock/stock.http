@@ -1,0 +1,47 @@
+### 유저 로그인
+POST http://localhost:8080/api/v1/users/sign-in
+Content-Type: application/json
+
+{
+  "username": "asdf123",
+  "password": "asdfgA12@"
+}
+> {%
+    client.global.set("access_token", response.headers.valueOf("Authorization"))
+%}
+
+
+### 재고 생성
+POST http://localhost:8080/api/v1/stocks
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "productId": "ddf9aa8c-1e24-4a08-b1c3-5dfe14ec46a8",
+  "hubId": "123e4567-e89b-12d3-a456-426614174000",
+  "quantity": 50
+}
+
+
+
+### 재고 감소
+PUT http://localhost:8080/api/v1/stocks/ddf9aa8c-1e24-4a08-b1c3-5dfe14ec46a8/decrease
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "hubId": "123e4567-e89b-12d3-a456-426614174000",
+  "quantity": 20
+}
+
+
+
+### 재고 증가
+PUT http://localhost:8080/api/v1/stocks/ddf9aa8c-1e24-4a08-b1c3-5dfe14ec46a8/increase
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "hubId": "123e4567-e89b-12d3-a456-426614174000",
+  "quantity": 50
+}
