@@ -2,7 +2,6 @@ package com.sparta.product.domain.model;
 
 
 import com.sparta.commonmodule.entity.BaseEntity;
-import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
@@ -67,15 +66,4 @@ public class Product extends BaseEntity {
     }
 
 
-
-    // DTO -> Entity 변환 메서드
-    public static Product of(CreateProductResponseDto responseDto) {
-        return Product.builder()
-                .name(responseDto.name())
-                .description(responseDto.description())
-                .price(responseDto.price())
-                .isDisplay(responseDto.isDisplay())
-                .companyId(responseDto.companyId())
-                .build();
-    }
 }
