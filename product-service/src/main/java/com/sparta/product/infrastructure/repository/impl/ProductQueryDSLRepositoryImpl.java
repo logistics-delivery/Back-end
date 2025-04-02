@@ -43,8 +43,7 @@ public class ProductQueryDSLRepositoryImpl implements ProductQueryDSLRepository 
                 .where(
                         nameContains(requestDto.name()),
                         descriptionContains(requestDto.description()),
-                        companyIdEq(requestDto.companyId()),
-                        hubIdEq(requestDto.hubId())
+                        companyIdEq(requestDto.companyId())
                 )
                 .orderBy(orderSpecifierList.toArray(new OrderSpecifier[0])) // 동적 정렬
                 .offset(pageable.getOffset())  // 페이징 - 시작 인덱스
@@ -60,8 +59,7 @@ public class ProductQueryDSLRepositoryImpl implements ProductQueryDSLRepository 
                 .where(
                         nameContains(requestDto.name()),
                         descriptionContains(requestDto.description()),
-                        companyIdEq(requestDto.companyId()),
-                        hubIdEq(requestDto.hubId())
+                        companyIdEq(requestDto.companyId())
                 )
                 .fetchOne();
 
@@ -93,10 +91,6 @@ public class ProductQueryDSLRepositoryImpl implements ProductQueryDSLRepository 
         return companyId != null ? product.companyId.eq(companyId) : null;
     }
 
-
-    private BooleanExpression hubIdEq(UUID hubId) {
-        return hubId != null ? product.hubId.eq(hubId) : null;
-    }
 
 
     /**

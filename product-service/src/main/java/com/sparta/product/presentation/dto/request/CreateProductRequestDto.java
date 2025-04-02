@@ -7,9 +7,7 @@ import java.util.UUID;
 public record CreateProductRequestDto(String name,
                                       String description,
                                       BigDecimal price,
-                                      Integer quantity,
                                       boolean isDisplay,
-                                      UUID companyId,
-                                      UUID hubId) {
+                                      UUID companyId) {
 
 }

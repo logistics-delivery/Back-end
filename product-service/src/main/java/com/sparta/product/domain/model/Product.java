@@ -2,9 +2,6 @@ package com.sparta.product.domain.model;
 
 
 import com.sparta.commonmodule.entity.BaseEntity;
-import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
-import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
-import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
@@ -46,13 +43,13 @@ public class Product extends BaseEntity {
     /**
      * 상품 생성
      */
-    public static Product createProduct(CreateProductRequestDto requestDto, Long userId) {
+    public static Product createProduct(String name, String description, BigDecimal price, boolean isDisplay,UUID companyId) {
         return Product.builder()
-                .name(requestDto.name())
-                .description(requestDto.description())
-                .price(requestDto.price())
-                .isDisplay(requestDto.isDisplay())
-                .companyId(requestDto.companyId())
+                .name(name)
+                .description(description)
+                .price(price)
+                .isDisplay(isDisplay)
+                .companyId(companyId)
                 .build();
     }
 
@@ -60,24 +57,13 @@ public class Product extends BaseEntity {
     /**
      * 상품 수정
      */
-    public Product updateProduct(UpdateProductServiceRequestDto serviceDto) {
-        this.name = serviceDto.name();
-        this.description = serviceDto.description();
-        this.price = serviceDto.price();
-        this.isDisplay = serviceDto.isDisplay();
+    public Product updateProduct(String name, String description, BigDecimal price, boolean isDisplay) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.isDisplay = isDisplay;
         return this;
     }
 
 
-
-    // DTO -> Entity 변환 메서드
-    public static Product of(CreateProductResponseDto responseDto) {
-        return Product.builder()
-                .name(responseDto.name())
-                .description(responseDto.description())
-                .price(responseDto.price())
-                .isDisplay(responseDto.isDisplay())
-                .companyId(responseDto.companyId())
-                .build();
-    }
 }

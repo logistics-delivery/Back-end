@@ -6,7 +6,6 @@ import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.domain.model.Product;
 import com.sparta.product.domain.repository.ProductRepository;
 import com.sparta.product.infrastructure.client.CompanyClient;
-import com.sparta.product.infrastructure.client.HubClient;
 import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
 import com.sparta.product.presentation.dto.request.SearchProductRequestDto;
 import com.sparta.product.presentation.dto.response.*;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -26,7 +24,6 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final HubClient hubClient;
     private final CompanyClient companyClient;
 
 
@@ -34,10 +31,17 @@ public class ProductServiceImpl implements ProductService {
      * 상품 생성
      */
     @Override
-    public CreateProductResponseDto createProduct(CreateProductRequestDto requestDto, Long userId) {
+    public CreateProductResponseDto createProduct(CreateProductRequestDto requestDto) {
         validateCompanyExists(requestDto.companyId());
-        validateHubExists(requestDto.hubId());
-        Product product = productRepository.save(Product.createProduct(requestDto, userId));
+        Product product = productRepository
+                .save(Product.createProduct(
+                        requestDto.name(),
+                        requestDto.description(),
+                        requestDto.price(),
+                        requestDto.isDisplay(),
+                        requestDto.companyId()
+                ));
+
         return CreateProductResponseDto.from(product);
     }
 
@@ -74,7 +78,13 @@ public class ProductServiceImpl implements ProductService {
     public UpdateProductResponseDto updateProduct(UpdateProductServiceRequestDto serviceDto) {
         Product product = productRepository.findById(serviceDto.id())
                 .orElseThrow(() -> new ResourceNotFoundException("찾을 수 없는 상품 입니다."));
-        product.updateProduct(serviceDto);
+        product.updateProduct(
+                serviceDto.name(),
+                serviceDto.description(),
+                serviceDto.price(),
+                serviceDto.isDisplay()
+        );
+
         return UpdateProductResponseDto.from(product);
     }
 
@@ -107,11 +117,5 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-
-    // 허브 존재 검증 메서드
-    private void validateHubExists(UUID hubId) {
-        Optional.ofNullable(hubClient.getHubById(hubId))
-                .orElseThrow(() -> new ResourceNotFoundException("해당 허브가 존재하지 않습니다."));
-    }
 
 }
