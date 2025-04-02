@@ -3,7 +3,6 @@ package com.sparta.product.domain.model;
 
 import com.sparta.commonmodule.entity.BaseEntity;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
-import com.sparta.product.presentation.dto.request.CreateProductRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -46,13 +45,13 @@ public class Product extends BaseEntity {
     /**
      * 상품 생성
      */
-    public static Product createProduct(CreateProductRequestDto requestDto, Long userId) {
+    public static Product createProduct(String name, String description, BigDecimal price, boolean isDisplay,UUID companyId) {
         return Product.builder()
-                .name(requestDto.name())
-                .description(requestDto.description())
-                .price(requestDto.price())
-                .isDisplay(requestDto.isDisplay())
-                .companyId(requestDto.companyId())
+                .name(name)
+                .description(description)
+                .price(price)
+                .isDisplay(isDisplay)
+                .companyId(companyId)
                 .build();
     }
 

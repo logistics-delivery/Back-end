@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public interface ProductService {
 
-    CreateProductResponseDto createProduct(CreateProductRequestDto requestDto, Long userId);
+    CreateProductResponseDto createProduct(CreateProductRequestDto requestDto);
 
     ReadProductResponseDto readProduct(UUID productId);
 
