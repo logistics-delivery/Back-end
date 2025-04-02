@@ -12,10 +12,8 @@ public record ReadProductResponseDto(UUID id,
                                      String name,
                                      String description,
                                      BigDecimal price,
-                                     Integer quantity,
                                      boolean isDisplay,
-                                     UUID companyId,
-                                     UUID hubId) {
+                                     UUID companyId) {
 
     // Entity -> DTO 변환 메서드
     public static ReadProductResponseDto from(Product product) {
@@ -24,10 +22,8 @@ public record ReadProductResponseDto(UUID id,
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
-                .quantity(product.getQuantity())
                 .isDisplay(product.isDisplay())
                 .companyId(product.getCompanyId())
-                .hubId(product.getHubId())
                 .build();
     }
 }

@@ -11,10 +11,8 @@ public record SearchProductResponseDto(UUID id,
                                        String name,
                                        String description,
                                        BigDecimal price,
-                                       Integer quantity,
                                        Boolean isDisplay,
-                                       UUID companyId,
-                                       UUID hubId) {
+                                       UUID companyId) {
     // Entity -> DTO 변환 메서드
     public static SearchProductResponseDto from(Product product) {
         return SearchProductResponseDto.builder()
@@ -22,10 +20,8 @@ public record SearchProductResponseDto(UUID id,
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
-                .quantity(product.getQuantity())
                 .isDisplay(product.isDisplay())
                 .companyId(product.getCompanyId())
-                .hubId(product.getHubId())
                 .build();
     }
 }
