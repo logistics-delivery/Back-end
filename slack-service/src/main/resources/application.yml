@@ -17,6 +17,9 @@ spring:
   h2:
     console:
       enabled: false  # H2 콘솔 비활성화 (PostgreSQL 사용 시)
+  ai:
+    openai:
+      api-key: ${OPEN_AI_KEY}
 server:
   port: 8087
 
@@ -37,4 +40,5 @@ springdoc:
     path: /swagger-ui.html
 slack:
   webhook:
-    url: https://hooks.slack.com/services/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
+    url: ${SLACK_URL}
+  
