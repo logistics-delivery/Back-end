@@ -33,7 +33,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<CreateProductResponseDto> createProduct(@RequestBody CreateProductRequestDto requestDto,
                                                                   @RequestHeader(value = "user_id", required = true) Long userId) {
-        return ResponseEntity.ok(productService.createProduct(requestDto, userId));
+        return ResponseEntity.ok(productService.createProduct(requestDto));
     }
 
 
