@@ -2,7 +2,6 @@ package com.sparta.product.domain.model;
 
 
 import com.sparta.commonmodule.entity.BaseEntity;
-import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
 import com.sparta.product.presentation.dto.response.CreateProductResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -59,11 +58,11 @@ public class Product extends BaseEntity {
     /**
      * 상품 수정
      */
-    public Product updateProduct(UpdateProductServiceRequestDto serviceDto) {
-        this.name = serviceDto.name();
-        this.description = serviceDto.description();
-        this.price = serviceDto.price();
-        this.isDisplay = serviceDto.isDisplay();
+    public Product updateProduct(String name, String description, BigDecimal price, boolean isDisplay) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.isDisplay = isDisplay;
         return this;
     }
 

@@ -78,7 +78,13 @@ public class ProductServiceImpl implements ProductService {
     public UpdateProductResponseDto updateProduct(UpdateProductServiceRequestDto serviceDto) {
         Product product = productRepository.findById(serviceDto.id())
                 .orElseThrow(() -> new ResourceNotFoundException("찾을 수 없는 상품 입니다."));
-        product.updateProduct(serviceDto);
+        product.updateProduct(
+                serviceDto.name(),
+                serviceDto.description(),
+                serviceDto.price(),
+                serviceDto.isDisplay()
+        );
+
         return UpdateProductResponseDto.from(product);
     }
 
