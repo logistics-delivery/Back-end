@@ -3,7 +3,7 @@ package com.sparta.product.presentation;
 import com.sparta.commonmodule.aop.RoleCheck;
 import com.sparta.product.application.dto.DeleteProductServiceRequestDto;
 import com.sparta.product.application.dto.UpdateProductServiceRequestDto;
-import com.sparta.product.application.service.ProductServiceImpl;
+import com.sparta.product.application.service.ProductService;
 import com.sparta.product.presentation.dto.request.*;
 import com.sparta.product.presentation.dto.response.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @Tag(name = "Product Service", description = "상품 서비스 API")
 public class ProductController {
 
-    private final ProductServiceImpl productServiceImpl;
+    private final ProductService productService;
 
     /**
      * 상품 생성
@@ -33,7 +33,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<CreateProductResponseDto> createProduct(@RequestBody CreateProductRequestDto requestDto,
                                                                   @RequestHeader(value = "user_id", required = true) Long userId) {
-        return ResponseEntity.ok(productServiceImpl.createProduct(requestDto, userId));
+        return ResponseEntity.ok(productService.createProduct(requestDto, userId));
     }
 
 
@@ -44,7 +44,7 @@ public class ProductController {
     @RoleCheck("ROLE_MASTER, ROLE_HUB, ROLE_COMPANY, ROLE_SHIPPING")
     @GetMapping("/{productId}")
     public ResponseEntity<ReadProductResponseDto> readProduct(@PathVariable UUID productId) {
-        return ResponseEntity.ok(productServiceImpl.readProduct(productId));
+        return ResponseEntity.ok(productService.readProduct(productId));
     }
 
 
@@ -54,7 +54,7 @@ public class ProductController {
     @RoleCheck("ROLE_MASTER, ROLE_HUB, ROLE_COMPANY, ROLE_SHIPPING")
     @GetMapping
     public ResponseEntity<List<ReadProductResponseDto>> readAllProduct() {
-        return ResponseEntity.ok(productServiceImpl.readAllProduct());
+        return ResponseEntity.ok(productService.readAllProduct());
     }
 
 
@@ -65,7 +65,7 @@ public class ProductController {
     @PutMapping("/{productId}")
     public ResponseEntity<UpdateProductResponseDto> updateProduct(@PathVariable UUID productId,
                                                                   @RequestBody UpdateProductRequestDto requestDto) {
-        return ResponseEntity.ok(productServiceImpl.updateProduct(
+        return ResponseEntity.ok(productService.updateProduct(
                 UpdateProductServiceRequestDto.of(requestDto, productId)));
     }
 
@@ -77,7 +77,7 @@ public class ProductController {
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable UUID productId,
                                               @RequestHeader(value = "user_id", required = true) Long userId) {
-        productServiceImpl.deleteProduct(
+        productService.deleteProduct(
                 DeleteProductServiceRequestDto.of(userId, productId));
         return ResponseEntity.noContent().build();
     }
@@ -90,7 +90,7 @@ public class ProductController {
     @GetMapping("/search")
     public ResponseEntity<Page<SearchProductResponseDto>> searchProducts(@ModelAttribute SearchProductRequestDto requestDto,
                                                                          Pageable pageable) {
-        return ResponseEntity.ok(productServiceImpl.searchProducts(requestDto, pageable));
+        return ResponseEntity.ok(productService.searchProducts(requestDto, pageable));
     }
 
 
