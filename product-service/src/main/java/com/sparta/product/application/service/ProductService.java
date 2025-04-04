@@ -14,9 +14,21 @@ import java.util.UUID;
 
 public interface ProductService {
 
-    CreateProductResponseDto createProduct(CreateProductRequestDto requestDto);
+    /**
+ * Creates a new product using the details provided in the request DTO.
+ *
+ * @param requestDto the DTO containing the information required to create the product
+ * @return the response DTO containing the details of the newly created product
+ */
+CreateProductResponseDto createProduct(CreateProductRequestDto requestDto);
 
-    ReadProductResponseDto readProduct(UUID productId);
+    /**
+ * Retrieves details for the product with the specified identifier.
+ *
+ * @param productId the unique identifier of the product to retrieve
+ * @return a DTO containing detailed information about the product
+ */
+ReadProductResponseDto readProduct(UUID productId);
 
     List<ReadProductResponseDto> readAllProduct();
 

@@ -15,7 +15,15 @@ public record ReadProductResponseDto(UUID id,
                                      boolean isDisplay,
                                      UUID companyId) {
 
-    // Entity -> DTO 변환 메서드
+    /**
+     * Converts the given Product entity into a ReadProductResponseDto.
+     *
+     * <p>This method maps the product’s core attributes—its ID, name, description, price,
+     * display status, and company ID—to a corresponding DTO instance using the builder pattern.</p>
+     *
+     * @param product the product entity to convert
+     * @return a ReadProductResponseDto representing the provided product data
+     */
     public static ReadProductResponseDto from(Product product) {
         return ReadProductResponseDto.builder()
                 .id(product.getId())

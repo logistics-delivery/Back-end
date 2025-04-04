@@ -15,7 +15,15 @@ public record CreateProductResponseDto(UUID id,
                                        boolean isDisplay,
                                        UUID companyId) {
 
-    // Entity -> DTO 변환 메서드
+    /**
+     * Converts a Product entity to a CreateProductResponseDto.
+     *
+     * <p>This method maps the attributes of the provided Product, including id, name, description, price,
+     * display status, and company ID, into a new CreateProductResponseDto using the builder pattern.</p>
+     *
+     * @param product the Product entity containing the product details
+     * @return a CreateProductResponseDto instance representing the product
+     */
     public static CreateProductResponseDto from(Product product) {
         return CreateProductResponseDto.builder()
             .id(product.getId())

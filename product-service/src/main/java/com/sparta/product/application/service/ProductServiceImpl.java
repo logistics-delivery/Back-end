@@ -28,7 +28,14 @@ public class ProductServiceImpl implements ProductService {
 
 
     /**
-     * 상품 생성
+     * Creates a new product.
+     *
+     * Validates that the specified company exists, then creates and saves a product using the details
+     * provided in the request DTO. Returns a response DTO representing the newly created product.
+     *
+     * @param requestDto DTO containing the product's name, description, price, display flag, and company ID.
+     * @return a response DTO representing the created product
+     * @throws ResourceNotFoundException if the company does not exist
      */
     @Override
     public CreateProductResponseDto createProduct(CreateProductRequestDto requestDto) {
@@ -72,7 +79,15 @@ public class ProductServiceImpl implements ProductService {
 
 
     /**
-     * 상품 수정
+     * Updates an existing product's details.
+     *
+     * <p>This method locates the product using the ID provided in the update DTO, updates its name,
+     * description, price, and display flag with the new values, and returns a response DTO reflecting
+     * the updated product information. A ResourceNotFoundException is thrown if the product cannot be found.</p>
+     *
+     * @param serviceDto the DTO containing the product ID and updated attribute values
+     * @return a response DTO with the updated product information
+     * @throws ResourceNotFoundException if no product with the specified ID exists
      */
     @Override
     public UpdateProductResponseDto updateProduct(UpdateProductServiceRequestDto serviceDto) {
@@ -110,7 +125,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    // 업체 존재 검증 메서드
+    /**
+     * Validates that a company with the specified identifier exists.
+     * <p>
+     * If the company is not found, a {@code ResourceNotFoundException} is thrown.
+     *
+     * @param companyId the unique identifier of the company to validate
+     * @throws ResourceNotFoundException if no company exists with the given identifier
+     */
     private void validateCompanyExists(UUID companyId) {
         if (!companyClient.existsById(companyId)) {
             throw new ResourceNotFoundException("해당 업체가 존재하지 않습니다.");

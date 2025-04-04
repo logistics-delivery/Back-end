@@ -27,6 +27,19 @@ public class ProductQueryDSLRepositoryImpl implements ProductQueryDSLRepository 
     private final JPAQueryFactory queryFactory;
 
 
+    /**
+     * Searches for products matching the given criteria and returns a paginated result.
+     *
+     * <p>This method uses QueryDSL to construct a dynamic query based on the parameters in the
+     * {@code SearchProductRequestDto}. It filters products by name, description, and company ID, applies
+     * dynamic sorting from the {@code Pageable} parameter, and ensures the page size is valid. A separate
+     * count query determines the total number of matching products, and the retrieved products are converted
+     * into {@code SearchProductResponseDto} objects before being encapsulated in a {@code PageImpl}.</p>
+     *
+     * @param requestDto the search criteria including product name, description, and company ID.
+     * @param pageable pagination and sorting information.
+     * @return a paginated list of {@code SearchProductResponseDto} objects representing the search results.
+     */
     @Override
     public Page<SearchProductResponseDto> searchProducts(SearchProductRequestDto requestDto,  Pageable pageable) {
 
@@ -87,6 +100,15 @@ public class ProductQueryDSLRepositoryImpl implements ProductQueryDSLRepository 
     }
 
 
+    /**
+     * Creates a BooleanExpression to filter products by company ID.
+     *
+     * <p>If the provided companyId is non-null, returns an expression that matches products with the given company ID;
+     * otherwise returns null.
+     *
+     * @param companyId the UUID to match against the product's company ID
+     * @return a BooleanExpression for filtering by company ID, or null if companyId is null
+     */
     private BooleanExpression companyIdEq(UUID companyId) {
         return companyId != null ? product.companyId.eq(companyId) : null;
     }
