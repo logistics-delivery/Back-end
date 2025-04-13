@@ -31,7 +31,7 @@ Authorization: {{access_token}}
 ###
 POST http://localhost:8080/api/v1/shippings
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg5NDQsImV4cCI6MTc0Mjg0MjU0NH0.UueDPgZXhB0w1L_XhcE9fwC1BAdjiHe590Rh5HlSIxppfTTSZczHTgzUyLp6iZNR9_0iCqDfRJNPtE4qzdqV8A
+Authorization: {{access_token}}
 
 {
   "orderId": "550e8400-e29b-41d4-a716-446655440000",

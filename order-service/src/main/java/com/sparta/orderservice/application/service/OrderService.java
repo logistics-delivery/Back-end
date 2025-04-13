@@ -83,7 +83,7 @@ public class OrderService {
                 .build();
 
         // 6. FeignClient로 배송 요청
-        CreateShippingResponseDto shippingResponse = shippingClient.create(shippingRequest);
+        CreateShippingResponseDto shippingResponse = shippingClient.createShipping(shippingRequest);
 
         // 7. 배송 실패 시 예외
         if (!"READY".equals(shippingResponse.getStatus())) {

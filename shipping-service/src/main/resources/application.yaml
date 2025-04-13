@@ -8,11 +8,13 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   jpa:
+    properties:
+      hibernate:
+        default_schema: shipping_service
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-    show-sql: true  # 실행되는 SQL 쿼리 출력
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-
+    show-sql: true
 server:
   port: 8088
 
