@@ -5,6 +5,7 @@ import com.sparta.slackservice.application.dto.SlackRequestDto;
 import com.sparta.slackservice.application.dto.SlackResponseDto;
 import com.sparta.slackservice.application.dto.SlackSearchRequestDto;
 import com.sparta.slackservice.domain.model.Slack;
+import com.sparta.slackservice.domain.repository.SlackRepository;
 import com.sparta.slackservice.infastructure.JpaSlackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Transactional
 public class SlackService {
 
-    private final JpaSlackRepository slackRepository;
+    private final SlackRepository slackRepository;
     private final SlackWebhookService slackWebhookService;
 
     //슬랙 메세지 생성
