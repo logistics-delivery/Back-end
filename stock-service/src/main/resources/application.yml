@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: stock-service
+  datasource:
+    url: jdbc:postgresql://localhost:5001/maindb
+    username: admin
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    properties:
+      hibernate:
+        spring.jpa.open-in-view: false
+        format_sql: true
+        default_batch_fetch_size: 10
+        default_schema: stock_service
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 8089
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+springdoc:
+  api-docs:
+    version: openapi_3_1
+    enabled: true
+    path: /stock-service/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html

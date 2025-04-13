@@ -1,0 +1,116 @@
+### 유저 로그인
+POST http://localhost:8080/api/v1/users/sign-in
+Content-Type: application/json
+
+{
+  "username": "asdf123",
+  "password": "asdfgA12@"
+}
+> {%
+    client.global.set("access_token", response.headers.valueOf("Authorization"))
+%}
+
+
+### 상품 생성
+POST http://localhost:8080/api/v1/products
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "name": "마른오징어3",
+  "description": "마른오징어 입니다3.",
+  "price": 1000,
+  "isDisplay": true,
+  "companyId": "b8166e5f-b844-441c-ae46-75130d4b9fb0"
+}
+
+
+### 상품 단일 조회
+GET http://localhost:8080/api/v1/products/238d66b2-f8de-4de9-b0e5-6b32fd620788
+Content-Type: application/json
+Authorization: {{access_token}}
+
+
+### 상품 목록 조회
+GET http://localhost:8080/api/v1/products
+Content-Type: application/json
+Authorization: {{access_token}}
+
+
+### 상품 수정
+PUT http://localhost:8080/api/v1/products/238d66b2-f8de-4de9-b0e5-6b32fd620788
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "name": "마른오징어 수정",
+  "description": "마른오징어 입니다 수정.",
+  "price": 3000,
+  "isDisplay": false
+}
+
+
+### 상품 수정(재고 감소 성공)
+PUT http://localhost:8080/api/v1/products/238d66b2-f8de-4de9-b0e5-6b32fd620788/decrease
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI3ODg3OTEsImV4cCI6MTc0Mjc5MjM5MX0.GTMZCuZ7-jfzYshDEfBdCAfelNFAexIogXxU6rzX3fNTaeQ0GPFilKyylO_E90PiX5DFUWBQ29oIChuMpUU-gg
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "companyId": "550e8400-e29b-41d4-a716-446655440000",
+  "hubId": "123e4567-e89b-12d3-a456-426614174000",
+  "quantity": 30
+}
+
+
+### 상품 수정(재고 감소 실패)
+PUT http://localhost:8080/api/v1/products/238d66b2-f8de-4de9-b0e5-6b32fd620788/decrease
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "companyId": "550e8400-e29b-41d4-a716-446655440000",
+  "hubId": "123e4567-e89b-12d3-a456-426614174000",
+  "quantity": 100
+}
+
+
+### 상품 수정(재고 증가)
+PUT http://localhost:8080/api/v1/products/238d66b2-f8de-4de9-b0e5-6b32fd620788/increase
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI3ODg3OTEsImV4cCI6MTc0Mjc5MjM5MX0.GTMZCuZ7-jfzYshDEfBdCAfelNFAexIogXxU6rzX3fNTaeQ0GPFilKyylO_E90PiX5DFUWBQ29oIChuMpUU-gg
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "companyId": "550e8400-e29b-41d4-a716-446655440000",
+  "hubId": "123e4567-e89b-12d3-a456-426614174000",
+  "quantity": 30
+}
+
+
+### 상품 삭제
+DELETE http://localhost:8080/api/v1/products/225dc81a-7b96-4905-83b9-16945fef9a7d
+Authorization: {{access_token}}
+
+
+
+
+### 상품 검색 (상품 이름으로 검색)
+GET http://localhost:8080/api/v1/products/search?name=치킨2&page=0&size=10&sort=createdAt,asc
+Authorization: {{access_token}}
+
+### 상품 검색 (상품 설명으로 검색)
+GET http://localhost:8080/api/v1/products/search?description=마른오징어&page=0&size=10&sort=createdAt,asc
+Authorization: {{access_token}}
+
+### 상품 검색 (허브 ID로 검색)
+GET http://localhost:8080/api/v1/products/search?hubId=db2e0d31-18fb-4856-8d7a-5da08fbf6845&page=0&size=10&sort=createdAt,asc
+Authorization: {{access_token}}
+
+### 상품 검색 (업체 ID로 검색)
+GET http://localhost:8080/api/v1/products/search?companyId=b8166e5f-b844-441c-ae46-75130d4b9fb0&page=0&size=10&sort=createdAt,asc
+Authorization: {{access_token}}
+
+
+
+

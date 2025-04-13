@@ -1,0 +1,201 @@
+@host = http://localhost:8080
+
+POST http://localhost:8080/api/v1/users/sign-in
+Content-Type: application/json
+
+{
+  "username": "asdf123",
+  "password": "asdfgA12@"
+}
+> {%
+  client.global.set("access_token", response.headers.valueOf("Authorization"))
+%}
+
+### 👩🏻‍💻 Hub Route 테이블의 더미데이터에 필요한 코드
+###
+
+### 경기 남부 → 경기 북부
+POST http://localhost:8080/api/v1/hubs/hub-routes/8b3f2668-49cb-4885-8855-e20fd4bf10aa/d2587e4e-b2d4-4c9b-b2fd-37f035596a0d/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 경기 북부 → 경기 남부
+POST {{host}}/api/v1/hubs/hub-routes/d2587e4e-b2d4-4c9b-b2fd-37f035596a0d/8b3f2668-49cb-4885-8855-e20fd4bf10aa/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 경기 남부 → 서울특별시
+POST {{host}}/api/v1/hubs/hub-routes/8b3f2668-49cb-4885-8855-e20fd4bf10aa/d25f4291-d134-4f73-885a-0eb188a72649/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 서울특별시 → 경기 남부
+POST {{host}}/api/v1/hubs/hub-routes/d25f4291-d134-4f73-885a-0eb188a72649/8b3f2668-49cb-4885-8855-e20fd4bf10aa/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 경기 남부 → 인천광역시
+POST {{host}}/api/v1/hubs/hub-routes/8b3f2668-49cb-4885-8855-e20fd4bf10aa/4410d46d-27a2-4267-824b-4305a6731624/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 인천광역시 → 경기 남부
+POST {{host}}/api/v1/hubs/hub-routes/4410d46d-27a2-4267-824b-4305a6731624/8b3f2668-49cb-4885-8855-e20fd4bf10aa/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 경기 남부 → 강원특별자치도
+POST {{host}}/api/v1/hubs/hub-routes/8b3f2668-49cb-4885-8855-e20fd4bf10aa/3e734ae7-1030-45c8-b19d-b7ee7601cf2f/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 강원특별자치도 → 경기 남부
+POST {{host}}/api/v1/hubs/hub-routes/3e734ae7-1030-45c8-b19d-b7ee7601cf2f/8b3f2668-49cb-4885-8855-e20fd4bf10aa/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 경기 남부 → 경상북도
+POST {{host}}/api/v1/hubs/hub-routes/8b3f2668-49cb-4885-8855-e20fd4bf10aa/ec87005e-5160-4515-90ce-dcbbfb392678/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 경상북도 → 경기 남부
+POST {{host}}/api/v1/hubs/hub-routes/ec87005e-5160-4515-90ce-dcbbfb392678/8b3f2668-49cb-4885-8855-e20fd4bf10aa/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+
+
+
+
+
+### 대전광역시 → 충청남도
+POST {{host}}/api/v1/hubs/hub-routes/9d23ac68-441f-4122-ac91-98c99896fcc4/a8d36f04-6312-4acb-aac1-1b5e82e0995d/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 충청남도 → 대전광역시
+POST {{host}}/api/v1/hubs/hub-routes/a8d36f04-6312-4acb-aac1-1b5e82e0995d/9d23ac68-441f-4122-ac91-98c99896fcc4/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대전광역시 → 충청북도
+POST {{host}}/api/v1/hubs/hub-routes/9d23ac68-441f-4122-ac91-98c99896fcc4/2cddf4cb-07fc-487a-bceb-9613b884447f/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 충청북도 → 대전광역시
+POST {{host}}/api/v1/hubs/hub-routes/2cddf4cb-07fc-487a-bceb-9613b884447f/9d23ac68-441f-4122-ac91-98c99896fcc4/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대전광역시 → 세종특별자치시
+POST {{host}}/api/v1/hubs/hub-routes/9d23ac68-441f-4122-ac91-98c99896fcc4/0b1fa666-ebaa-4da8-a880-3bd40181ec0c/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 세종특별자치시 → 대전광역시
+POST {{host}}/api/v1/hubs/hub-routes/0b1fa666-ebaa-4da8-a880-3bd40181ec0c/9d23ac68-441f-4122-ac91-98c99896fcc4/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대전광역시 → 전북특별자치도
+POST {{host}}/api/v1/hubs/hub-routes/9d23ac68-441f-4122-ac91-98c99896fcc4/eb42b568-480c-4515-ac25-6d2dc6532110/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 전북특별자치도 → 대전광역시
+POST {{host}}/api/v1/hubs/hub-routes/eb42b568-480c-4515-ac25-6d2dc6532110/9d23ac68-441f-4122-ac91-98c99896fcc4/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대전광역시 → 광주광역시
+POST {{host}}/api/v1/hubs/hub-routes/9d23ac68-441f-4122-ac91-98c99896fcc4/b38d1ab0-2d3e-424c-b39d-814f10b294a5/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 광주광역시 → 대전광역시
+POST {{host}}/api/v1/hubs/hub-routes/b38d1ab0-2d3e-424c-b39d-814f10b294a5/9d23ac68-441f-4122-ac91-98c99896fcc4/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대전광역시 → 전라남도
+POST {{host}}/api/v1/hubs/hub-routes/9d23ac68-441f-4122-ac91-98c99896fcc4/972869be-9b58-4db2-9477-67a986c42d5b/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 전라남도 → 대전광역시
+POST {{host}}/api/v1/hubs/hub-routes/972869be-9b58-4db2-9477-67a986c42d5b/9d23ac68-441f-4122-ac91-98c99896fcc4/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대전광역시 → 경기 남부
+POST {{host}}/api/v1/hubs/hub-routes/9d23ac68-441f-4122-ac91-98c99896fcc4/8b3f2668-49cb-4885-8855-e20fd4bf10aa/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 경기 남부 → 대전광역시
+POST {{host}}/api/v1/hubs/hub-routes/8b3f2668-49cb-4885-8855-e20fd4bf10aa/9d23ac68-441f-4122-ac91-98c99896fcc4/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대전광역시 → 대구광역시
+POST {{host}}/api/v1/hubs/hub-routes/9d23ac68-441f-4122-ac91-98c99896fcc4/73c63196-a79c-4b05-912e-d3bbd8244cda/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대구광역시 → 대전광역시
+POST {{host}}/api/v1/hubs/hub-routes/73c63196-a79c-4b05-912e-d3bbd8244cda/9d23ac68-441f-4122-ac91-98c99896fcc4/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대구광역시 → 경상북도
+POST {{host}}/api/v1/hubs/hub-routes/73c63196-a79c-4b05-912e-d3bbd8244cda/ec87005e-5160-4515-90ce-dcbbfb392678/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 경상북도 → 대구광역시
+POST {{host}}/api/v1/hubs/hub-routes/ec87005e-5160-4515-90ce-dcbbfb392678/73c63196-a79c-4b05-912e-d3bbd8244cda/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대구광역시 → 경상남도
+POST {{host}}/api/v1/hubs/hub-routes/73c63196-a79c-4b05-912e-d3bbd8244cda/6ad0e2b5-6a15-437b-be2d-db5329b6cff6/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 경상남도 → 대구광역시
+POST {{host}}/api/v1/hubs/hub-routes/6ad0e2b5-6a15-437b-be2d-db5329b6cff6/73c63196-a79c-4b05-912e-d3bbd8244cda/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대구광역시 → 부산광역시
+POST {{host}}/api/v1/hubs/hub-routes/73c63196-a79c-4b05-912e-d3bbd8244cda/12bca245-3e19-400d-a421-6e3e42c56b1e/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 부산광역시 → 대구광역시
+POST {{host}}/api/v1/hubs/hub-routes/12bca245-3e19-400d-a421-6e3e42c56b1e/73c63196-a79c-4b05-912e-d3bbd8244cda/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대구광역시 → 울산광역시
+POST {{host}}/api/v1/hubs/hub-routes/73c63196-a79c-4b05-912e-d3bbd8244cda/b97f9c00-f8bb-4ff4-99d0-624da28a2be7/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 울산광역시 → 대구광역시
+POST {{host}}/api/v1/hubs/hub-routes/b97f9c00-f8bb-4ff4-99d0-624da28a2be7/73c63196-a79c-4b05-912e-d3bbd8244cda/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 대구광역시 → 경기 남부
+POST {{host}}/api/v1/hubs/hub-routes/73c63196-a79c-4b05-912e-d3bbd8244cda/8b3f2668-49cb-4885-8855-e20fd4bf10aa/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+
+### 경기 남부 → 대구광역시
+POST {{host}}/api/v1/hubs/hub-routes/8b3f2668-49cb-4885-8855-e20fd4bf10aa/73c63196-a79c-4b05-912e-d3bbd8244cda/direct
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJST0xFX01BU1RFUiIsInNsYWNrX25hbWUiOiJhc2RnZ2ciLCJpc3MiOiJ1c2VyLXNlcnZpY2UiLCJpYXQiOjE3NDI4Mzg2MDEsImV4cCI6MTc0Mjg0MjIwMX0.nz_C1XrfRH0FYkP75wiFCzWdMn10TmDs8pUThBvAHaVwotpWtOZmT_vqHNWwIvGAqA1QCvbiSN4ib_E1E3Iy7w
+Content-Type: application/json
+

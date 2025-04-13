@@ -1,0 +1,9 @@
+-- init.sql
+CREATE SCHEMA IF NOT EXISTS user_service;
+CREATE SCHEMA IF NOT EXISTS order_service;
+CREATE SCHEMA IF NOT EXISTS hub_service;
+CREATE SCHEMA IF NOT EXISTS product_service;
+CREATE SCHEMA IF NOT EXISTS company_service;
+CREATE SCHEMA IF NOT EXISTS shipping_service;
+CREATE SCHEMA IF NOT EXISTS slack_service;
+CREATE SCHEMA IF NOT EXISTS stock_service;

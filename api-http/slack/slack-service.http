@@ -1,0 +1,58 @@
+POST http://localhost:8080/api/v1/users/sign-in
+Content-Type: application/json
+
+{
+  "username": "asdf123",
+  "password": "asdfgA12@"
+}
+> {%
+    client.global.set("access_token", response.headers.valueOf("Authorization"))
+%}
+###
+
+POST http://localhost:8080/api/v1/slacks/create
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "message":"반가워요!",
+  "receiverId":3
+}
+
+###
+
+POST http://localhost:8080/api/v1/slacks/send/9ae52019-9b37-4bc0-b171-96da397337f3
+Authorization: {{access_token}}
+
+####
+
+###
+
+GET http://localhost:8080/api/v1/slacks/9ae52019-9b37-4bc0-b171-96da397337f3
+Authorization: {{access_token}}
+
+####
+
+POST http://localhost:8080/api/v1/slacks/search
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "receiverId": 3
+}
+
+###
+
+PUT http://localhost:8080/api/v1/slacks/modify/b08bd42a-6b0e-497d-831f-a9f5b4fa63db
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "message": "변경메세지",
+  "receiverId": 1
+}
+
+###
+
+DELETE http://localhost:8080/api/v1/slacks/b08bd42a-6b0e-497d-831f-a9f5b4fa63db
+Authorization: {{access_token}}

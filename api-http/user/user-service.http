@@ -1,0 +1,45 @@
+POST http://localhost:8080/api/v1/users/sign-up
+Content-Type: application/json
+
+{
+    "username":"asdf123",
+    "password":"asdfgA12@",
+    "email":"asdf@naver.com",
+    "slackName": "asdggg",
+    "tokenValue": "mgbE4vogtrMGufz6PXkQNTV-KZtU4-Mz7_wcKf7r40kKTu8z4BD9l_kacdd4MzU3pQV6y3LB-yrmMvvXFKep2Q"
+}
+
+###
+
+POST http://localhost:8080/api/v1/users/sign-in
+Content-Type: application/json
+
+{
+  "username": "asdf123",
+  "password": "asdfgA12@"
+}
+> {%
+    client.global.set("access_token", response.headers.valueOf("Authorization"))
+%}
+###
+
+GET http://localhost:8080/api/v1/users
+Authorization: {{access_token}}
+
+###
+
+PUT http://localhost:8080/api/v1/users/update
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "username": "afdsjhsd24",
+  "password": "asdfgA12gg@",
+  "email":"asdfg3@naver.com",
+  "slackName": "asdgggh"
+}
+
+###
+
+DELETE http://localhost:8080/api/v1/users
+Authorization: {{access_token}}

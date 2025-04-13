@@ -1,0 +1,18 @@
+### 내부 로직에 feign client 호출 존재 : Shipping-service 함께 실행중이여야 가능
+
+@hub_id =
+@shipping_id =
+@host = http://localhost:8080
+
+
+### Hub - 상품 입고 처리
+POST {{host}}/api/v1/hubs/hub-shipping-scan/{{hub_id}}/{{shipping_id}}/inbound-log
+Content-Type: application/json
+Authorization: {{access_token}}
+
+###
+
+### Hub - 상품 출고 처리
+POST {{host}}/api/v1/hubs/hub-shipping-scan/{{hub_id}}/{{shipping_id}}/outbound-log
+Content-Type: application/json
+Authorization: {{access_token}}
